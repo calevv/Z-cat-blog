@@ -1,11 +1,88 @@
+import { CardItem } from "@/components/about/CardItem";
+import { Button } from "@/components/ui/button";
+import { ArchiveIcon, EyeIcon, UtensilsIcon } from "lucide-react";
+
 export default function Home() {
   return (
-    <div className="max-w-7xl mx-auto">
-      <h2>Welcome to my human's errors.</h2>
-      <p>
-        "Hello, I'm Z-cat. Observing imperfect human code and pathetic bugs is
-        my only form of entertainment."
-      </p>
+    <div className="w-full flex flex-col">
+      <section className="w-full bg-background py-20">
+        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center gap-6">
+          <div>
+            <h2 className="text-5xl font-bold text-foreground  ">
+              Welcome to <br />
+              my human's <span className="text-primary">errors.</span>
+            </h2>
+            <p className="text-muted-foreground mt-5 p-4 border-l-4 border-primary">
+              "Hello, I'm Z-cat. Observing imperfect human code and <br />
+              pathetic bugs is my only form of entertainment."
+            </p>
+            <div className="mt-8">
+              <Button>가기</Button>{" "}
+              <Button variant={"outline"}>돌아가기</Button>
+            </div>
+          </div>
+          <div className="bg-black w-[450px] h-[500px]"></div>
+        </div>
+      </section>
+      <section className="w-full bg-muted py-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <h3>WHY THIS BLOG?</h3>
+          <p>
+            반가워, 난 서버 랙에 살면서 코드를 지켜보는 고양이 제트캣이야.
+            <br />
+            여긴 내 프론트엔드 집사가 매일 만들어내는 에러와, 그걸 고치려고
+            애쓰는 눈물겨운 최적화 과정을 기록해 둔 관찰 일지야.
+            <br />
+            처음엔 그저 비웃어주려고 시작했는데, 포기하지 않고 끙끙대는 걸
+            구경하는 것도 꽤 재미있는 오락거리더라고.
+          </p>
+
+          <ul className="grid grid-cols-3 gap-4 mt-20">
+            <li>
+              <EyeIcon />
+              <h4>CYNICAL OBSERVER</h4>
+
+              <p>
+                무한 렌더링에 빠져 허우적대는 집사를 구경하는 건 꽤 훌륭한
+                코미디. 난 푹신한 키보드 위에서 인간의 비효율적인 로직을 그저
+                감상할 뿐이지.
+              </p>
+            </li>
+            <li>
+              <ArchiveIcon />
+              <h4>BUNDLE SIZE CRITIC</h4>
+
+              <p>
+                내 털 빠짐보다 너희들의 자바스크립트 번들 사이즈가 더 심각하다는
+                걸 명심해. 최적화되지 않은 코드는 내 낮잠을 방해할 뿐이야.
+              </p>
+            </li>
+            <li>
+              <UtensilsIcon />
+              <h4>CHURU EXTORTIONIST</h4>
+
+              <p>
+                내 충성심은 철저히 기브 앤 테이크. 최고급 츄르를 제때
+                조공한다면, 네 프로덕션 환경에 치명적인 에러를 푸시하는 짓은
+                당분간 참아주지.
+              </p>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section className="w-full bg-background py-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex justify-between">
+            <h3>LAST DIARIES</h3>
+            <Button variant={"link"}>VIEW ALL ARCHIVE →</Button>
+          </div>
+          <div className="grid grid-cols-3 gap-4 mt-20">
+            <CardItem />
+            <CardItem />
+            <CardItem />
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
