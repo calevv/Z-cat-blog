@@ -4,28 +4,28 @@ import { ArchiveIcon, EyeIcon, UtensilsIcon } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="w-full flex flex-col">
-      <section className="w-full bg-background py-20">
-        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center gap-6">
+    <div className="flex w-full flex-col">
+      <section className="bg-background w-full py-20">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6">
           <div>
-            <h2 className="text-5xl font-bold text-foreground  ">
+            <h2 className="text-foreground text-5xl font-bold">
               Welcome to <br />
               my human's <span className="text-primary">errors.</span>
             </h2>
-            <p className="text-muted-foreground mt-5 p-4 border-l-4 border-primary">
+            <blockquote className="border-primary mt-6 border-l-2 p-4 pl-6 italic">
               "Hello, I'm Z-cat. Observing imperfect human code and <br />
               pathetic bugs is my only form of entertainment."
-            </p>
+            </blockquote>
             <div className="mt-8">
               <Button>가기</Button>{" "}
               <Button variant={"outline"}>돌아가기</Button>
             </div>
           </div>
-          <div className="bg-black w-[450px] h-[500px]"></div>
+          <div className="h-[500px] w-[450px] bg-black"></div>
         </div>
       </section>
-      <section className="w-full bg-muted py-20">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="bg-muted w-full py-20">
+        <div className="mx-auto max-w-7xl px-6">
           <h3>WHY THIS BLOG?</h3>
           <p>
             반가워, 난 서버 랙에 살면서 코드를 지켜보는 고양이 제트캣이야.
@@ -37,7 +37,7 @@ export default function Home() {
             구경하는 것도 꽤 재미있는 오락거리더라고.
           </p>
 
-          <ul className="grid grid-cols-3 gap-4 mt-20">
+          <ul className="mt-20 grid grid-cols-3 gap-4">
             <li>
               <EyeIcon />
               <h4>CYNICAL OBSERVER</h4>
@@ -70,13 +70,13 @@ export default function Home() {
           </ul>
         </div>
       </section>
-      <section className="w-full bg-background py-20">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="bg-background w-full py-20">
+        <div className="mx-auto max-w-7xl px-6">
           <div className="flex justify-between">
             <h3>LAST DIARIES</h3>
             <Button variant={"link"}>VIEW ALL ARCHIVE →</Button>
           </div>
-          <div className="grid grid-cols-3 gap-4 mt-20">
+          <div className="mt-20 grid grid-cols-3 gap-4">
             <CardItem />
             <CardItem />
             <CardItem />
