@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Navigation() {
+  const pathname = usePathname();
   return (
     <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-sm border-b border-muted/50">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -13,19 +17,31 @@ export default function Navigation() {
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
           <Link
             href="/"
-            className="hover:text-foreground transition-colors text-foreground border-b-2 border-primary pb-1"
+            className={`transition-colors pb-1 border-b-2 ${
+              pathname === "/"
+                ? "text-foreground border-primary"
+                : "text-muted-foreground hover:text-foreground border-transparent"
+            }`}
           >
             About
           </Link>
           <Link
             href="/diary"
-            className="hover:text-foreground transition-colors pb-1"
+            className={`transition-colors pb-1 border-b-2 ${
+              pathname === "/diary"
+                ? "text-foreground border-primary"
+                : "text-muted-foreground hover:text-foreground border-transparent"
+            }`}
           >
             Diary
           </Link>
           <Link
             href="/contact"
-            className="hover:text-foreground transition-colors pb-1"
+            className={`transition-colors pb-1 border-b-2 ${
+              pathname === "/contact"
+                ? "text-foreground border-primary"
+                : "text-muted-foreground hover:text-foreground border-transparent"
+            }`}
           >
             Contact
           </Link>

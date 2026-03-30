@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Noto_Sans, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import Navigation from "@/components/layout/Navigation";
-import Footer from "@/components/layout/Footer";
 
 const interHeading = Inter({ subsets: ["latin"], variable: "--font-heading" });
 
@@ -33,7 +31,9 @@ export default function RootLayout({
     <html
       lang="en"
       className={cn(
-        "h-full",
+        "bg-background",
+        "text-foreground",
+        "min-h-screen",
         "antialiased",
         geistSans.variable,
         geistMono.variable,
@@ -42,11 +42,7 @@ export default function RootLayout({
         interHeading.variable,
       )}
     >
-      <body className="min-h-full flex flex-col ">
-        <Navigation />
-        <main className="flex-1"> {children}</main>
-        <Footer />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
