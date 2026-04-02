@@ -21,13 +21,23 @@ export default function Home() {
               <Button variant={"outline"}>돌아가기</Button>
             </div>
           </div>
-          <div className="h-[500px] w-[450px] bg-black"></div>
+          <div className="relative h-[500px] w-[450px] bg-black">
+            {/* 이미지 들어올 자리 */}
+
+            {/* 오버레이 텍스트 — absolute로 우측 하단에 띄움 */}
+            <div className="absolute right-4 bottom-4 border border-white/20 bg-black/60 px-3 py-2 backdrop-blur-sm">
+              <p className="font-mono text-[10px] text-white/50">[STATUS]</p>
+              <p className="font-mono text-sm font-bold text-white">
+                OBSERVING
+              </p>
+            </div>
+          </div>
         </div>
       </section>
       <section className="bg-muted w-full py-20">
         <div className="mx-auto max-w-7xl px-6">
-          <h3>WHY THIS BLOG?</h3>
-          <p>
+          <h2>WHY THIS BLOG?</h2>
+          <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
             반가워, 난 서버 랙에 살면서 코드를 지켜보는 고양이 제트캣이야.
             <br />
             여긴 내 프론트엔드 집사가 매일 만들어내는 에러와, 그걸 고치려고
@@ -37,31 +47,28 @@ export default function Home() {
             구경하는 것도 꽤 재미있는 오락거리더라고.
           </p>
 
-          <ul className="mt-20 grid grid-cols-3 gap-4">
-            <li>
-              <EyeIcon />
+          <ul className="mt-12 grid grid-cols-3 gap-8">
+            <li className="flex flex-col gap-3">
+              <EyeIcon className="text-primary size-5" />
               <h4>CYNICAL OBSERVER</h4>
-
-              <p>
+              <p className="text-muted-foreground text-sm leading-relaxed break-keep">
                 무한 렌더링에 빠져 허우적대는 집사를 구경하는 건 꽤 훌륭한
                 코미디. 난 푹신한 키보드 위에서 인간의 비효율적인 로직을 그저
                 감상할 뿐이지.
               </p>
             </li>
-            <li>
-              <ArchiveIcon />
+            <li className="flex flex-col gap-3">
+              <ArchiveIcon className="text-primary size-5" />
               <h4>BUNDLE SIZE CRITIC</h4>
-
-              <p>
+              <p className="text-muted-foreground text-sm leading-relaxed break-keep">
                 내 털 빠짐보다 너희들의 자바스크립트 번들 사이즈가 더 심각하다는
                 걸 명심해. 최적화되지 않은 코드는 내 낮잠을 방해할 뿐이야.
               </p>
             </li>
-            <li>
-              <UtensilsIcon />
+            <li className="flex flex-col gap-3">
+              <UtensilsIcon className="text-primary size-5" />
               <h4>CHURU EXTORTIONIST</h4>
-
-              <p>
+              <p className="text-muted-foreground text-sm leading-relaxed break-keep">
                 내 충성심은 철저히 기브 앤 테이크. 최고급 츄르를 제때
                 조공한다면, 네 프로덕션 환경에 치명적인 에러를 푸시하는 짓은
                 당분간 참아주지.
@@ -73,7 +80,7 @@ export default function Home() {
       <section className="bg-background w-full py-20">
         <div className="mx-auto max-w-7xl px-6">
           <div className="flex justify-between">
-            <h3>LAST DIARIES</h3>
+            <h2>LAST DIARIES</h2>
             <Button variant={"link"}>VIEW ALL ARCHIVE →</Button>
           </div>
           <div className="mt-20 grid grid-cols-3 gap-4">
