@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist_Mono, Noto_Sans, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
 
 const interHeading = Inter({ subsets: ["latin"], variable: "--font-heading" });
 
@@ -34,6 +35,7 @@ export default function RootLayout({
     >
       <body className={cn("min-h-screen font-sans antialiased")}>
         {children}
+        <Toaster />
       </body>
     </html>
   );

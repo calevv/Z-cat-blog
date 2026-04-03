@@ -7,18 +7,18 @@ import { usePathname } from "next/navigation";
 export default function Navigation() {
   const pathname = usePathname();
   return (
-    <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-sm border-b border-muted/50">
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <header className="bg-background/80 border-muted/50 sticky top-0 z-50 w-full border-b backdrop-blur-sm">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         {/* Logo */}
-        <Link href="/" className="font-bold text-xl tracking-tight">
+        <Link href="/" className="text-xl font-bold tracking-tight">
           Z-cat.
         </Link>
 
         {/* Centered Nav */}
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
+        <nav className="text-muted-foreground hidden items-center gap-8 text-sm font-medium md:flex">
           <Link
             href="/"
-            className={`transition-colors pb-1 border-b-2 ${
+            className={`border-b-2 pb-1 transition-colors ${
               pathname === "/"
                 ? "text-foreground border-primary"
                 : "text-muted-foreground hover:text-foreground border-transparent"
@@ -28,8 +28,8 @@ export default function Navigation() {
           </Link>
           <Link
             href="/diary"
-            className={`transition-colors pb-1 border-b-2 ${
-              pathname === "/diary"
+            className={`border-b-2 pb-1 transition-colors ${
+              pathname.startsWith("/diary")
                 ? "text-foreground border-primary"
                 : "text-muted-foreground hover:text-foreground border-transparent"
             }`}
@@ -38,7 +38,7 @@ export default function Navigation() {
           </Link>
           <Link
             href="/contact"
-            className={`transition-colors pb-1 border-b-2 ${
+            className={`border-b-2 pb-1 transition-colors ${
               pathname === "/contact"
                 ? "text-foreground border-primary"
                 : "text-muted-foreground hover:text-foreground border-transparent"
@@ -51,7 +51,7 @@ export default function Navigation() {
         {/* Right Section (Search Icon Placeholder) */}
         <div>
           <button
-            className="p-2 hover:bg-muted rounded-full transition-colors"
+            className="hover:bg-muted rounded-full p-2 transition-colors"
             aria-label="Search"
           >
             <SearchIcon />

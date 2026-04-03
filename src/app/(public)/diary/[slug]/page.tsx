@@ -3,6 +3,7 @@
 // 역할: 개별 포스트 상세 내용
 // TODO: Supabase 연결 후 더미 데이터 교체
 // ───────────────────────────────
+import CommentSection from "@/components/diary/CommentSection";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -70,11 +71,6 @@ export default async function Page({
             <p className="text-muted-foreground font-mono text-xs">
               {DUMMY_POST.date}
             </p>
-            {DUMMY_POST.tags.map((tag) => (
-              <span key={tag} className="text-primary font-mono text-xs">
-                #{tag}
-              </span>
-            ))}
           </div>
 
           {/* 제목 */}
@@ -86,7 +82,14 @@ export default async function Page({
           </p>
 
           {/* author */}
-          <div className="mt-6 flex justify-end">
+          <div className="mt-6 flex justify-between">
+            <p className="flex gap-1">
+              {DUMMY_POST.tags.map((tag) => (
+                <span key={tag} className="text-primary font-mono text-xs">
+                  #{tag}
+                </span>
+              ))}
+            </p>
             <span
               className={`font-mono text-xs ${
                 DUMMY_POST.authorType === "zetcat"
@@ -110,18 +113,7 @@ export default async function Page({
       </section>{" "}
       {/* 댓글 */}
       <section className="mx-auto max-w-3xl px-6 pb-16">
-        <p className="text-foreground font-mono text-xs font-bold">COMMENTS</p>
-        {/* TODO: Supabase 연결 후 댓글 목록 렌더링 */}
-        <div className="mt-4 flex gap-2">
-          <input
-            type="text"
-            placeholder="관찰 소감을 남겨라, 인간."
-            className="border-border bg-background text-foreground placeholder:text-muted-foreground focus:border-primary flex-1 border px-4 py-2 font-mono text-sm transition-colors focus:outline-none"
-          />
-          <button className="bg-primary px-4 py-2 font-mono text-xs text-white transition-opacity hover:opacity-80">
-            SEND
-          </button>
-        </div>
+        <CommentSection />
       </section>
       {/* 이전글 / 다음글 */}
       <section className="mx-auto max-w-3xl px-6 py-8">
