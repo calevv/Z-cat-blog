@@ -1,10 +1,15 @@
 // ───────────────────────────────
 // Diary 목록 페이지
 // 역할: 전체 포스트 목록 + 태그 사이드바 필터
-// TODO: Supabase 연결 후 더미 데이터 교체
+// TODO:
+// 태그 필터링
+// 페이지네이션 혹은 스크롤
+// 호버 이벤트 변경
+// Supabase 연결 후 더미 데이터 교체(완)
 // ───────────────────────────────
 import { createClient } from "@/lib/supabase";
 import { formatDate } from "@/lib/utils";
+import Link from "next/link";
 
 // 더미 태그 목록 — 나중에 DB에서 동적으로 가져올 것
 const ALL_TAGS = ["Next.js", "React", "Supabase", "CSS"];
@@ -42,52 +47,56 @@ export default async function DiaryPage() {
           {/* 포스트 목록 */}
           <ul className="divide-border flex flex-1 flex-col divide-y">
             {posts?.map((post) => (
-              <li key={post.id} className="flex gap-6 py-8">
-                {/* 썸네일 */}
-                <div className="bg-muted h-24 w-36 shrink-0" />
-
-                {/* 텍스트 */}
-                <div className="flex flex-1 flex-col gap-2">
-                  {/* 날짜 + 태그 */}
-                  <div className="flex items-center gap-3">
-                    <span className="text-muted-foreground font-mono text-xs">
-                      {formatDate(post.published_at)}
-                    </span>
-                    {post.tags.map((tag: string) => (
-                      <span
-                        key={tag}
-                        className="text-primary font-mono text-xs"
-                      >
-                        #{tag}
+              <li key={post.id}>
+                <Link
+                  href={`/diary/${post.slug}`}
+                  className="flex gap-6 py-8 transition-opacity hover:opacity-70"
+                >
+                  {/* 썸네일 */}
+                  <div className="bg-muted h-24 w-36 shrink-0" />
+                  {/* 텍스트 */}
+                  <div className="flex flex-1 flex-col gap-2">
+                    {/* 날짜 + 태그 */}
+                    <div className="flex items-center gap-3">
+                      <span className="text-muted-foreground font-mono text-xs">
+                        {formatDate(post.published_at)}
                       </span>
-                    ))}
+                      {post.tags.map((tag: string) => (
+                        <span
+                          key={tag}
+                          className="text-primary font-mono text-xs"
+                        >
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* 제목 */}
+                    <h2 className="text-foreground text-lg leading-snug font-bold">
+                      {post.title_ko}
+                    </h2>
+
+                    {/* 요약 */}
+                    <p className="text-muted-foreground line-clamp-2 text-sm">
+                      {post.excerpt}
+                    </p>
+
+                    {/* author 배지 */}
+                    <div className="mt-auto flex justify-end">
+                      <span
+                        className={`font-mono text-xs ${
+                          post.author_type === "zetcat"
+                            ? "text-primary"
+                            : "text-muted-foreground"
+                        }`}
+                      >
+                        {post.author_type === "zetcat"
+                          ? "[ Z-cat ]"
+                          : "[ Human ]"}
+                      </span>
+                    </div>
                   </div>
-
-                  {/* 제목 */}
-                  <h2 className="text-foreground text-lg leading-snug font-bold">
-                    {post.title_ko}
-                  </h2>
-
-                  {/* 요약 */}
-                  <p className="text-muted-foreground line-clamp-2 text-sm">
-                    {post.excerpt}
-                  </p>
-
-                  {/* author 배지 */}
-                  <div className="mt-auto flex justify-end">
-                    <span
-                      className={`font-mono text-xs ${
-                        post.author_type === "zetcat"
-                          ? "text-primary"
-                          : "text-muted-foreground"
-                      }`}
-                    >
-                      {post.author_type === "zetcat"
-                        ? "[ Z-cat ]"
-                        : "[ Human ]"}
-                    </span>
-                  </div>
-                </div>
+                </Link>
               </li>
             ))}
           </ul>
