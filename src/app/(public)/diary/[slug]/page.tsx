@@ -47,7 +47,7 @@ export default async function DiaryDetailPage({
     .lt("published_at", post.published_at)
     .order("published_at", { ascending: false })
     .limit(1)
-    .single();
+    .maybeSingle();
 
   const { data: nextPost } = await supabase
     .from("posts")
@@ -56,7 +56,7 @@ export default async function DiaryDetailPage({
     .gt("published_at", post.published_at)
     .order("published_at", { ascending: true })
     .limit(1)
-    .single();
+    .maybeSingle();
 
   return (
     <div className="bg-background w-full">

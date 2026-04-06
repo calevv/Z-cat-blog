@@ -21,7 +21,7 @@ export default function Footer() {
         <div className="text-muted-foreground flex gap-4 font-mono text-xs">
           {/* TODO: 깃허브 주소 넣기 */}
           <Link
-            href="https://github.com"
+            href="https://github.com/calevv"
             target="_blank"
             aria-label="GitHub"
             className="hover:text-foreground transition-colors"
@@ -30,7 +30,7 @@ export default function Footer() {
           </Link>
           |{/* TODO: 블로그 주소 넣기 */}
           <Link
-            href="https://velog.io"
+            href="https://velog.io/@jeongminji"
             target="_blank"
             className="hover:text-foreground transition-colors"
           >
