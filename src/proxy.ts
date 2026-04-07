@@ -39,15 +39,21 @@ export async function proxy(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // /admin/login 제외한 /admin 경로 접근 시
+  // 1. [접근 제한] 로그인 안 됐는데 /admin 페이지에 접근한 경우
   if (
     !user &&
     request.nextUrl.pathname.startsWith("/admin") &&
     !request.nextUrl.pathname.startsWith("/admin/login")
   ) {
-    // 로그인 페이지로 리다이렉트
     const url = request.nextUrl.clone();
     url.pathname = "/admin/login";
+    return NextResponse.redirect(url);
+  }
+
+  // 2. [역 리다이렉트] 이미 로그인됐는데 /admin/login 페이지에 접근한 경우 (뒤로가기 방지)
+  if (user && request.nextUrl.pathname === "/admin/login") {
+    const url = request.nextUrl.clone();
+    url.pathname = "/admin"; // 또는 가고 싶은 관리자 메인 페이지
     return NextResponse.redirect(url);
   }
 

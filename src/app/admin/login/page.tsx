@@ -58,6 +58,7 @@ export default function LoginPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          {/* autoComplete="new-password" 자동완성 방지 */}
           {/* 이메일 */}
           <div className="flex flex-col gap-1">
             <label className="text-muted-foreground font-mono text-xs">
@@ -69,7 +70,7 @@ export default function LoginPage() {
               value={form.email}
               onChange={handleChange}
               placeholder="YOUR_EMAIL"
-              autoComplete="email"
+              autoComplete="new-password"
               className="border-border bg-background text-foreground placeholder:text-muted-foreground focus:border-primary w-full border px-4 py-3 font-mono text-sm transition-colors focus:outline-none"
             />
           </div>
@@ -85,7 +86,7 @@ export default function LoginPage() {
               value={form.password}
               onChange={handleChange}
               placeholder="YOUR_PASSWORD"
-              autoComplete="current-password"
+              autoComplete="new-password"
               className="border-border bg-background text-foreground placeholder:text-muted-foreground focus:border-primary w-full border px-4 py-3 font-mono text-sm transition-colors focus:outline-none"
             />
           </div>
