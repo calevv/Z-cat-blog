@@ -8,9 +8,9 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendContactEmail(formData: FormData) {
-  const name = formData.get("name") as String;
-  const email = formData.get("email") as String;
-  const message = formData.get("message") as String;
+  const name = formData.get("name") as string;
+  const email = formData.get("email") as string;
+  const message = formData.get("message") as string;
 
   // 빈 값 체크
   if (!name || !email || !message) {
