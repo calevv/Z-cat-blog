@@ -17,7 +17,7 @@ export default function Home() {
               pathetic bugs is my only form of entertainment."
             </blockquote>
             <div className="mt-8">
-              <Button>가기</Button>{" "}
+              <Button>가기</Button>
               <Button variant={"outline"}>돌아가기</Button>
             </div>
           </div>

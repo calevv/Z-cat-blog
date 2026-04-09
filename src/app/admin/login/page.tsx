@@ -33,7 +33,6 @@ export default function LoginPage() {
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
-    console.log("로그인", form);
     const result = await signIn(form);
 
     // redirect가 일어나면 여기 아래는 실행 안 됨

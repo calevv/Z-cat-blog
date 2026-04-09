@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Noto_Sans, Inter, Newsreader } from "next/font/google";
+import {
+  Geist_Mono,
+  Space_Grotesk,
+  Noto_Sans,
+  Inter,
+  Newsreader,
+} from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
@@ -18,7 +24,11 @@ const newsreader = Newsreader({
   variable: "--font-serif",
   style: ["italic", "normal"],
 });
-
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
 export const metadata: Metadata = {
   title: "Z-cat | A Cat's Dev Log",
   description:
@@ -34,6 +44,7 @@ export default function RootLayout({
     <html
       lang="ko"
       className={cn(
+        spaceGrotesk.variable,
         geistMono.variable,
         notoSans.variable,
         interHeading.variable,
