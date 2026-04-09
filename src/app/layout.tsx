@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Noto_Sans, Inter } from "next/font/google";
+import { Geist_Mono, Noto_Sans, Inter, Newsreader } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
@@ -11,6 +11,12 @@ const notoSans = Noto_Sans({ subsets: ["latin"], variable: "--font-sans" });
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  variable: "--font-serif",
+  style: ["italic", "normal"],
 });
 
 export const metadata: Metadata = {
@@ -30,7 +36,8 @@ export default function RootLayout({
       className={cn(
         geistMono.variable,
         notoSans.variable,
-        interHeading.variable
+        interHeading.variable,
+        newsreader.variable
       )}
     >
       <body className={cn("min-h-screen font-sans antialiased")}>
