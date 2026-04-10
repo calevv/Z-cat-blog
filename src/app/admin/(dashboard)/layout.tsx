@@ -1,4 +1,5 @@
 import { signOut } from "@/actions/auth";
+import DashboardNav from "@/components/admin/dashboard/layout/DashboardNav";
 import { Button } from "@/components/ui/button";
 import { SquareArrowRightExit } from "lucide-react";
 import { ReactNode } from "react";
@@ -13,11 +14,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             Admin Console
           </p>
         </header>
-        <nav className="flex-1 px-3 py-4">
-          <ul className="text-white">
-            <li>게시물 관리</li>
-          </ul>
-        </nav>
+        <DashboardNav />
         <footer className="flex min-h-24 flex-col gap-3 px-6 pt-5">
           <article className="text-white">login user</article>
           <form action={signOut}>
