@@ -2,7 +2,7 @@
 // Contact 페이지
 // 역할: 문의 폼 + Resend로 이메일 전송
 // ───────────────────────────────
-import ContactForm from "@/components/contact/ContactForm";
+import ContactForm from "@/components/public/contact/ContactForm";
 
 export default function ContactPage() {
   return (

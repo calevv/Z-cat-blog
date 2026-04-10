@@ -6,7 +6,7 @@
 // 상세페이지 인덱스와 날짜 수정예정
 // .maybeSingle() 변경
 // ───────────────────────────────
-import CommentSection from "@/components/diary/CommentSection";
+import CommentSection from "@/components/public/diary/CommentSection";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { createClient } from "@/lib/supabase";
