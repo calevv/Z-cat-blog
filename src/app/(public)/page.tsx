@@ -1,4 +1,4 @@
-import { CardItem } from "@/components/about/CardItem";
+import { CardItem } from "@/components/public/about/CardItem";
 import { Button } from "@/components/ui/button";
 import { ArchiveIcon, EyeIcon, UtensilsIcon } from "lucide-react";
 
