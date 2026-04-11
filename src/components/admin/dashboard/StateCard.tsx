@@ -8,7 +8,7 @@ export default function StateCard({
   className?: string;
 }) {
   return (
-    <article className="inline-flex flex-col gap-2 rounded-[10px] bg-white px-6 py-5 outline outline-1 outline-offset-[-1px] outline-neutral-200">
+    <article className="flex flex-col gap-2 rounded-[10px] border border-neutral-200 bg-white px-6 py-5">
       <span className="font-space text-xs leading-4 font-normal tracking-wider text-zinc-500 uppercase">
         {label}
       </span>
