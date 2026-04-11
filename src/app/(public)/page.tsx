@@ -1,6 +1,7 @@
 import { CardItem } from "@/components/public/about/CardItem";
 import { Button } from "@/components/ui/button";
 import { ArchiveIcon, EyeIcon, UtensilsIcon } from "lucide-react";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -21,9 +22,16 @@ export default function Home() {
               <Button variant={"outline"}>돌아가기</Button>
             </div>
           </div>
-          <div className="relative h-[500px] w-[450px] bg-black">
-            {/* 이미지 들어올 자리 */}
-
+          <div className="relative bg-black">
+            {/* 이미지  */}
+            <Image
+              src="/about-hero-zcat.png"
+              alt="Z-cat"
+              className="object-contain"
+              width={536}
+              height={600}
+              priority
+            />
             {/* 오버레이 텍스트 — absolute로 우측 하단에 띄움 */}
             <div className="absolute right-4 bottom-4 border border-white/20 bg-black/60 px-3 py-2 backdrop-blur-sm">
               <p className="font-mono text-[10px] text-white/50">[STATUS]</p>
