@@ -11,11 +11,13 @@ export default function Home() {
           <div>
             <h2 className="text-foreground text-5xl font-bold">
               Welcome to <br />
-              my human's <span className="text-primary">errors.</span>
+              {`my human's `}
+              <span className="text-primary">errors.</span>
             </h2>
+
             <blockquote className="border-primary mt-6 border-l-2 p-4 pl-6 italic">
-              "Hello, I'm Z-cat. Observing imperfect human code and <br />
-              pathetic bugs is my only form of entertainment."
+              {`"Hello, I'm Z-cat. Observing imperfect human code and`} <br />
+              {`pathetic bugs is my only form of entertainment."`}
             </blockquote>
             <div className="mt-8">
               <Button>가기</Button>
