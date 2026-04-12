@@ -22,10 +22,12 @@ import { Suspense } from "react";
 export default async function AdminPage({
   searchParams,
 }: {
-  searchParams: { status?: string };
+  searchParams: { status?: string; query?: string };
 }) {
-  const { status: statusParam } = await searchParams;
+  const { status: statusParam, query: searchQuery } = await searchParams;
   const status = statusParam ?? "all";
+  const query = searchQuery?.toLowerCase() ?? "";
+
   const supabase = await createServerSupabaseClient();
 
   // 포스트 호출
@@ -40,11 +42,22 @@ export default async function AdminPage({
   const published = posts?.filter((p) => p.published).length ?? 0;
   const drafts = total - published;
 
-  // 탭 필터링 — JS에서 처리 (DB 추가 호출 없음)
+  // 탭 + 검색어 필터링 병합
   const filtered = posts?.filter((post) => {
-    if (status === "published") return post.published;
-    if (status === "draft") return !post.published;
-    return true;
+    // 1. 상태 필터링
+    const matchesStatus =
+      status === "all"
+        ? true
+        : status === "published"
+          ? post.published
+          : !post.published;
+
+    // 2. 검색어 필터링 (제목에서 검색)
+    const matchesQuery =
+      post.title_ko.toLowerCase().includes(query) ||
+      post.title_en.toLowerCase().includes(query);
+
+    return matchesStatus && matchesQuery;
   });
 
   return (
