@@ -1,3 +1,4 @@
+import { formatDate } from "@/lib/utils";
 import { SquarePen, Trash2 } from "lucide-react";
 
 export interface Post {
@@ -21,7 +22,6 @@ export interface AdminTablePostProp {
 export default function AdminTable({ posts }: AdminTablePostProp) {
   const THEAD_TITLE = ["Title", "Tags", "Date", "Status", "Actions"];
 
-  // console.log(posts);
   return (
     <table className="w-full">
       <thead className="h-10 border-t border-b border-neutral-200 bg-neutral-50">
@@ -38,8 +38,6 @@ export default function AdminTable({ posts }: AdminTablePostProp) {
       </thead>
       <tbody>
         {posts.map((post) => {
-          const date = new Date(post.created_at);
-          const createTime = date.toLocaleDateString();
           return (
             <tr key={post.id} className="h-16 border-b border-neutral-200">
               <td className="font-heading px-6 text-xs leading-5 font-bold text-zinc-900">
@@ -58,7 +56,7 @@ export default function AdminTable({ posts }: AdminTablePostProp) {
                 </div>
               </td>
               <td className="font-space px-6 text-xs leading-4 font-normal text-zinc-500">
-                {createTime}
+                {formatDate(post.created_at)}
               </td>
               <td className="px-6">
                 <span

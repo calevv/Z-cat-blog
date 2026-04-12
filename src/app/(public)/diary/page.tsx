@@ -7,6 +7,8 @@
 // 호버 이벤트 변경
 // Supabase 연결 후 더미 데이터 교체(완)
 // ───────────────────────────────
+import PageHeader from "@/components/common/PageHeader";
+import SectionContainer from "@/components/common/section/SectionContainer";
 import { createClient } from "@/lib/supabase";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
@@ -21,32 +23,26 @@ export default async function DiaryPage() {
     .select("*")
     .eq("published", true)
     .order("published_at", { ascending: false });
-
-  console.log(posts, error);
+  console.log("post_error", error);
   return (
     <div className="bg-background w-full">
       {/* 헤더 영역 */}
-      <section className="border-border">
-        <div className="mx-auto max-w-7xl border-b px-6 py-16">
-          <p className="text-muted-foreground font-mono text-xs">
-            [ARCHIVE_INDEX_04]
-          </p>
-          <h1 className="text-foreground mt-2 text-5xl font-bold">
-            The Log Files
-          </h1>
-          <p className="text-muted-foreground mt-3 text-sm">
-            Observations from the cold aisle. Occasionally interrupted by human
-            intervention.
-          </p>
-        </div>
-      </section>
+      <PageHeader
+        code="[ARCHIVE_INDEX_01]"
+        title={<>The Log Files</>}
+        description="Observations from the cold aisle. Occasionally interrupted by human
+            intervention."
+      />
 
       {/* 본문 — 목록 + 사이드바 */}
-      <section className="mx-auto max-w-7xl px-6 py-12">
-        <div className="flex gap-16">
-          {/* 포스트 목록 */}
-          <ul className="divide-border flex flex-1 flex-col divide-y">
-            {posts?.map((post) => (
+      <SectionContainer className="gap-8">
+        {/* 포스트 목록 */}
+        <ul className="divide-border flex flex-1 flex-col divide-y">
+          {posts?.map((post) => {
+            const displayDate =
+              post.published_at ?? post.created_at ?? "NO_DATE_ERROR";
+            // 날짜가 없으면 생성일(created_at)을 보여주고, 그것도 없으면 에러 메시지
+            return (
               <li key={post.id}>
                 <Link
                   href={`/diary/${post.slug}`}
@@ -59,7 +55,7 @@ export default async function DiaryPage() {
                     {/* 날짜 + 태그 */}
                     <div className="flex items-center gap-3">
                       <span className="text-muted-foreground font-mono text-xs">
-                        {formatDate(post.published_at)}
+                        {formatDate(displayDate)}
                       </span>
                       {post.tags.map((tag: string) => (
                         <span
@@ -98,30 +94,28 @@ export default async function DiaryPage() {
                   </div>
                 </Link>
               </li>
-            ))}
-          </ul>
+            );
+          })}
+        </ul>
 
-          {/* 사이드바 */}
-          <aside className="w-48 shrink-0">
-            <div className="sticky top-24">
-              <p className="text-foreground font-mono text-xs font-bold">
-                TAGS
-              </p>
-              {/* TODO: 클릭 시 필터 기능 — 클라이언트 컴포넌트로 분리 예정 */}
-              <ul className="mt-4 flex flex-col gap-2">
-                {ALL_TAGS.map((tag) => (
-                  <li
-                    key={tag}
-                    className="text-muted-foreground hover:text-foreground cursor-pointer font-mono text-sm transition-colors"
-                  >
-                    #{tag}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </aside>
-        </div>
-      </section>
+        {/* 사이드바 */}
+        <aside className="w-48 shrink-0">
+          <div className="sticky top-24">
+            <p className="text-foreground font-mono text-xs font-bold">TAGS</p>
+            {/* TODO: 클릭 시 필터 기능 — 클라이언트 컴포넌트로 분리 예정 */}
+            <ul className="mt-4 flex flex-col gap-2">
+              {ALL_TAGS.map((tag) => (
+                <li
+                  key={tag}
+                  className="text-muted-foreground hover:text-foreground cursor-pointer font-mono text-sm transition-colors"
+                >
+                  #{tag}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </aside>
+      </SectionContainer>
     </div>
   );
 }
