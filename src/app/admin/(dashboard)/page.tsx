@@ -1,17 +1,35 @@
+// ───────────────────────────────
+// AdminPage
+// 역할: 포스트 목록 관리 + 통계 카드
+// TODO:
+// [ ] 검색 기능 연결 (searchParams.q)
+// [ ] lib/posts.ts 분리 (getAllPosts)
+// [ ] Suspense fallback 스켈레톤 UI 고려
+// [ ] force-dynamic → 최적화 방식 전환 고려
+// ───────────────────────────────
+
+export const dynamic = "force-dynamic";
+// force-dynamic: searchParams 사용으로 매 요청마다 서버에서 새로 실행
+// 탭 필터링이 정상 작동하려면 필요
+
 import AdminHeader from "@/components/admin/dashboard/AdminHeader";
 import AdminTable from "@/components/admin/dashboard/AdminTable";
 import PublishTabs from "@/components/admin/dashboard/PublishTabs";
 import StateCard from "@/components/admin/dashboard/StateCard";
 import { createServerSupabaseClient } from "@/lib/supabase";
+import { Suspense } from "react";
 
 export default async function AdminPage({
   searchParams,
 }: {
   searchParams: { status?: string };
 }) {
+  const { status: statusParam } = await searchParams;
+  const status = statusParam ?? "all";
   const supabase = await createServerSupabaseClient();
 
   // 포스트 호출
+  // TODO: lib/posts.ts 분리 예정 (getAllPosts)
   const { data: posts } = await supabase
     .from("posts")
     .select("*")
@@ -22,8 +40,7 @@ export default async function AdminPage({
   const published = posts?.filter((p) => p.published).length ?? 0;
   const drafts = total - published;
 
-  // 탭 필터링
-  const status = searchParams.status ?? "all";
+  // 탭 필터링 — JS에서 처리 (DB 추가 호출 없음)
   const filtered = posts?.filter((post) => {
     if (status === "published") return post.published;
     if (status === "draft") return !post.published;
@@ -40,13 +57,19 @@ export default async function AdminPage({
           <StateCard label="Drafts" value={drafts} />
         </section>
         <section className="flex min-h-96 flex-col overflow-hidden rounded-[10px] border border-neutral-200 bg-white">
-          <PublishTabs />
+          {/* Suspense: useSearchParams() 사용하는 클라이언트 컴포넌트는
+              서버 렌더링 시 URL 정보가 없을 수 있어서 Suspense 필요
+              fallback={null} → 로딩 중 아무것도 안 보임
+              TODO: 스켈레톤 UI 추가 고려 */}
+          <Suspense fallback={null}>
+            <PublishTabs />
+          </Suspense>
           <div className="flex-1">
             <AdminTable posts={filtered ?? []} />
           </div>
           <div className="flex h-10 items-center justify-between px-6">
             <p className="font-space text-[10px] leading-4 font-normal tracking-wide text-zinc-400 uppercase">
-              {`${total} posts found`}
+              {`${filtered?.length ?? 0} posts found`}
             </p>
             <p className="font-space text-[10px] leading-4 font-normal tracking-wide text-zinc-400 uppercase">
               All entries logged by Z-cat.
