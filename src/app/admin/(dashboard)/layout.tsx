@@ -1,10 +1,20 @@
 import { signOut } from "@/actions/auth";
+import AvatarGroup from "@/components/admin/dashboard/layout/AvatarGroup";
 import DashboardNav from "@/components/admin/dashboard/layout/DashboardNav";
 import { Button } from "@/components/ui/button";
+import { createServerSupabaseClient } from "@/lib/supabase";
 import { SquareArrowRightExit } from "lucide-react";
 import { ReactNode } from "react";
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default async function Layout({ children }: { children: ReactNode }) {
+  const supabase = await createServerSupabaseClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const adminName = user?.user_metadata?.display_name ?? "User";
+
   return (
     <main className="flex min-h-screen w-full">
       <aside className="flex w-60 flex-col justify-between bg-zinc-900">
@@ -15,13 +25,13 @@ export default function Layout({ children }: { children: ReactNode }) {
           </p>
         </header>
         <DashboardNav />
-        <footer className="flex min-h-24 flex-col gap-3 px-6 pt-5">
-          <article className="text-white">login user</article>
+        <footer className="flex min-h-24 flex-col gap-3 px-6 py-5">
+          <AvatarGroup user={adminName} />
           <form action={signOut}>
             <Button
               variant={"ghost"}
               type="submit"
-              className="cursor-pointer text-[10px] leading-4 font-normal tracking-wide text-zinc-600 uppercase"
+              className="w-full cursor-pointer justify-start text-[10px] leading-4 font-normal tracking-wide text-zinc-600 uppercase"
             >
               <SquareArrowRightExit />
               Logout
