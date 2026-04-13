@@ -1,8 +1,9 @@
 "use client";
 
+import { generateSlug } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import { CheckIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -17,6 +18,37 @@ export default function EditorPage() {
     author_type: "zcat" as "zcat" | "human",
     published: false,
   });
+  useEffect(() => {
+    // title_ko가 없으면 실행 안 함
+    if (!form.title_ko.trim()) return;
+
+    // 1초 후 번역 실행
+    const timer = setTimeout(async () => {
+      try {
+        // MyMemory API 호출
+        const res = await fetch(
+          `https://api.mymemory.translated.net/get?q=${encodeURIComponent(form.title_ko)}&langpair=ko|en`
+        );
+        const data = await res.json();
+        const translated = data.responseData.translatedText as string;
+
+        // 번역 결과로 slug 생성
+        const slug = generateSlug(translated);
+
+        setForm((prev) => ({
+          ...prev,
+          title_en: translated,
+          slug,
+        }));
+      } catch (error) {
+        console.error("번역 실패:", error);
+      }
+    }, 2000); // 2초
+    // Todo: 몇초가 적당한지 고민...
+
+    // 클린업: title_ko가 또 바뀌면 이전 타이머 취소
+    return () => clearTimeout(timer);
+  }, [form.title_ko]);
 
   const toggleAuthor = () => {
     setForm((prev) => ({
@@ -32,7 +64,9 @@ export default function EditorPage() {
     ) {
       setForm((prev) => ({ ...prev, tags: prev.tags.slice(0, -1) })); // 마지막 태그 제거
     }
-
+    {
+      /* TODO: 동일 태그 입력시 표시 확실하게 */
+    }
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       const value = e.currentTarget.value.trim();
@@ -95,7 +129,7 @@ export default function EditorPage() {
               type="text"
               name="slug"
               placeholder="POST_URL_SLUG"
-              className="font-space text-xs font-normal tracking-wide text-red-500 transition-colors placeholder:text-red-300 focus:outline-none"
+              className="font-space flex-1 text-xs font-normal tracking-wide text-red-500 transition-colors placeholder:text-red-300 focus:outline-none"
             />
           </div>
         </header>
@@ -163,7 +197,27 @@ export default function EditorPage() {
             </div>
           </div>
         </header>
-        <div className="flex-1 overflow-y-auto bg-neutral-50 p-6">
+        <div className="flex flex-1 flex-col gap-8 overflow-y-auto bg-neutral-50 p-6">
+          <div className="flex flex-col">
+            {/* 제목 동기화 */}
+            {form.title_ko && (
+              <h1 className="font-heading mb-2 text-3xl font-bold text-zinc-900">
+                {form.title_ko}
+              </h1>
+            )}
+
+            {/* 태그 동기화 */}
+            {form.tags.length > 0 && (
+              <div className="mb-6 flex gap-2">
+                {form.tags.map((tag) => (
+                  <span key={tag} className="text-primary font-mono text-xs">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+          <div>By {form.author_type}</div>
           {/* prose 클래스가 마크다운 스타일링을 담당, max-w-none으로 너비 제한 해제 */}
           <article className="prose prose-zinc max-w-none">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
