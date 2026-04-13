@@ -5,7 +5,6 @@
 "use server";
 
 import { createServerSupabaseClient } from "@/lib/supabase";
-import { redirect } from "next/navigation";
 
 interface PostForm {
   id?: string; // 있으면 수정, 없으면 새 글
