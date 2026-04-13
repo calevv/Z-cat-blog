@@ -22,7 +22,7 @@ export default function EditorPage() {
     // title_ko가 없으면 실행 안 함
     if (!form.title_ko.trim()) return;
 
-    // 1초 후 번역 실행
+    // 2초 후 번역 실행
     const timer = setTimeout(async () => {
       try {
         // MyMemory API 호출
