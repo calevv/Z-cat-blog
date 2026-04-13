@@ -12,7 +12,7 @@ interface CardItemProps {
   excerpt?: string;
   date?: string;
   tags?: string[];
-  authorType?: "zetcat" | "human";
+  authorType?: "zcat" | "human";
   coverImage?: string;
 }
 
@@ -21,7 +21,7 @@ export function CardItem({
   excerpt = "집사가 또 useEffect를 남발했다. 의존성 배열 없이. 경이롭다.",
   date = "2025.01.15",
   tags = ["React", "Next.js"],
-  authorType = "zetcat",
+  authorType = "zcat",
   coverImage,
 }: CardItemProps) {
   return (
@@ -65,10 +65,10 @@ export function CardItem({
         <div className="mt-auto flex justify-end">
           <span
             className={`font-mono text-xs ${
-              authorType === "zetcat" ? "text-primary" : "text-muted-foreground"
+              authorType === "zcat" ? "text-primary" : "text-muted-foreground"
             }`}
           >
-            {authorType === "zetcat" ? "[ Z-cat ]" : "[ Human ]"}
+            {authorType === "zcat" ? "[ Z-cat ]" : "[ Human ]"}
           </span>
         </div>
       </div>

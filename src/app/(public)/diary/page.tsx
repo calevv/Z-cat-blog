@@ -81,12 +81,12 @@ export default async function DiaryPage() {
                     <div className="mt-auto flex justify-end">
                       <span
                         className={`font-mono text-xs ${
-                          post.author_type === "zetcat"
+                          post.author_type === "zcat"
                             ? "text-primary"
                             : "text-muted-foreground"
                         }`}
                       >
-                        {post.author_type === "zetcat"
+                        {post.author_type === "zcat"
                           ? "[ Z-cat ]"
                           : "[ Human ]"}
                       </span>

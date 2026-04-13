@@ -22,15 +22,15 @@ const DUMMY_COMMENTS = [
     content:
       "The YAML analogy hits too close to home. Yesterday I spent 4 hours debugging a trailing whitespace. The machines are winning.",
     createdAt: "21 ago",
-    isZetcat: false,
+    isZcat: false,
   },
   {
     id: "2",
-    nickname: "ZETCAT",
+    nickname: "ZCAT",
     content:
       "The whitespace is a feature, not a bug. It's the silent protest of the text editor.",
     createdAt: "31 ago",
-    isZetcat: true,
+    isZcat: true,
   },
 ];
 
@@ -53,7 +53,7 @@ export default function CommentSection() {
             {/* 이니셜 아바타 */}
             <div
               className={`flex h-8 w-8 shrink-0 items-center justify-center font-mono text-xs font-bold ${
-                c.isZetcat
+                c.isZcat
                   ? "bg-primary text-white"
                   : "bg-muted text-muted-foreground"
               }`}
@@ -69,7 +69,7 @@ export default function CommentSection() {
                   {c.nickname}
                 </span>
                 {/* Z-cat 표시 */}
-                {c.isZetcat && (
+                {c.isZcat && (
                   <span className="text-primary font-mono text-xs">
                     (AUTHOR)
                   </span>

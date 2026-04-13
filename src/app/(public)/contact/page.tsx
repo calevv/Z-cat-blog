@@ -32,7 +32,7 @@ export default function ContactPage() {
           <aside className="flex w-80 flex-col gap-8">
             <dl>
               <dt>Node</dt>
-              <dd>Zetcat Node 01</dd>
+              <dd>Zcat Node 01</dd>
             </dl>
             <div className="col-start-1 col-end-3 h-px w-full bg-neutral-200"></div>
             <div>

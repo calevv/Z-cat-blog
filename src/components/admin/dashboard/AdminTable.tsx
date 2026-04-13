@@ -8,7 +8,7 @@ export interface Post {
   title_en: string;
   content: string;
   excerpt: string;
-  author_type: "human" | "zetcat";
+  author_type: "human" | "zcat";
   tags: string[];
   published: boolean;
   published_at: string;
