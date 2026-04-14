@@ -26,7 +26,7 @@ export default function AdminTable({ posts }: AdminTablePostProp) {
           ))}
         </ul>
       </div>
-      <div className="h-125 overflow-y-auto">
+      <div className="custom-scrollbar h-125 overflow-y-auto">
         {posts.map((post) => {
           return (
             <ul

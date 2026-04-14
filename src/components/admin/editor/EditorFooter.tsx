@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import ExitEditorAlert from "./ExitEditorAlert";
 interface EditorFooterProps {
   onSave: (published: boolean) => void;
   status: "saved" | "saving" | "unsaved";
@@ -9,9 +10,7 @@ export default function EditorFooter({ onSave, status }: EditorFooterProps) {
     <footer className="flex h-17 items-center justify-between border-t border-neutral-200 bg-white px-8 py-4">
       {/* TODO: 버튼들 기능 추가*/}
       <div>
-        <Button variant={"ghost"}>
-          <ArrowLeft /> 나가기
-        </Button>
+        <ExitEditorAlert />
       </div>
       <div className="flex gap-3">
         <Button

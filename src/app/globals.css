@@ -158,3 +158,26 @@
     @apply font-mono;
   }
 }
+
+@layer utilities {
+  /* 스크롤바 전체 스타일 */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px; /* 세로 스크롤 두께 */
+    height: 6px; /* 가로 스크롤 두께 */
+  }
+
+  /* 스크롤바 트랙(바탕) */
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* 스크롤바 핸들(움직이는 부분) */
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-zinc-200;
+  }
+
+  /* 마우스 올렸을 때 핸들 색상 */
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-zinc-300;
+  }
+}
