@@ -1,8 +1,7 @@
 "use client";
-
+// 클라이언트여서 커스텀훅 사용 가능
 import EditorFooter from "@/components/admin/editor/EditorFooter";
-import { generateSlug } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { savePost } from "@/actions/posts";
 import { toast } from "sonner";
 
@@ -10,55 +9,23 @@ import { redirect } from "next/navigation";
 import EditorHeader from "@/components/admin/editor/EditorHeader";
 import EditorBody from "@/components/admin/editor/EditorBody";
 import EditorPreview from "@/components/admin/editor/EditorPreview ";
+import { useEditorForm } from "@/hooks/useEditorForm";
 
 export default function EditorPage() {
-  const [form, setForm] = useState({
-    title_ko: "",
-    title_en: "", // 번역 결과
-    slug: "",
-    content: "",
-    excerpt: "",
-    tags: [] as string[],
-    author_type: "zcat" as "zcat" | "human",
-    published: false,
-  });
-  useEffect(() => {
-    // title_ko가 없으면 실행 안 함
-    if (!form.title_ko.trim()) return;
-
-    // 1초 후 번역 실행
-    const timer = setTimeout(async () => {
-      try {
-        // MyMemory API 호출
-        const res = await fetch(
-          `https://api.mymemory.translated.net/get?q=${encodeURIComponent(form.title_ko)}&langpair=ko|en`
-        );
-        const data = await res.json();
-        const translated = data.responseData.translatedText as string;
-
-        // 번역 결과로 slug 생성
-        const slug = generateSlug(translated);
-
-        setForm((prev) => ({
-          ...prev,
-          title_en: translated,
-          slug,
-        }));
-      } catch (error) {
-        console.error("번역 실패:", error);
-      }
-    }, 1000); // 1초
-    // Todo: 몇초가 적당한지 고민...
-
-    // 클린업: title_ko가 또 바뀌면 이전 타이머 취소
-    return () => clearTimeout(timer);
-  }, [form.title_ko]);
-
   // postId 상태 — null이면 새 글, 있으면 수정
   const [postId, setPostId] = useState<string | null>(null);
   const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "unsaved">(
     "saved"
   );
+  const {
+    form,
+    handleTitleChange,
+    handleContentChange,
+    handleSlugChange,
+    addTag,
+    removeLastTag,
+    toggleAuthor,
+  } = useEditorForm();
 
   // 공통 저장 함수
   async function handleSave(published: boolean) {
@@ -102,20 +69,23 @@ export default function EditorPage() {
         {/* 에디터 메인 영역 (좌우 분할) */}
         {/* 좌측: 마크다운 입력창 */}
         <section className="flex flex-col border-r border-neutral-200 bg-white">
-          <EditorHeader form={form} setForm={setForm} />
+          <EditorHeader
+            title={form.title_ko}
+            tags={form.tags}
+            slug={form.slug}
+            onTitleChange={handleTitleChange}
+            onAddTag={addTag}
+            onRemoveLastTag={removeLastTag}
+            onSlugChange={handleSlugChange}
+          />
           <div className="border-border/40 flex-1 p-6">
-            <EditorBody
-              content={form.content}
-              onChange={(value) =>
-                setForm((prev) => ({ ...prev, content: value }))
-              }
-            />
+            <EditorBody content={form.content} onChange={handleContentChange} />
           </div>
         </section>
 
         {/* 우측: 실시간 미리보기 (마크다운 뷰어) */}
 
-        <EditorPreview form={form} setForm={setForm} />
+        <EditorPreview form={form} onToggleAuthor={toggleAuthor} />
       </main>
       <EditorFooter onSave={handleSave} status={saveStatus} />
     </div>

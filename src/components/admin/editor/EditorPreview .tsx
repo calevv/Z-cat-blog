@@ -3,7 +3,6 @@ import remarkGfm from "remark-gfm";
 
 import { cn } from "@/lib/utils";
 import { CheckIcon } from "lucide-react";
-import React from "react";
 
 export interface PostForm {
   title_ko: string;
@@ -15,19 +14,15 @@ export interface PostForm {
   author_type: "zcat" | "human";
   published: boolean;
 }
-export interface ChildProps {
+interface EditorPreviewProps {
   form: PostForm;
-  // 리액트 상태 업데이트 함수 타입
-  setForm: React.Dispatch<React.SetStateAction<PostForm>>;
+  onToggleAuthor: () => void;
 }
 
-export default function EditorPreview({ form, setForm }: ChildProps) {
-  const toggleAuthor = () => {
-    setForm((prev) => ({
-      ...prev,
-      author_type: prev.author_type === "zcat" ? "human" : "zcat",
-    }));
-  };
+export default function EditorPreview({
+  form,
+  onToggleAuthor,
+}: EditorPreviewProps) {
   return (
     <section className="flex flex-col">
       <header className="flex h-17 items-center justify-between border-b border-neutral-200 bg-white px-8 py-4">
@@ -55,7 +50,7 @@ export default function EditorPreview({ form, setForm }: ChildProps) {
           </p>
           <div className="flex h-7 items-center overflow-hidden rounded border border-neutral-200">
             <button
-              onClick={toggleAuthor}
+              onClick={onToggleAuthor}
               className={cn(
                 "font-space px-4 py-1.5 text-[10px] leading-4 font-medium tracking-wide uppercase",
                 form.author_type === "zcat"
@@ -67,7 +62,7 @@ export default function EditorPreview({ form, setForm }: ChildProps) {
             </button>
 
             <button
-              onClick={toggleAuthor}
+              onClick={onToggleAuthor}
               className={cn(
                 "font-space px-4 py-1.5 text-[10px] leading-4 font-medium tracking-wide uppercase",
                 form.author_type === "human"

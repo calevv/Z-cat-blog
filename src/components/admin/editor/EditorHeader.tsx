@@ -1,29 +1,32 @@
 import React from "react";
 
-export interface PostForm {
-  title_ko: string;
-  title_en: string;
-  slug: string;
-  content: string;
-  excerpt: string;
+interface EditorHeaderProps {
+  title: string;
   tags: string[];
-  author_type: "zcat" | "human";
-  published: boolean;
-}
-export interface ChildProps {
-  form: PostForm;
-  // 리액트 상태 업데이트 함수 타입
-  setForm: React.Dispatch<React.SetStateAction<PostForm>>;
+  slug: string;
+
+  onTitleChange: (value: string) => void;
+  onAddTag: (tag: string) => void;
+  onRemoveLastTag: () => void;
+  onSlugChange: (value: string) => void;
 }
 
-export default function EditorHeader({ form, setForm }: ChildProps) {
+export default function EditorHeader({
+  title,
+  slug,
+  tags,
+  onTitleChange,
+  onAddTag,
+  onRemoveLastTag,
+  onSlugChange,
+}: EditorHeaderProps) {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (
       e.key === "Backspace" &&
       e.currentTarget.value === "" &&
-      form.tags.length > 0
+      tags.length > 0
     ) {
-      setForm((prev) => ({ ...prev, tags: prev.tags.slice(0, -1) })); // 마지막 태그 제거
+      onRemoveLastTag();
     }
     {
       /* TODO: 동일 태그 입력시 표시 확실하게 */
@@ -31,8 +34,8 @@ export default function EditorHeader({ form, setForm }: ChildProps) {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       const value = e.currentTarget.value.trim();
-      if (value && !form.tags.includes(value)) {
-        setForm((prev) => ({ ...prev, tags: [...prev.tags, value] }));
+      if (value && !tags.includes(value)) {
+        onAddTag(value);
         e.currentTarget.value = "";
       }
     }
@@ -43,10 +46,8 @@ export default function EditorHeader({ form, setForm }: ChildProps) {
       {/* TODO: 타이틀과 태그는 이후 보여주기창과 동기화 기능 필요*/}
 
       <input
-        value={form.title_ko}
-        onChange={(e) =>
-          setForm((prev) => ({ ...prev, title_ko: e.target.value }))
-        }
+        value={title}
+        onChange={(e) => onTitleChange(e.target.value)}
         type="text"
         name="title"
         placeholder="POST_TITLE"
@@ -54,7 +55,7 @@ export default function EditorHeader({ form, setForm }: ChildProps) {
       />
       <div className="flex flex-wrap items-center gap-1">
         <label className="text-muted-foreground font-mono text-xs">TAGS:</label>
-        {form.tags.map((tag) => (
+        {tags.map((tag) => (
           <span
             key={tag}
             className="border border-zinc-200 bg-zinc-100 px-2 py-0.5 font-mono text-[10px] text-zinc-600 uppercase"
@@ -68,7 +69,7 @@ export default function EditorHeader({ form, setForm }: ChildProps) {
           type="text"
           onKeyDown={handleKeyDown}
           name={"tags"}
-          placeholder={form.tags.length === 0 ? "ADD_TAGS..." : ""}
+          placeholder={tags.length === 0 ? "ADD_TAGS..." : ""}
           className="font-space text-xs font-normal tracking-wide text-zinc-500 placeholder:text-zinc-300"
         />
       </div>
@@ -77,10 +78,8 @@ export default function EditorHeader({ form, setForm }: ChildProps) {
           URL_SLUG:
         </label>
         <input
-          value={form.slug}
-          onChange={(e) =>
-            setForm((prev) => ({ ...prev, slug: e.target.value }))
-          }
+          value={slug}
+          onChange={(e) => onSlugChange(e.target.value)}
           type="text"
           name="slug"
           placeholder="POST_URL_SLUG"
