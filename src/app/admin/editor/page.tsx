@@ -85,7 +85,7 @@ export default function EditorPage() {
   // postId 상태 — null이면 새 글, 있으면 수정
   const [postId, setPostId] = useState<string | null>(null);
   const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "unsaved">(
-    "unsaved"
+    "saved"
   );
 
   // 공통 저장 함수
