@@ -2,8 +2,6 @@
 
 import EditorFooter from "@/components/admin/editor/EditorFooter";
 import { generateSlug } from "@/lib/utils";
-import { cn } from "@/lib/utils";
-import { CheckIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { savePost } from "@/actions/posts";
 import { toast } from "sonner";
@@ -56,13 +54,6 @@ export default function EditorPage() {
     return () => clearTimeout(timer);
   }, [form.title_ko]);
 
-  const toggleAuthor = () => {
-    setForm((prev) => ({
-      ...prev,
-      author_type: prev.author_type === "zcat" ? "human" : "zcat",
-    }));
-  };
-
   // postId 상태 — null이면 새 글, 있으면 수정
   const [postId, setPostId] = useState<string | null>(null);
   const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "unsaved">(
@@ -107,7 +98,7 @@ export default function EditorPage() {
 
   return (
     <div className="flex h-screen w-full flex-col">
-      <main className="grid h-full flex-1 grid-cols-2">
+      <main className="grid flex-1 grid-cols-2">
         {/* 에디터 메인 영역 (좌우 분할) */}
         {/* 좌측: 마크다운 입력창 */}
         <section className="flex flex-col border-r border-neutral-200 bg-white">
@@ -123,59 +114,8 @@ export default function EditorPage() {
         </section>
 
         {/* 우측: 실시간 미리보기 (마크다운 뷰어) */}
-        <section className="flex flex-col">
-          <header className="flex h-17 items-center justify-between border-b border-neutral-200 bg-white px-8 py-4">
-            <div className="flex items-center gap-3">
-              <p className="font-space text-[10px] leading-4 font-normal tracking-wider text-zinc-500 uppercase">
-                STATUS_04 // PREVIEW
-              </p>
-              <div className="flex h-6 items-center gap-1.5 rounded border-orange-700/20 bg-orange-700/10 px-2">
-                <div className="h-1.5 w-1.5 rounded-full bg-orange-700 opacity-95"></div>
-                <p className="font-space text-[9px] leading-3 font-normal tracking-wider text-orange-700 uppercase">
-                  LIVE
-                  {/* TODO: 기능 추가 후 로딩이 생기면 SYNCING 이랑 오가게 */}
-                </p>
-              </div>
 
-              {/* TODO: 임시저장 추가 후 로딩이 생기면 수정 MODIFIED NOW*/}
-              <div className="flex items-center gap-1 text-xs leading-4 font-normal tracking-wider text-zinc-500">
-                <CheckIcon className="h-5 w-5 text-zinc-500" />
-                <p>Autosaved at 12:00 PM</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2.5">
-              <p className="font-space text-[10px] leading-4 font-normal tracking-wider text-zinc-500 uppercase">
-                AUTHOR:
-              </p>
-              <div className="flex h-7 items-center overflow-hidden rounded border border-neutral-200">
-                <button
-                  onClick={toggleAuthor}
-                  className={cn(
-                    "font-space px-4 py-1.5 text-[10px] leading-4 font-medium tracking-wide uppercase",
-                    form.author_type === "zcat"
-                      ? "bg-primary text-white"
-                      : "bg-white text-zinc-500"
-                  )}
-                >
-                  ZCAT
-                </button>
-
-                <button
-                  onClick={toggleAuthor}
-                  className={cn(
-                    "font-space px-4 py-1.5 text-[10px] leading-4 font-medium tracking-wide uppercase",
-                    form.author_type === "human"
-                      ? "bg-primary text-white"
-                      : "bg-white text-zinc-500"
-                  )}
-                >
-                  HUMAN
-                </button>
-              </div>
-            </div>
-          </header>
-          <EditorPreview form={form} />
-        </section>
+        <EditorPreview form={form} setForm={setForm} />
       </main>
       <EditorFooter onSave={handleSave} status={saveStatus} />
     </div>
