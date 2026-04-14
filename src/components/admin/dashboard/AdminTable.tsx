@@ -1,4 +1,6 @@
-import { formatDate } from "@/lib/utils";
+// TODO : 대시보드 내 작성자 구별 표시 고민
+
+import { cn, formatDate } from "@/lib/utils";
 import { SquarePen, Trash2 } from "lucide-react";
 
 export interface Post {
@@ -59,15 +61,24 @@ export default function AdminTable({ posts }: AdminTablePostProp) {
                 {formatDate(post.created_at)}
               </td>
               <td className="px-6">
-                <span
-                  className={`rounded px-2 py-0.5 text-[10px] font-bold ${
+                <div
+                  className={cn(
+                    "flex h-6 w-fit items-center gap-1.5 rounded-full px-3 transition-colors",
                     post.published
                       ? "bg-green-50 text-green-600"
-                      : "bg-zinc-100 text-zinc-400"
-                  }`}
+                      : "border border-neutral-200 bg-neutral-50 text-zinc-500"
+                  )}
                 >
-                  {post.published ? "ㆍPUBLISHED" : "ㆍDRAFT"}
-                </span>
+                  <div
+                    className={cn(
+                      "h-1.5 w-1.5 rounded-full",
+                      post.published ? "bg-green-600" : "bg-zinc-400"
+                    )}
+                  ></div>
+                  <p className="font-space text-[10px] leading-4 font-medium tracking-wide uppercase">
+                    {post.published ? "PUBLISHED" : "DRAFT"}
+                  </p>
+                </div>
               </td>
               <td className="px-6">
                 <div className="flex gap-2">
