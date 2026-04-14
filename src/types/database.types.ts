@@ -6,24 +6,36 @@ type PostUpdateRow = Database["public"]["Tables"]["posts"]["Update"];
 
 export type AuthorType = "human" | "zcat";
 
-export interface Post extends Omit<PostRow, "author_type" | "tags"> {
+export interface Post extends Omit<PostRow, "author_type"> {
   author_type: AuthorType;
-  tags: string[]; // null 허용 안 함
 }
 
-// 4. Insert와 Update도 마찬가지로 처리하면 안전합니다.
-export interface PostInsert extends Omit<
-  PostInsertRow,
-  "author_type" | "tags"
-> {
+export interface PostInsert extends Omit<PostInsertRow, "author_type"> {
   author_type?: AuthorType;
-  tags?: string[]; // null 허용 안 함
 }
 
-export interface PostUpdate extends Omit<
-  PostUpdateRow,
-  "author_type" | "tags"
-> {
+export interface PostUpdate extends Omit<PostUpdateRow, "author_type"> {
   author_type?: AuthorType;
-  tags?: string[]; // null 허용 안 함
+}
+
+/* Posts Server Action 전용 타입*/
+export interface PostForm extends Omit<
+  PostRow,
+  | "author_type"
+  | "cover_image"
+  | "id"
+  | "created_at"
+  | "updated_at"
+  | "published_at"
+> {
+  id?: string;
+  author_type: AuthorType;
+}
+
+/* 어드민 테이블 전용 타입*/
+export interface AdminTableProps extends Omit<
+  PostRow,
+  "cover_image" | "updated_at"
+> {
+  author_type: AuthorType;
 }

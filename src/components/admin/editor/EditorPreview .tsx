@@ -17,11 +17,15 @@ export interface PostForm {
 interface EditorPreviewProps {
   form: PostForm;
   onToggleAuthor: () => void;
+  lastSavedAt: Date | null;
+  saveStatus: "saved" | "saving" | "unsaved";
 }
 
 export default function EditorPreview({
   form,
   onToggleAuthor,
+  lastSavedAt,
+  saveStatus,
 }: EditorPreviewProps) {
   return (
     <section className="flex flex-col">
@@ -39,10 +43,13 @@ export default function EditorPreview({
           </div>
 
           {/* TODO: 임시저장 추가 후 로딩이 생기면 수정 MODIFIED NOW*/}
-          <div className="flex items-center gap-1 text-xs leading-4 font-normal tracking-wider text-zinc-500">
-            <CheckIcon className="h-5 w-5 text-zinc-500" />
-            <p>Autosaved at 12:00 PM</p>
-          </div>
+
+          {saveStatus === "saved" && (
+            <div className="flex items-center gap-1 text-xs leading-4 font-normal tracking-wider text-zinc-500">
+              <CheckIcon className="h-5 w-5 text-zinc-500" />
+              <p>Autosaved at {lastSavedAt?.toLocaleTimeString()}</p>
+            </div>
+          )}
         </div>
         <div className="flex items-center gap-2.5">
           <p className="font-space text-[10px] leading-4 font-normal tracking-wider text-zinc-500 uppercase">

@@ -1,24 +1,11 @@
 // TODO : 대시보드 내 작성자 구별 표시 고민
 
 import { cn, formatDate } from "@/lib/utils";
+import { AdminTableProps } from "@/types/database.types";
 import { SquarePen, Trash2 } from "lucide-react";
 
-export interface Post {
-  id: string;
-  slug: string;
-  title_ko: string;
-  title_en: string;
-  content: string;
-  excerpt: string;
-  author_type: "human" | "zcat";
-  tags: string[];
-  published: boolean;
-  published_at: string;
-  created_at: string;
-}
-
 export interface AdminTablePostProp {
-  posts: Post[];
+  posts: AdminTableProps[];
 }
 
 export default function AdminTable({ posts }: AdminTablePostProp) {

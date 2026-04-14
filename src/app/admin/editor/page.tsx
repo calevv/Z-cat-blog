@@ -11,12 +11,9 @@ import EditorBody from "@/components/admin/editor/EditorBody";
 import EditorPreview from "@/components/admin/editor/EditorPreview ";
 import { useEditorForm } from "@/hooks/useEditorForm";
 
+//TODO : 태그 없으면 등록 못하는 처리, 같은 제목 필터링
+
 export default function EditorPage() {
-  // postId 상태 — null이면 새 글, 있으면 수정
-  const [postId, setPostId] = useState<string | null>(null);
-  const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "unsaved">(
-    "saved"
-  );
   const {
     form,
     handleTitleChange,
@@ -25,6 +22,11 @@ export default function EditorPage() {
     addTag,
     removeLastTag,
     toggleAuthor,
+    saveStatus,
+    setSaveStatus,
+    postId,
+    lastSavedAt,
+    setPostId,
   } = useEditorForm();
 
   // 공통 저장 함수
@@ -85,7 +87,12 @@ export default function EditorPage() {
 
         {/* 우측: 실시간 미리보기 (마크다운 뷰어) */}
 
-        <EditorPreview form={form} onToggleAuthor={toggleAuthor} />
+        <EditorPreview
+          form={form}
+          lastSavedAt={lastSavedAt}
+          onToggleAuthor={toggleAuthor}
+          saveStatus={saveStatus}
+        />
       </main>
       <EditorFooter onSave={handleSave} status={saveStatus} />
     </div>

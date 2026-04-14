@@ -5,18 +5,7 @@
 "use server";
 
 import { createServerSupabaseClient } from "@/lib/supabase";
-
-interface PostForm {
-  id?: string; // 있으면 수정, 없으면 새 글
-  title_ko: string;
-  title_en: string;
-  slug: string;
-  content: string;
-  excerpt: string;
-  tags: string[];
-  author_type: "zcat" | "human";
-  published: boolean;
-}
+import { PostForm } from "@/types/database.types";
 
 // 임시저장 + 발행 공통 함수
 export async function savePost(form: PostForm) {

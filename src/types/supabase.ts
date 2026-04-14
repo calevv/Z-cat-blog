@@ -19,46 +19,46 @@ export type Database = {
           author_type: string
           content: string
           cover_image: string | null
-          created_at: string | null
-          excerpt: string | null
+          created_at: string
+          excerpt: string
           id: string
-          published: boolean | null
+          published: boolean
           published_at: string | null
           slug: string
-          tags: string[] | null
+          tags: string[]
           title_en: string
           title_ko: string
-          updated_at: string | null
+          updated_at: string
         }
         Insert: {
           author_type?: string
           content: string
           cover_image?: string | null
-          created_at?: string | null
-          excerpt?: string | null
+          created_at?: string
+          excerpt?: string
           id?: string
-          published?: boolean | null
+          published?: boolean
           published_at?: string | null
           slug: string
-          tags?: string[] | null
+          tags?: string[]
           title_en: string
           title_ko: string
-          updated_at?: string | null
+          updated_at?: string
         }
         Update: {
           author_type?: string
           content?: string
           cover_image?: string | null
-          created_at?: string | null
-          excerpt?: string | null
+          created_at?: string
+          excerpt?: string
           id?: string
-          published?: boolean | null
+          published?: boolean
           published_at?: string | null
           slug?: string
-          tags?: string[] | null
+          tags?: string[]
           title_en?: string
           title_ko?: string
-          updated_at?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
