@@ -16,7 +16,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
   const adminName = user?.user_metadata?.display_name ?? "User";
 
   return (
-    <main className="flex min-h-screen w-full">
+    <main className="flex h-screen w-full overflow-hidden">
       <aside className="flex w-60 flex-col justify-between bg-zinc-900">
         <header className="text-background min-h-24 p-6">
           <h1 className="text-lg leading-7 font-bold text-white">Z-cat.</h1>

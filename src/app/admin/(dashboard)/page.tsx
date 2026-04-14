@@ -69,7 +69,7 @@ export default async function AdminPage({
           <StateCard label="Published" value={published} />
           <StateCard label="Drafts" value={drafts} />
         </section>
-        <section className="flex min-h-96 flex-col overflow-hidden rounded-[10px] border border-neutral-200 bg-white">
+        <section className="flex h-full flex-col overflow-hidden rounded-[10px] border border-neutral-200 bg-white">
           {/* Suspense: useSearchParams() 사용하는 클라이언트 컴포넌트는
               서버 렌더링 시 URL 정보가 없을 수 있어서 Suspense 필요
               fallback={null} → 로딩 중 아무것도 안 보임
