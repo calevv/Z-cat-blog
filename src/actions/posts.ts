@@ -34,7 +34,6 @@ export async function savePost(form: PostForm) {
     author_type: form.author_type,
     published: form.published,
     published_at: form.published ? new Date().toISOString() : null,
-    updated_at: new Date().toISOString(),
   };
 
   // 수정 vs 새 글
@@ -58,4 +57,22 @@ export async function savePost(form: PostForm) {
     if (error) return { success: false, message: "저장 실패. 집사 탓이다." };
     return { success: true, message: "저장됐다.", id: data.id };
   }
+}
+
+// draft 완전 삭제
+export async function deleteDraft(id: string) {
+  const supabase = await createServerSupabaseClient();
+  const { error } = await supabase
+    .from("posts")
+    .delete()
+    .eq("id", id)
+    .eq("published", false); // published된 글은 실수로 못 지우게 방어
+
+  if (error) return { success: false };
+  return { success: true };
+}
+
+// 발행된 글 soft delete (나중에)
+export async function deletePost(id: string) {
+  // deleted_at 설정
 }

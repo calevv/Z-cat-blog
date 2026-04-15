@@ -3,6 +3,7 @@
 import { SearchIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { SearchDialog } from "./SearchDialog";
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -50,12 +51,7 @@ export default function Navigation() {
 
         {/* Right Section (Search Icon Placeholder) */}
         <div>
-          <button
-            className="hover:bg-muted rounded-full p-2 transition-colors"
-            aria-label="Search"
-          >
-            <SearchIcon />
-          </button>
+          <SearchDialog />
         </div>
       </div>
     </header>

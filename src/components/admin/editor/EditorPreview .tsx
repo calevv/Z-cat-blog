@@ -37,7 +37,7 @@ export default function EditorPreview({
           <div className="flex h-6 items-center gap-1.5 rounded border-orange-700/20 bg-orange-700/10 px-2">
             <div className="h-1.5 w-1.5 rounded-full bg-orange-700 opacity-95"></div>
             <p className="font-space text-[9px] leading-3 font-normal tracking-wider text-orange-700 uppercase">
-              LIVE
+              {saveStatus === "saving" ? "SYNCING" : "LIVE"}
               {/* TODO: 기능 추가 후 로딩이 생기면 SYNCING 이랑 오가게 */}
             </p>
           </div>

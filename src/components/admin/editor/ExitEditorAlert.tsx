@@ -1,3 +1,6 @@
+"use client";
+
+import { deleteDraft } from "@/actions/posts";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,9 +14,51 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle, ArrowLeft } from "lucide-react";
+import { AlertTriangle, ArrowLeft, XIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-export default function ExitEditorAlert() {
+interface ExitAlertProp {
+  postId: string | null;
+
+  status: "saved" | "saving" | "unsaved";
+  onSave: (published: boolean) => void;
+}
+
+export default function ExitEditorAlert({
+  postId,
+  status,
+  onSave,
+}: ExitAlertProp) {
+  const router = useRouter();
+  const handleExit = () => router.push("/admin");
+
+  // 1. postId가 없으면: 다이얼로그 없이 바로 버튼 반환
+  if (!postId) {
+    return (
+      <Button variant="ghost" onClick={handleExit}>
+        <ArrowLeft /> 나가기
+      </Button>
+    );
+  }
+
+  // 2. postId가 있으면: 다이얼로그 로직 실행
+  const handleDeleteAndExit = async () => {
+    if (postId) {
+      const res = await deleteDraft(postId);
+
+      if (res.success) {
+        router.push("/admin");
+      } else {
+        alert("삭제 실패");
+      }
+    } else {
+      router.push("/admin");
+    }
+  };
+  const handleDraftAndExit = () => {
+    onSave(false);
+    router.push("/admin");
+  };
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -22,8 +67,14 @@ export default function ExitEditorAlert() {
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent size="sm">
-        <AlertDialogHeader>
-          <AlertDialogMedia>
+        <AlertDialogHeader className="relative">
+          <AlertDialogCancel
+            className="absolute top-0 right-0"
+            variant={"ghost"}
+          >
+            <XIcon />
+          </AlertDialogCancel>
+          <AlertDialogMedia className="mt-4">
             <AlertTriangle />
           </AlertDialogMedia>
           <AlertDialogTitle>작성 중인 내용이 있습니다!</AlertDialogTitle>
@@ -34,11 +85,15 @@ export default function ExitEditorAlert() {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogAction>저장하지 않고 나가기</AlertDialogAction>
-          <AlertDialogAction>임시 저장 후 나가기</AlertDialogAction>
-          <AlertDialogCancel className="col-span-2">
-            계속 작성하기
-          </AlertDialogCancel>
+          <AlertDialogAction variant={"outline"} onClick={handleDeleteAndExit}>
+            나가기
+          </AlertDialogAction>
+          <AlertDialogAction
+            onClick={handleDraftAndExit}
+            disabled={status === "saving"}
+          >
+            임시 저장
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

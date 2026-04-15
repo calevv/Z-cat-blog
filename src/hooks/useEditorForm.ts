@@ -3,7 +3,7 @@ import { generateSlug } from "@/lib/utils";
 import { savePost } from "@/actions/posts";
 import { PostForm } from "@/types/database.types";
 
-export function useEditorForm() {
+export function useEditorForm({ isEditMode }: { isEditMode: boolean }) {
   const [form, setForm] = useState<PostForm>({
     title_ko: "",
     title_en: "",
@@ -55,6 +55,8 @@ export function useEditorForm() {
 
   // 자동저장
   useEffect(() => {
+    if (isEditMode) return;
+
     // 제목이나 내용이 없으면 실행 안 함
     if (!form.title_ko.trim() || !form.content.trim()) return;
     // slug 생성 전이면 실행 안 함

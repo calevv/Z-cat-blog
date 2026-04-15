@@ -1,9 +1,11 @@
 // TODO : 대시보드 내 작성자 구별 표시 고민
 // TODO : 대시보드 내 스크롤 수정
 
+import { Button } from "@/components/ui/button";
 import { cn, formatDate } from "@/lib/utils";
 import { AdminTableProps } from "@/types/database.types";
 import { SquarePen, Trash2 } from "lucide-react";
+import Link from "next/link";
 
 export interface AdminTablePostProp {
   posts: AdminTableProps[];
@@ -13,12 +15,16 @@ export default function AdminTable({ posts }: AdminTablePostProp) {
   const THEAD_TITLE = ["Title", "Tags", "Date", "Status", "Actions"];
 
   return (
-    <div className="w-full">
-      <div className="border-t border-b border-neutral-200">
-        <ul className="grid h-10 grid-cols-5 items-center bg-neutral-50">
+    <div className="w-full" role="table">
+      <div className="border-t border-b border-neutral-200" role="rowgroup">
+        <ul
+          className="grid h-10 grid-cols-5 items-center bg-neutral-50"
+          role="row"
+        >
           {THEAD_TITLE.map((title) => (
             <li
               key={title}
+              role="columnheader"
               className="font-space px-6 text-left text-xs leading-4 font-bold tracking-wider text-zinc-500 uppercase"
             >
               {title}
@@ -26,17 +32,21 @@ export default function AdminTable({ posts }: AdminTablePostProp) {
           ))}
         </ul>
       </div>
-      <div className="custom-scrollbar h-125 overflow-y-auto">
+      <div className="custom-scrollbar h-125 overflow-y-auto" role="rowgroup">
         {posts.map((post) => {
           return (
             <ul
+              role="row"
               key={post.id}
               className="grid h-16 grid-cols-5 items-center border-b border-neutral-200"
             >
-              <li className="font-heading px-6 text-xs leading-5 font-bold text-zinc-900">
+              <li
+                role="cell"
+                className="font-heading px-6 text-xs leading-5 font-bold text-zinc-900"
+              >
                 {post.title_ko}
               </li>
-              <li className="px-6">
+              <li role="cell" className="px-6">
                 <div className="flex gap-1">
                   {post.tags.map((tag, index) => (
                     <p
@@ -48,10 +58,13 @@ export default function AdminTable({ posts }: AdminTablePostProp) {
                   ))}
                 </div>
               </li>
-              <li className="font-space px-6 text-xs leading-4 font-normal text-zinc-500">
+              <li
+                role="cell"
+                className="font-space px-6 text-xs leading-4 font-normal text-zinc-500"
+              >
                 {formatDate(post.created_at)}
               </li>
-              <li className="px-6">
+              <li role="cell" className="px-6">
                 <div
                   className={cn(
                     "flex h-6 w-fit items-center gap-1.5 rounded-full px-3 transition-colors",
@@ -71,10 +84,16 @@ export default function AdminTable({ posts }: AdminTablePostProp) {
                   </p>
                 </div>
               </li>
-              <li className="px-6">
+              <li role="cell" className="px-6">
                 <div className="flex gap-2">
-                  <SquarePen className="h-4 w-4 text-zinc-500" />
-                  <Trash2 className="h-4 w-4 text-zinc-500" />
+                  <Link href={`/admin/editor/${post.id}`}>
+                    <Button variant={"ghost"}>
+                      <SquarePen className="h-4 w-4 text-zinc-500" />
+                    </Button>
+                  </Link>
+                  <Button variant={"ghost"}>
+                    <Trash2 className="h-4 w-4 text-zinc-500" />
+                  </Button>
                 </div>
               </li>
             </ul>
