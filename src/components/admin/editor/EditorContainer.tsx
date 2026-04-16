@@ -118,6 +118,7 @@ export default function EditorContainer({
         />
       </main>
       <EditorFooter
+        published={form.published}
         isEditMode={isEditMode}
         onSave={handleSave}
         postId={postId}

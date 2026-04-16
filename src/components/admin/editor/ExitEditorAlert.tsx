@@ -22,14 +22,19 @@ interface ExitAlertProp {
 
   status: "saved" | "saving" | "unsaved";
   onSave: (published: boolean) => void;
+  isEditMode: boolean;
+  published: boolean;
 }
 
 export default function ExitEditorAlert({
   postId,
   status,
   onSave,
+  isEditMode,
+  published,
 }: ExitAlertProp) {
   const router = useRouter();
+  const showDraftSave = !published && !isEditMode;
   const handleExit = () => router.push("/admin");
 
   // 1. postId가 없으면: 다이얼로그 없이 바로 버튼 반환
@@ -55,8 +60,12 @@ export default function ExitEditorAlert({
       router.push("/admin");
     }
   };
-  const handleDraftAndExit = () => {
-    onSave(false);
+  const handleNormalExit = () => {
+    router.push("/admin");
+  };
+
+  const handleDraftAndExit = async () => {
+    await onSave(false);
     router.push("/admin");
   };
   return (
@@ -85,15 +94,20 @@ export default function ExitEditorAlert({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogAction variant={"outline"} onClick={handleDeleteAndExit}>
+          <AlertDialogAction
+            variant={"outline"}
+            onClick={isEditMode ? handleNormalExit : handleDeleteAndExit}
+          >
             나가기
           </AlertDialogAction>
-          <AlertDialogAction
-            onClick={handleDraftAndExit}
-            disabled={status === "saving"}
-          >
-            임시 저장
-          </AlertDialogAction>
+          {showDraftSave && (
+            <AlertDialogAction
+              onClick={handleDraftAndExit}
+              disabled={status === "saving"}
+            >
+              임시 저장
+            </AlertDialogAction>
+          )}
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
