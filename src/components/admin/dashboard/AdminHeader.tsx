@@ -13,12 +13,15 @@ export default function AdminHeader() {
           게시물 관리
         </h6>
       </div>
-      <Link href="/admin/editor">
-        <Button className="h-9 w-32 rounded bg-zinc-900 text-xs leading-4 font-bold tracking-wider text-white uppercase">
+      <Button
+        asChild
+        className="h-9 w-32 rounded bg-zinc-900 text-xs leading-4 font-bold tracking-wider text-white uppercase"
+      >
+        <Link href="/admin/editor">
           <PlusIcon className="h-2.5 w-2.5 text-white" />
           New Post
-        </Button>
-      </Link>
+        </Link>
+      </Button>
     </header>
   );
 }

@@ -7,8 +7,8 @@
 // ───────────────────────────────
 "use client";
 
+import { sendContactEmail } from "@/lib/actions/contact.action";
 import { useRef, useState } from "react";
-import { sendContactEmail } from "@/actions/contact";
 import { toast } from "sonner";
 
 export default function ContactForm() {

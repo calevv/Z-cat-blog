@@ -2,7 +2,7 @@
 // 클라이언트여서 커스텀훅 사용 가능
 import EditorFooter from "@/components/admin/editor/EditorFooter";
 import { useEffect, useState } from "react";
-import { savePost } from "@/actions/posts";
+import { savePost } from "@/lib/actions/posts.action";
 import { toast } from "sonner";
 
 import { redirect } from "next/navigation";

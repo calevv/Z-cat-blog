@@ -86,11 +86,11 @@ export default function AdminTable({ posts }: AdminTablePostProp) {
               </li>
               <li role="cell" className="px-6">
                 <div className="flex gap-2">
-                  <Link href={`/admin/editor/${post.id}`}>
-                    <Button variant={"ghost"}>
+                  <Button variant={"ghost"} asChild>
+                    <Link href={`/admin/editor/${post.id}`}>
                       <SquarePen className="h-4 w-4 text-zinc-500" />
-                    </Button>
-                  </Link>
+                    </Link>
+                  </Button>
                   <Button variant={"ghost"}>
                     <Trash2 className="h-4 w-4 text-zinc-500" />
                   </Button>

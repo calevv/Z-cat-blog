@@ -9,7 +9,7 @@
 // ───────────────────────────────
 import PageHeader from "@/components/common/PageHeader";
 import SectionContainer from "@/components/common/section/SectionContainer";
-import { createClient } from "@/lib/supabase";
+import { getCachedPosts } from "@/lib/posts/posts.query";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
 
@@ -17,13 +17,7 @@ import Link from "next/link";
 const ALL_TAGS = ["Next.js", "React", "Supabase", "CSS"];
 
 export default async function DiaryPage() {
-  const supabase = createClient();
-  const { data: posts, error } = await supabase
-    .from("posts")
-    .select("*")
-    .eq("published", true)
-    .order("published_at", { ascending: false });
-  console.log("post_error", error);
+  const posts = await getCachedPosts();
   return (
     <div className="bg-background w-full">
       {/* 헤더 영역 */}

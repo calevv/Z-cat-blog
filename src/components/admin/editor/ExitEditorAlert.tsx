@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteDraft } from "@/actions/posts";
+import { deleteDraft } from "@/lib/actions/posts.action";
 import {
   AlertDialog,
   AlertDialogAction,

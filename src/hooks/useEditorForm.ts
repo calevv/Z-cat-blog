@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { generateSlug } from "@/lib/utils";
-import { savePost } from "@/actions/posts";
+import { savePost } from "@/lib/actions/posts.action";
 import { PostForm } from "@/types/database.types";
 
 export function useEditorForm({ isEditMode }: { isEditMode: boolean }) {

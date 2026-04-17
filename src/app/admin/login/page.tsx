@@ -5,7 +5,7 @@
 // ───────────────────────────────
 "use client";
 
-import { signIn } from "@/actions/auth";
+import { signIn } from "@/lib/actions/auth.action";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
