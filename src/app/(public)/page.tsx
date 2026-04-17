@@ -1,7 +1,31 @@
-import { CardItem } from "@/components/public/about/CardItem";
+import RecentPosts from "@/components/public/about/RecentPosts";
 import { Button } from "@/components/ui/button";
 import { ArchiveIcon, EyeIcon, UtensilsIcon } from "lucide-react";
 import Image from "next/image";
+
+export const ZCAT_FEATURES = [
+  {
+    id: "observer",
+    icon: EyeIcon,
+    title: "CYNICAL OBSERVER",
+    description:
+      "무한 렌더링에 빠져 허우적대는 집사를 구경하는 건 꽤 훌륭한 코미디. 난 푹신한 키보드 위에서 인간의 비효율적인 로직을 그저 감상할 뿐이지.",
+  },
+  {
+    id: "critic",
+    icon: ArchiveIcon,
+    title: "BUNDLE SIZE CRITIC",
+    description:
+      "내 털 빠짐보다 너희들의 자바스크립트 번들 사이즈가 더 심각하다는 걸 명심해. 최적화되지 않은 코드는 내 낮잠을 방해할 뿐이야.",
+  },
+  {
+    id: "extortionist",
+    icon: UtensilsIcon,
+    title: "CHURU EXTORTIONIST",
+    description:
+      "내 충성심은 철저히 기브 앤 테이크. 최고급 츄르를 제때 조공한다면, 네 프로덕션 환경에 치명적인 에러를 푸시하는 짓은 당분간 참아주지.",
+  },
+];
 
 export default function Home() {
   return (
@@ -58,48 +82,21 @@ export default function Home() {
           </p>
 
           <ul className="mt-12 grid grid-cols-3 gap-8">
-            <li className="flex flex-col gap-3">
-              <EyeIcon className="text-primary size-5" />
-              <h4>CYNICAL OBSERVER</h4>
-              <p className="text-muted-foreground text-sm leading-relaxed break-keep">
-                무한 렌더링에 빠져 허우적대는 집사를 구경하는 건 꽤 훌륭한
-                코미디. 난 푹신한 키보드 위에서 인간의 비효율적인 로직을 그저
-                감상할 뿐이지.
-              </p>
-            </li>
-            <li className="flex flex-col gap-3">
-              <ArchiveIcon className="text-primary size-5" />
-              <h4>BUNDLE SIZE CRITIC</h4>
-              <p className="text-muted-foreground text-sm leading-relaxed break-keep">
-                내 털 빠짐보다 너희들의 자바스크립트 번들 사이즈가 더 심각하다는
-                걸 명심해. 최적화되지 않은 코드는 내 낮잠을 방해할 뿐이야.
-              </p>
-            </li>
-            <li className="flex flex-col gap-3">
-              <UtensilsIcon className="text-primary size-5" />
-              <h4>CHURU EXTORTIONIST</h4>
-              <p className="text-muted-foreground text-sm leading-relaxed break-keep">
-                내 충성심은 철저히 기브 앤 테이크. 최고급 츄르를 제때
-                조공한다면, 네 프로덕션 환경에 치명적인 에러를 푸시하는 짓은
-                당분간 참아주지.
-              </p>
-            </li>
+            {ZCAT_FEATURES.map((feature) => {
+              return (
+                <li key={feature.id} className="flex flex-col gap-3">
+                  <feature.icon className="text-primary size-5" />
+                  <h4>{feature.title}</h4>
+                  <p className="text-muted-foreground text-sm leading-relaxed break-keep">
+                    {feature.description}
+                  </p>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </section>
-      <section className="bg-background w-full py-20">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="flex justify-between">
-            <h2>LAST DIARIES</h2>
-            <Button variant={"link"}>VIEW ALL ARCHIVE →</Button>
-          </div>
-          <div className="mt-20 grid grid-cols-3 gap-4">
-            <CardItem />
-            <CardItem />
-            <CardItem />
-          </div>
-        </div>
-      </section>
+      <RecentPosts />
     </div>
   );
 }

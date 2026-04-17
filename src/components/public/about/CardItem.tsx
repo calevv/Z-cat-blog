@@ -4,34 +4,36 @@
 // 연관: about 페이지 반복 렌더링됨
 // ──────
 
+import { formatDate } from "@/lib/utils";
+
 // CardItemProps
 // 슈퍼베이스 세팅 전 임시 타입
 
 interface CardItemProps {
-  title?: string;
+  title_ko?: string;
   excerpt?: string;
-  date?: string;
+  created_at?: string;
   tags?: string[];
-  authorType?: "zcat" | "human";
+  author_type?: "zcat" | "human";
   coverImage?: string;
 }
 
 export function CardItem({
-  title = "The Entropy of Managed Clusters.",
-  excerpt = "집사가 또 useEffect를 남발했다. 의존성 배열 없이. 경이롭다.",
-  date = "2025.01.15",
-  tags = ["React", "Next.js"],
-  authorType = "zcat",
+  title_ko,
+  excerpt,
+  created_at,
+  tags,
+  author_type,
   coverImage,
 }: CardItemProps) {
   return (
-    <article className="group border-border bg-card flex flex-col overflow-hidden border">
+    <article className="group border-border bg-card flex flex-col overflow-hidden rounded-2xl border">
       {/* 썸네일 */}
       <div className="bg-muted aspect-video w-full overflow-hidden">
         {coverImage ? (
           <img
             src={coverImage}
-            alt={title}
+            alt={title_ko}
             className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0"
           />
         ) : (
@@ -40,13 +42,13 @@ export function CardItem({
       </div>
 
       {/* 본문 */}
-      <div className="flex flex-1 flex-col gap-3 p-4">
+      <div className="flex flex-1 flex-col gap-3 p-5">
         {/* 날짜 + 태그 */}
         <div className="flex items-center gap-2">
           <span className="text-muted-foreground font-mono text-xs">
-            {date}
+            {created_at ? formatDate(created_at) : "No Date"}
           </span>
-          {tags.map((tag) => (
+          {tags?.map((tag) => (
             <span key={tag} className="text-primary font-mono text-xs">
               #{tag}
             </span>
@@ -55,20 +57,20 @@ export function CardItem({
 
         {/* 제목 */}
         <h3 className="text-foreground text-sm leading-snug font-bold tracking-tight">
-          {title}
+          {title_ko}
         </h3>
 
         {/* 요약 */}
-        <p className="text-muted-foreground line-clamp-2 text-xs">{excerpt}</p>
+        <p className="text-muted-foreground line-clamp-1 text-xs">{excerpt}</p>
 
         {/* author_type 배지 */}
         <div className="mt-auto flex justify-end">
           <span
             className={`font-mono text-xs ${
-              authorType === "zcat" ? "text-primary" : "text-muted-foreground"
+              author_type === "zcat" ? "text-primary" : "text-muted-foreground"
             }`}
           >
-            {authorType === "zcat" ? "[ Z-cat ]" : "[ Human ]"}
+            {author_type === "zcat" ? "[ Z-cat ]" : "[ Human ]"}
           </span>
         </div>
       </div>

@@ -22,6 +22,7 @@ export function SearchDialog() {
         <DialogHeader>
           <VisuallyHidden.Root>
             <DialogTitle>Search Modal</DialogTitle>
+            <DialogDescription></DialogDescription>
           </VisuallyHidden.Root>
           <div className="flex h-9 items-center gap-3 rounded border border-neutral-200 bg-neutral-50 px-3 focus-within:border-orange-600 focus-within:bg-white">
             <Search size={14} className="text-zinc-400" />
