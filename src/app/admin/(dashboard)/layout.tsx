@@ -1,9 +1,10 @@
-import { signOut } from "@/actions/auth";
+import { signOut } from "@/lib/actions/auth.action";
 import AvatarGroup from "@/components/admin/dashboard/layout/AvatarGroup";
 import DashboardNav from "@/components/admin/dashboard/layout/DashboardNav";
 import { Button } from "@/components/ui/button";
 import { createServerSupabaseClient } from "@/lib/supabase";
-import { SquareArrowRightExit } from "lucide-react";
+import { House, SquareArrowRightExit } from "lucide-react";
+import Link from "next/link";
 import { ReactNode } from "react";
 
 export default async function Layout({ children }: { children: ReactNode }) {
@@ -27,10 +28,19 @@ export default async function Layout({ children }: { children: ReactNode }) {
         <DashboardNav />
         <footer className="flex min-h-24 flex-col gap-3 px-6 py-5">
           <AvatarGroup user={adminName} />
+          <Button
+            asChild
+            variant={"ghost"}
+            className="w-full cursor-pointer justify-start text-[10px] leading-4 font-normal tracking-wide text-zinc-600 uppercase"
+          >
+            <Link href={"/"}>
+              <House />
+              Go to Site
+            </Link>
+          </Button>
           <form action={signOut}>
             <Button
               variant={"ghost"}
-              type="submit"
               className="w-full cursor-pointer justify-start text-[10px] leading-4 font-normal tracking-wide text-zinc-600 uppercase"
             >
               <SquareArrowRightExit />
