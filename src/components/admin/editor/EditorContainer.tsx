@@ -1,16 +1,17 @@
 "use client";
+
 // 클라이언트여서 커스텀훅 사용 가능
 import EditorFooter from "@/components/admin/editor/EditorFooter";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { savePost } from "@/lib/actions/posts.action";
 import { toast } from "sonner";
 
-import { redirect } from "next/navigation";
 import EditorHeader from "@/components/admin/editor/EditorHeader";
 import EditorBody from "@/components/admin/editor/EditorBody";
-import EditorPreview from "@/components/admin/editor/EditorPreview ";
 import { useEditorForm } from "@/hooks/useEditorForm";
 import { Post } from "@/types/database.types";
+import { useRouter } from "next/navigation";
+import EditorPreview from "./EditorPreview";
 
 //TODO : 태그 없으면 등록 못하는 처리, 같은 제목 필터링
 
@@ -19,6 +20,7 @@ export default function EditorContainer({
 }: {
   initialData?: Post;
 }) {
+  const router = useRouter();
   const isEditMode = !!initialData;
   const {
     form,
@@ -85,7 +87,7 @@ export default function EditorContainer({
     toast.success(result.message);
 
     // 올리기면 대시보드로 이동
-    if (published) redirect("/admin");
+    if (published) router.push("/admin");
   }
 
   return (

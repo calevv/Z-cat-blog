@@ -6,6 +6,7 @@ export async function getCachedPosts() {
     .from("posts")
     .select("*")
     .eq("published", true)
+    .is("deleted_at", null)
     .order("published_at", { ascending: false });
 
   if (error) throw error;
@@ -20,6 +21,7 @@ export async function getRecentPosts(limit: number = 3) {
     .from("posts")
     .select("*")
     .eq("published", true)
+    .is("deleted_at", null)
     .order("published_at", { ascending: false })
     .limit(limit);
 
