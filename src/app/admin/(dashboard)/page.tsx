@@ -35,6 +35,7 @@ export default async function AdminPage({
   const { data: posts } = await supabase
     .from("posts")
     .select("*")
+    .is("deleted_at", null)
     .order("created_at", { ascending: false });
 
   // 카운트 계산

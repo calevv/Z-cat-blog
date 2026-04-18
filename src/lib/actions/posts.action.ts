@@ -6,6 +6,7 @@
 
 import { createServerSupabaseClient } from "@/lib/supabase";
 import { PostForm } from "@/types/database.types";
+import { revalidatePath } from "next/cache";
 
 // 임시저장 + 발행 공통 함수
 export async function savePost(form: PostForm) {
@@ -72,7 +73,19 @@ export async function deleteDraft(id: string) {
   return { success: true };
 }
 
-// 발행된 글 soft delete (나중에)
+//  글 soft delete
 export async function deletePost(id: string) {
-  // deleted_at 설정
+  const supabase = await createServerSupabaseClient();
+
+  const { error } = await supabase
+    .from("posts")
+    .update({ deleted_at: new Date().toISOString() })
+    .eq("id", id);
+
+  if (error) return { success: false, message: "삭제 실패" };
+
+  revalidatePath("/admin");
+  revalidatePath("/diary");
+
+  return { success: true, message: "삭제됐다, 인간." };
 }

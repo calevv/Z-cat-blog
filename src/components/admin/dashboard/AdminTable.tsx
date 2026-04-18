@@ -1,7 +1,10 @@
+"use client";
+
 // TODO : 대시보드 내 작성자 구별 표시 고민
 // TODO : 대시보드 내 스크롤 수정
 
 import { Button } from "@/components/ui/button";
+import { deletePost } from "@/lib/actions/posts.action";
 import { cn, formatDate } from "@/lib/utils";
 import { AdminTableProps } from "@/types/database.types";
 import { SquarePen, Trash2 } from "lucide-react";
@@ -91,7 +94,14 @@ export default function AdminTable({ posts }: AdminTablePostProp) {
                       <SquarePen className="h-4 w-4 text-zinc-500" />
                     </Link>
                   </Button>
-                  <Button variant={"ghost"}>
+                  <Button
+                    variant={"ghost"}
+                    onClick={async () => {
+                      if (confirm("정말 삭제할까요?")) {
+                        await deletePost(post.id);
+                      }
+                    }}
+                  >
                     <Trash2 className="h-4 w-4 text-zinc-500" />
                   </Button>
                 </div>
