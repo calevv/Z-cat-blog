@@ -1,27 +1,38 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { generateSlug } from "@/lib/utils";
 import { savePost } from "@/lib/actions/posts.action";
-import { PostForm } from "@/types/database.types";
+import { Post, PostForm } from "@/types/database.types";
 
-export function useEditorForm({ isEditMode }: { isEditMode: boolean }) {
+export function useEditorForm({
+  isEditMode,
+  initialData,
+}: {
+  isEditMode: boolean;
+  initialData?: Post;
+}) {
   const [form, setForm] = useState<PostForm>({
-    title_ko: "",
-    title_en: "",
-    slug: "",
-    content: "",
-    excerpt: "",
-    tags: [],
-    author_type: "zcat",
-    published: false,
+    title_ko: initialData?.title_ko ?? "",
+    title_en: initialData?.title_en ?? "",
+    slug: initialData?.slug ?? "",
+    content: initialData?.content ?? "",
+    excerpt: initialData?.excerpt ?? "",
+    tags: initialData?.tags ?? [],
+    author_type: initialData?.author_type ?? "zcat",
+    published: initialData?.published ?? false,
   });
 
-  const [postId, setPostId] = useState<string | null>(null);
+  const [postId, setPostId] = useState<string | null>(initialData?.id ?? null);
   const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "unsaved">(
     "unsaved"
   );
   const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     // title_ko가 없으면 실행 안 함
     if (!form.title_ko.trim()) return;
 
@@ -41,7 +52,7 @@ export function useEditorForm({ isEditMode }: { isEditMode: boolean }) {
         setForm((prev) => ({
           ...prev,
           title_en: translated,
-          slug,
+          slug: isEditMode ? prev.slug : slug,
         }));
       } catch (error) {
         console.error("번역 실패:", error);
@@ -81,7 +92,14 @@ export function useEditorForm({ isEditMode }: { isEditMode: boolean }) {
     }, 3000); // 3초 디바운스
 
     return () => clearTimeout(timer);
-  }, [form.title_ko, form.content, form.slug, form.tags, form.author_type]);
+  }, [
+    form.title_ko,
+    form.content,
+    form.slug,
+    form.tags,
+    form.author_type,
+    postId,
+  ]);
 
   //  핸들러
   const handleTitleChange = (value: string) => {

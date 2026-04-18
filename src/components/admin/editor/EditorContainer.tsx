@@ -35,25 +35,8 @@ export default function EditorContainer({
     postId,
     lastSavedAt,
     setPostId,
-    setForm,
-  } = useEditorForm({ isEditMode });
+  } = useEditorForm({ isEditMode, initialData });
 
-  useEffect(() => {
-    if (!initialData) return;
-
-    setForm({
-      title_ko: initialData.title_ko ?? "",
-      title_en: initialData.title_en ?? "",
-      slug: initialData.slug ?? "",
-      content: initialData.content ?? "",
-      excerpt: initialData.excerpt ?? "",
-      tags: initialData.tags ?? [],
-      author_type: initialData.author_type ?? "zcat",
-      published: initialData.published ?? false,
-    });
-
-    setPostId(initialData.id);
-  }, [initialData]);
   // 공통 저장 함수
   async function handleSave(published: boolean) {
     // 필수값 체크
