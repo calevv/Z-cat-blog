@@ -27,6 +27,7 @@ export interface PostForm extends Omit<
   | "created_at"
   | "updated_at"
   | "published_at"
+  | "deleted_at"
 > {
   id?: string;
   author_type: AuthorType;
@@ -35,7 +36,7 @@ export interface PostForm extends Omit<
 /* 어드민 테이블 전용 타입*/
 export interface AdminTableProps extends Omit<
   PostRow,
-  "cover_image" | "updated_at"
+  "cover_image" | "updated_at" | "deleted_at"
 > {
   author_type: AuthorType;
 }
