@@ -1,36 +1,20 @@
 "use client";
 
 import React, { useState } from "react";
+import { useEditor } from "./EditorContext";
 
-interface EditorHeaderProps {
-  title: string;
-  tags: string[];
-  slug: string;
-
-  onTitleChange: (value: string) => void;
-  onAddTag: (tag: string) => void;
-  onRemoveLastTag: () => void;
-  onSlugChange: (value: string) => void;
-}
-
-export default function EditorHeader({
-  title,
-  slug,
-  tags,
-  onTitleChange,
-  onAddTag,
-  onRemoveLastTag,
-  onSlugChange,
-}: EditorHeaderProps) {
+export default function EditorHeader() {
+  const { form, handleTitleChange, addTag, removeLastTag, handleSlugChange } =
+    useEditor();
   const [tagError, setTagError] = useState("");
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (
       e.key === "Backspace" &&
       e.currentTarget.value === "" &&
-      tags.length > 0
+      form.tags.length > 0
     ) {
-      onRemoveLastTag();
+      removeLastTag();
       return;
     }
     {
@@ -42,13 +26,13 @@ export default function EditorHeader({
       const value = e.currentTarget.value.trim().toLowerCase();
       if (!value) return;
       //  먼저 중복 체크
-      if (tags.includes(value)) {
+      if (form.tags.includes(value)) {
         setTagError("이미 추가된 태그입니다");
         return;
       }
 
       //  정상 추가
-      onAddTag(value);
+      addTag(value);
       e.currentTarget.value = "";
       setTagError(""); // 에러 제거
     }
@@ -59,8 +43,8 @@ export default function EditorHeader({
       {/* TODO: 타이틀과 태그는 이후 보여주기창과 동기화 기능 필요*/}
 
       <input
-        value={title}
-        onChange={(e) => onTitleChange(e.target.value)}
+        value={form.title_ko}
+        onChange={(e) => handleTitleChange(e.target.value)}
         type="text"
         name="title"
         placeholder="POST_TITLE"
@@ -71,7 +55,7 @@ export default function EditorHeader({
           <label className="text-muted-foreground font-mono text-xs">
             TAGS:
           </label>
-          {tags.map((tag) => (
+          {form.tags.map((tag) => (
             <span
               key={tag}
               className="border border-zinc-200 bg-zinc-100 px-2 py-0.5 font-mono text-[10px] text-zinc-600 uppercase"
@@ -88,7 +72,7 @@ export default function EditorHeader({
               if (tagError) setTagError("");
             }}
             name={"tags"}
-            placeholder={tags.length === 0 ? "ADD_TAGS..." : ""}
+            placeholder={form.tags.length === 0 ? "ADD_TAGS..." : ""}
             className="font-space text-xs font-normal tracking-wide text-zinc-500 placeholder:text-zinc-300"
           />
         </div>
@@ -103,8 +87,8 @@ export default function EditorHeader({
           URL_SLUG:
         </label>
         <input
-          value={slug}
-          onChange={(e) => onSlugChange(e.target.value)}
+          value={form.slug}
+          onChange={(e) => handleSlugChange(e.target.value)}
           type="text"
           name="slug"
           placeholder="POST_URL_SLUG"

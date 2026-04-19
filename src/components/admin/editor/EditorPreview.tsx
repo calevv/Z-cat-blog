@@ -3,30 +3,11 @@ import remarkGfm from "remark-gfm";
 
 import { cn } from "@/lib/utils";
 import { CheckIcon } from "lucide-react";
+import { useEditor } from "./EditorContext";
 
-export interface PostForm {
-  title_ko: string;
-  title_en: string;
-  slug: string;
-  content: string;
-  excerpt: string;
-  tags: string[];
-  author_type: "zcat" | "human";
-  published: boolean;
-}
-interface EditorPreviewProps {
-  form: PostForm;
-  onToggleAuthor: () => void;
-  lastSavedAt: Date | null;
-  saveStatus: "saved" | "saving" | "unsaved";
-}
+export default function EditorPreview() {
+  const { form, toggleAuthor, lastSavedAt, saveStatus } = useEditor();
 
-export default function EditorPreview({
-  form,
-  onToggleAuthor,
-  lastSavedAt,
-  saveStatus,
-}: EditorPreviewProps) {
   return (
     <section className="flex flex-col">
       <header className="flex h-17 items-center justify-between border-b border-neutral-200 bg-white px-8 py-4">
@@ -57,7 +38,7 @@ export default function EditorPreview({
           </p>
           <div className="flex h-7 items-center overflow-hidden rounded border border-neutral-200">
             <button
-              onClick={onToggleAuthor}
+              onClick={toggleAuthor}
               className={cn(
                 "font-space px-4 py-1.5 text-[10px] leading-4 font-medium tracking-wide uppercase",
                 form.author_type === "zcat"
@@ -69,7 +50,7 @@ export default function EditorPreview({
             </button>
 
             <button
-              onClick={onToggleAuthor}
+              onClick={toggleAuthor}
               className={cn(
                 "font-space px-4 py-1.5 text-[10px] leading-4 font-medium tracking-wide uppercase",
                 form.author_type === "human"
