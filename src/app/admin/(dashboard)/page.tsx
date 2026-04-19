@@ -56,7 +56,7 @@ export default async function AdminPage({
     // 2. 검색어 필터링 (제목에서 검색)
     const matchesQuery =
       post.title_ko.toLowerCase().includes(query) ||
-      post.title_en.toLowerCase().includes(query);
+      (post.title_en ?? "").toLowerCase().includes(query);
 
     return matchesStatus && matchesQuery;
   });
