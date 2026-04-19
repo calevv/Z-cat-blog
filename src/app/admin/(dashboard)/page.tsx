@@ -62,15 +62,15 @@ export default async function AdminPage({
   });
 
   return (
-    <div className="flex flex-col">
+    <div className="flex h-full flex-col">
       <AdminHeader />
-      <div className="flex flex-1 flex-col gap-6 p-8">
+      <div className="flex flex-1 flex-col gap-6 overflow-hidden p-8">
         <section className="grid grid-cols-3 gap-4">
           <StateCard label="Total Posts" value={total} />
           <StateCard label="Published" value={published} />
           <StateCard label="Drafts" value={drafts} />
         </section>
-        <section className="flex h-full flex-col overflow-hidden rounded-[10px] border border-neutral-200 bg-white">
+        <section className="flex flex-1 flex-col overflow-hidden rounded-[10px] border border-neutral-200 bg-white">
           {/* Suspense: useSearchParams() 사용하는 클라이언트 컴포넌트는
               서버 렌더링 시 URL 정보가 없을 수 있어서 Suspense 필요
               fallback={null} → 로딩 중 아무것도 안 보임
@@ -78,7 +78,7 @@ export default async function AdminPage({
           <Suspense fallback={null}>
             <PublishTabs />
           </Suspense>
-          <div className="flex-1">
+          <div className="flex-1 overflow-hidden">
             <AdminTable posts={filtered ?? []} />
           </div>
           <div className="flex h-10 items-center justify-between px-6">

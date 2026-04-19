@@ -49,7 +49,9 @@ export default async function Layout({ children }: { children: ReactNode }) {
           </form>
         </footer>
       </aside>
-      <section className="flex-1 bg-neutral-50">{children}</section>
+      <section className="flex-1 overflow-hidden bg-neutral-50">
+        {children}
+      </section>
     </main>
   );
 }

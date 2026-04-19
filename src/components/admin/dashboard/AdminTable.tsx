@@ -18,7 +18,7 @@ export default function AdminTable({ posts }: AdminTablePostProp) {
   const THEAD_TITLE = ["Title", "Tags", "Date", "Status", "Actions"];
 
   return (
-    <div className="w-full" role="table">
+    <div className="flex h-full w-full flex-col" role="table">
       <div className="border-t border-b border-neutral-200" role="rowgroup">
         <ul
           className="grid h-10 grid-cols-5 items-center bg-neutral-50"
@@ -35,7 +35,7 @@ export default function AdminTable({ posts }: AdminTablePostProp) {
           ))}
         </ul>
       </div>
-      <div className="custom-scrollbar h-125 overflow-y-auto" role="rowgroup">
+      <div className="custom-scrollbar flex-1 overflow-y-auto" role="rowgroup">
         {posts.map((post) => {
           return (
             <ul
