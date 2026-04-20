@@ -5,7 +5,6 @@
 // ───────────────────────────────
 import { createBrowserClient } from "@supabase/ssr";
 import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY!;
@@ -16,6 +15,7 @@ export function createClient() {
 
 // 서버 컴포넌트, 미들웨어에서 사용
 export async function createServerSupabaseClient() {
+  const { cookies } = await import("next/headers");
   const cookieStore = await cookies();
 
   return createServerClient(supabaseUrl, supabaseKey, {
