@@ -11,6 +11,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { createClient } from "@/lib/supabase";
 import { formatDate } from "@/lib/utils";
+import { getCommentsByPostId } from "@/lib/queries/comments.query";
 
 export default async function DiaryDetailPage({
   params,
@@ -58,6 +59,8 @@ export default async function DiaryDetailPage({
     .limit(1)
     .maybeSingle();
 
+  const data = await getCommentsByPostId(post.id);
+  console.log(data);
   return (
     <div className="bg-background w-full">
       {/* 헤더 영역 */}

@@ -9,7 +9,7 @@
 // ───────────────────────────────
 import PageHeader from "@/components/common/PageHeader";
 import SectionContainer from "@/components/common/section/SectionContainer";
-import { getCachedPosts } from "@/lib/posts/posts.query";
+import { getCachedPosts } from "@/lib/queries/posts.query";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
 

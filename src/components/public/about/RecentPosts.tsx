@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { CardItem } from "./CardItem";
-import { getRecentPosts } from "@/lib/posts/posts.query";
+import { getRecentPosts } from "@/lib/queries/posts.query";
 import Link from "next/link";
 
 export default async function RecentPosts() {
