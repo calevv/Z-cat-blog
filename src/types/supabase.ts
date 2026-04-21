@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      comments: {
+        Row: {
+          author_name: string
+          content: string
+          created_at: string | null
+          id: string
+          is_zcat: boolean | null
+          parent_id: string | null
+          post_id: string | null
+        }
+        Insert: {
+          author_name: string
+          content: string
+          created_at?: string | null
+          id?: string
+          is_zcat?: boolean | null
+          parent_id?: string | null
+          post_id?: string | null
+        }
+        Update: {
+          author_name?: string
+          content?: string
+          created_at?: string | null
+          id?: string
+          is_zcat?: boolean | null
+          parent_id?: string | null
+          post_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comments_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       posts: {
         Row: {
           author_type: string

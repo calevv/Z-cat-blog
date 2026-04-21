@@ -40,3 +40,16 @@ export interface AdminTableProps extends Omit<
 > {
   author_type: AuthorType;
 }
+
+type CommentRow = Database["public"]["Tables"]["comments"]["Row"];
+type CommentInsertRow = Database["public"]["Tables"]["comments"]["Insert"];
+
+export interface Comment extends CommentRow {}
+
+export interface CommentInsert extends Omit<CommentInsertRow, "is_zcat"> {
+  is_zcat?: false; // 일반 유저는 항상 false
+}
+
+export interface ZcatCommentInsert extends Omit<CommentInsertRow, "is_zcat"> {
+  is_zcat: true; // Z-cat 댓글은 항상 true
+}
