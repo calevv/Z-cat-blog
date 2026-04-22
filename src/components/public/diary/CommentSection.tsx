@@ -9,10 +9,15 @@
 import { useState } from "react";
 import { Comment } from "@/types/database.types";
 import { formatDate } from "@/lib/utils";
+import {
+  createComment,
+  createZcatComment,
+} from "@/lib/actions/comments.action";
 
 interface CommentSectionProps {
   comments: Comment[];
   postId: string;
+  isAdmin: boolean;
 }
 
 // 랜덤 닉네임 생성 함수
@@ -24,11 +29,50 @@ function generateNickname() {
 export default function CommentSection({
   comments,
   postId,
+  isAdmin,
 }: CommentSectionProps) {
   // 랜덤 닉네임 — 컴포넌트 마운트 시 1회 생성
   const [nickname, setNickname] = useState(generateNickname);
   const [comment, setComment] = useState("");
+  const [isPending, setIsPending] = useState(false);
+  // 캐싱 전 임시방편
+  const [localComments, setLocalComments] = useState(comments);
 
+  async function handleSubmit() {
+    if (!comment.trim()) return;
+
+    setIsPending(true);
+
+    // isAdmin이면 Z-cat 액션, 아니면 일반 댓글 액션
+    const result = isAdmin
+      ? await createZcatComment({
+          post_id: postId,
+          content: comment,
+        })
+      : await createComment({
+          post_id: postId,
+          author_name: nickname,
+          content: comment,
+        });
+
+    if (result.success) {
+      setLocalComments((prev) => [
+        ...prev,
+        {
+          id: crypto.randomUUID(),
+          post_id: postId,
+          author_name: isAdmin ? "Z-cat" : nickname,
+          content: comment,
+          is_zcat: isAdmin,
+          parent_id: null,
+          created_at: new Date().toISOString(),
+        },
+      ]);
+      setComment("");
+    }
+
+    setIsPending(false);
+  }
   return (
     <div>
       {/* 섹션 제목 */}
@@ -38,7 +82,7 @@ export default function CommentSection({
 
       {/* 댓글 목록 */}
       <ul className="mt-6 flex flex-col gap-6">
-        {comments.map((c) => (
+        {localComments.map((c) => (
           <li key={c.id} className="flex gap-4">
             {/* 이니셜 아바타 */}
             <div
@@ -84,13 +128,15 @@ export default function CommentSection({
         </p>
 
         {/* 닉네임 입력 — 랜덤 생성, 수정 가능 */}
-        <input
-          type="text"
-          value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
-          className="border-border bg-background text-foreground focus:border-primary mt-4 w-full border px-4 py-2 font-mono text-xs focus:outline-none"
-          placeholder="NICKNAME"
-        />
+        {!isAdmin && (
+          <input
+            type="text"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+            className="border-border bg-background text-foreground focus:border-primary mt-4 w-full border px-4 py-2 font-mono text-xs focus:outline-none"
+            placeholder="NICKNAME"
+          />
+        )}
 
         {/* 댓글 textarea */}
         <textarea
@@ -103,8 +149,12 @@ export default function CommentSection({
 
         {/* 전송 버튼 */}
         <div className="mt-2 flex justify-end">
-          <button className="bg-primary px-6 py-2 font-mono text-xs text-white transition-opacity hover:opacity-80">
-            TRANSMIT_MESSAGE
+          <button
+            onClick={handleSubmit}
+            disabled={isPending}
+            className="bg-primary px-6 py-2 font-mono text-xs text-white transition-opacity hover:opacity-80"
+          >
+            {isPending ? "TRANSMITTING..." : "TRANSMIT_MESSAGE"}
           </button>
         </div>
       </div>

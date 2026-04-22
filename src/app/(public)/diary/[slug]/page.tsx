@@ -60,6 +60,11 @@ export default async function DiaryDetailPage({
     .maybeSingle();
 
   const comments = await getCommentsByPostId(post.id);
+  const { createServerSupabaseClient } = await import("@/lib/supabase");
+  const serverSupabase = await createServerSupabaseClient();
+  const {
+    data: { user },
+  } = await serverSupabase.auth.getUser();
 
   return (
     <div className="bg-background w-full">
@@ -109,10 +114,10 @@ export default async function DiaryDetailPage({
             {post.content}
           </ReactMarkdown>
         </article>
-      </section>{" "}
+      </section>
       {/* 댓글 */}
       <section className="mx-auto max-w-3xl px-6 pb-16">
-        <CommentSection comments={comments} postId={post.id} />
+        <CommentSection comments={comments} postId={post.id} isAdmin={!!user} />
       </section>
       {/* 이전글 / 다음글 */}
       <section className="mx-auto max-w-3xl px-6 py-8">

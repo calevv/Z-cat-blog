@@ -37,15 +37,13 @@ export async function createZcatComment({
 }) {
   const supabase = await createServerSupabaseClient();
 
-  const { error } = await supabase
-    .from("comments")
-    .insert({
-      post_id,
-      author_name: "Z-cat",
-      content,
-      is_zcat: true,
-      parent_id,
-    });
+  const { error } = await supabase.from("comments").insert({
+    post_id,
+    author_name: "Z-cat",
+    content,
+    is_zcat: true,
+    parent_id,
+  });
 
   if (error) return { success: false, message: "Z-cat 댓글 작성 실패" };
 

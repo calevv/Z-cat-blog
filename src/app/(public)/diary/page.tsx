@@ -18,6 +18,7 @@ const ALL_TAGS = ["Next.js", "React", "Supabase", "CSS"];
 
 export default async function DiaryPage() {
   const posts = await getCachedPosts();
+
   return (
     <div className="bg-background w-full">
       {/* 헤더 영역 */}
