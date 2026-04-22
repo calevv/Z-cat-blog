@@ -59,8 +59,8 @@ export default async function DiaryDetailPage({
     .limit(1)
     .maybeSingle();
 
-  const data = await getCommentsByPostId(post.id);
-  console.log(data);
+  const comments = await getCommentsByPostId(post.id);
+
   return (
     <div className="bg-background w-full">
       {/* 헤더 영역 */}
@@ -112,7 +112,7 @@ export default async function DiaryDetailPage({
       </section>{" "}
       {/* 댓글 */}
       <section className="mx-auto max-w-3xl px-6 pb-16">
-        <CommentSection />
+        <CommentSection comments={comments} postId={post.id} />
       </section>
       {/* 이전글 / 다음글 */}
       <section className="mx-auto max-w-3xl px-6 py-8">
