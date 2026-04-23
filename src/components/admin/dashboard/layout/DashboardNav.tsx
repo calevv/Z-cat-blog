@@ -4,6 +4,7 @@ import {
   FileText,
   MessageSquare,
   Tag,
+  Trash,
   BarChart3,
   Settings,
 } from "lucide-react";
@@ -25,6 +26,12 @@ export default function DashboardNav() {
       icon: MessageSquare,
       href: "/admin/comments",
       isReady: false,
+    },
+    {
+      title: "삭제 보관함",
+      icon: Trash,
+      href: "/admin/trash",
+      isReady: true,
     },
     {
       title: "태그 관리",
@@ -59,7 +66,7 @@ export default function DashboardNav() {
                   className={`flex items-center justify-between rounded-lg px-4 py-3 transition-colors ${
                     isActive
                       ? "bg-primary text-white"
-                      : "text-zinc-500 hover:bg-zinc-800/50"
+                      : "text-zinc-500 hover:bg-zinc-600/50"
                   } `}
                 >
                   <div className="flex items-center gap-3">

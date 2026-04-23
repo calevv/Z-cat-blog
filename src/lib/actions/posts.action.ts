@@ -89,3 +89,31 @@ export async function deletePost(id: string) {
 
   return { success: true, message: "삭제됐다, 인간." };
 }
+
+// 복구
+export async function restorePost(id: string) {
+  const supabase = await createServerSupabaseClient();
+
+  const { error } = await supabase
+    .from("posts")
+    .update({ deleted_at: null })
+    .eq("id", id);
+
+  if (error) return { success: false, message: "복구 실패" };
+
+  revalidatePath("/admin");
+  revalidatePath("/admin/trash");
+  return { success: true, message: "복구됐다." };
+}
+
+// 영구삭제
+export async function permanentDeletePost(id: string) {
+  const supabase = await createServerSupabaseClient();
+
+  const { error } = await supabase.from("posts").delete().eq("id", id);
+
+  if (error) return { success: false, message: "영구삭제 실패" };
+
+  revalidatePath("/admin/trash");
+  return { success: true, message: "영구삭제됐다." };
+}

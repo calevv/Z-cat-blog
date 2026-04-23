@@ -14,7 +14,6 @@ export async function getCachedPosts() {
   return data;
 }
 
-// posts.query.ts
 export async function getRecentPosts(limit: number = 3) {
   const supabase = createClient();
   const { data, error } = await supabase
