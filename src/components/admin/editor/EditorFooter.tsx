@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import ExitEditorAlert from "./ExitEditorAlert";
 import { useEditor } from "./EditorContext";
+import PublishModal from "./PublishModal";
 
 export default function EditorFooter() {
   const { form, handleSave, saveStatus } = useEditor();
@@ -20,13 +21,7 @@ export default function EditorFooter() {
             임시저장
           </Button>
         )}
-        <Button
-          variant={"default"}
-          onClick={() => handleSave(true)}
-          disabled={saveStatus === "saving"}
-        >
-          올리기
-        </Button>
+        <PublishModal />
       </div>
     </footer>
   );
