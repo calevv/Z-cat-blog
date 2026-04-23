@@ -7,6 +7,7 @@
 import { createServerSupabaseClient } from "@/lib/supabase";
 import { PostForm } from "@/types/database.types";
 import { revalidatePath } from "next/cache";
+import sharp from "sharp";
 
 // 임시저장 + 발행 공통 함수
 export async function savePost(form: PostForm) {
@@ -116,4 +117,32 @@ export async function permanentDeletePost(id: string) {
 
   revalidatePath("/admin/trash");
   return { success: true, message: "영구삭제됐다." };
+}
+
+export async function uploadCoverImage(formData: FormData) {
+  const file = formData.get("image") as File;
+
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+
+  const compressed = await sharp(buffer)
+    .resize(1200, 630, { fit: "cover" })
+    .webp({ quality: 80 })
+    .toBuffer();
+
+  // Supabase Storage 업로드
+  const supabase = await createServerSupabaseClient();
+  const fileName = `${crypto.randomUUID()}.webp`;
+
+  const { error } = await supabase.storage
+    .from("covers")
+    .upload(fileName, compressed, { contentType: "image/webp" });
+
+  if (error) return { success: false, message: "업로드 실패" };
+
+  const {
+    data: { publicUrl },
+  } = supabase.storage.from("covers").getPublicUrl(fileName);
+
+  return { success: true, url: publicUrl };
 }
