@@ -115,6 +115,7 @@ export default async function DiaryPage({
                   ALL POST
                 </Link>
               </li>
+              <li className="my-1 border-t border-neutral-200" />
               {allTags.map((t) => (
                 <li
                   key={t}

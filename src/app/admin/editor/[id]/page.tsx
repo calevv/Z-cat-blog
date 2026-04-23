@@ -20,6 +20,5 @@ export default async function EditEditorPage({
     console.log("getPostById error:", error);
     return null;
   }
-  console.log(data);
   return <EditorContainer initialData={data} />;
 }
