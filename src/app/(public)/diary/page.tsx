@@ -9,15 +9,19 @@
 // ───────────────────────────────
 import PageHeader from "@/components/common/PageHeader";
 import SectionContainer from "@/components/common/section/SectionContainer";
-import { getCachedPosts } from "@/lib/queries/posts.query";
+import { getAllPosts } from "@/lib/queries/posts.query";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
 
-// 더미 태그 목록 — 나중에 DB에서 동적으로 가져올 것
-const ALL_TAGS = ["Next.js", "React", "Supabase", "CSS"];
-
-export default async function DiaryPage() {
-  const posts = await getCachedPosts();
+export default async function DiaryPage({
+  searchParams,
+}: {
+  searchParams: { tag?: string };
+}) {
+  const { tag } = await searchParams;
+  const posts = await getAllPosts();
+  const allTags = [...new Set(posts.flatMap((p) => p.tags))];
+  const filtered = tag ? posts.filter((p) => p.tags.includes(tag)) : posts;
 
   return (
     <div className="bg-background w-full">
@@ -33,7 +37,7 @@ export default async function DiaryPage() {
       <SectionContainer className="gap-8">
         {/* 포스트 목록 */}
         <ul className="divide-border flex flex-1 flex-col divide-y">
-          {posts?.map((post) => {
+          {filtered?.map((post) => {
             const displayDate =
               post.published_at ?? post.created_at ?? "NO_DATE_ERROR";
             // 날짜가 없으면 생성일(created_at)을 보여주고, 그것도 없으면 에러 메시지
@@ -99,12 +103,33 @@ export default async function DiaryPage() {
             <p className="text-foreground font-mono text-xs font-bold">TAGS</p>
             {/* TODO: 클릭 시 필터 기능 — 클라이언트 컴포넌트로 분리 예정 */}
             <ul className="mt-4 flex flex-col gap-2">
-              {ALL_TAGS.map((tag) => (
+              <li>
+                <Link
+                  href="/diary"
+                  className={`font-mono text-sm transition-colors ${
+                    !tag
+                      ? "text-primary font-bold"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  ALL POST
+                </Link>
+              </li>
+              {allTags.map((t) => (
                 <li
-                  key={tag}
+                  key={t}
                   className="text-muted-foreground hover:text-foreground cursor-pointer font-mono text-sm transition-colors"
                 >
-                  #{tag}
+                  <Link
+                    href={t === tag ? "/diary" : `/diary?tag=${t}`}
+                    className={`font-mono text-sm transition-colors ${
+                      t === tag
+                        ? "text-primary font-bold"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    #{t}
+                  </Link>
                 </li>
               ))}
             </ul>

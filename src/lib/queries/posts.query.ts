@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase";
 
-export async function getCachedPosts() {
+export async function getAllPosts() {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("posts")
