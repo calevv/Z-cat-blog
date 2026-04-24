@@ -1,8 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { PlusIcon } from "lucide-react";
-import Link from "next/link";
+interface AdminHeaderProps {
+  title: string;
+  component?: React.ReactNode;
+}
 
-export default function AdminHeader() {
+export default function AdminHeader({ title, component }: AdminHeaderProps) {
   return (
     <header className="flex h-20 items-center justify-between border-b border-neutral-200 bg-white px-8">
       <div>
@@ -10,18 +11,10 @@ export default function AdminHeader() {
           [ADMIN_CONSOLE]
         </p>
         <h6 className="font-heading text-xl leading-8 font-bold text-zinc-900">
-          게시물 관리
+          {title}
         </h6>
       </div>
-      <Button
-        asChild
-        className="h-9 w-32 rounded bg-zinc-900 text-xs leading-4 font-bold tracking-wider text-white uppercase"
-      >
-        <Link href="/admin/editor">
-          <PlusIcon className="h-2.5 w-2.5 text-white" />
-          New Post
-        </Link>
-      </Button>
+      {component}
     </header>
   );
 }

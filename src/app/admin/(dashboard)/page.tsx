@@ -18,6 +18,9 @@ import PublishTabs from "@/components/admin/dashboard/PublishTabs";
 import StateCard from "@/components/admin/dashboard/StateCard";
 import { createServerSupabaseClient } from "@/lib/supabase";
 import { Suspense } from "react";
+import { Button } from "@/components/ui/button";
+import { PlusIcon } from "lucide-react";
+import Link from "next/link";
 
 export default async function AdminPage({
   searchParams,
@@ -63,7 +66,20 @@ export default async function AdminPage({
 
   return (
     <div className="flex h-full flex-col">
-      <AdminHeader />
+      <AdminHeader
+        title={`게시물 관리`}
+        component={
+          <Button
+            asChild
+            className="h-9 w-32 rounded bg-zinc-900 text-xs leading-4 font-bold tracking-wider text-white uppercase"
+          >
+            <Link href="/admin/editor">
+              <PlusIcon className="h-2.5 w-2.5 text-white" />
+              New Post
+            </Link>
+          </Button>
+        }
+      />
       <div className="flex flex-1 flex-col gap-6 overflow-hidden p-8">
         <section className="grid grid-cols-3 gap-4">
           <StateCard label="Total Posts" value={total} />
