@@ -26,22 +26,13 @@ export default function EditorContainer({
   const editorForm = useEditorForm({ isEditMode, initialData });
 
   // 공통 저장 함수
-  async function handleSave(published: boolean) {
-    // 필수값 체크
-    if (!editorForm.form.title_ko.trim()) {
-      toast.error("제목을 입력해라, 인간.");
-      return;
-    }
-    if (!editorForm.form.slug.trim()) {
-      toast.error("slug가 없다. 번역을 기다려라.");
-      return;
-    }
-
+  async function handleSave(published: boolean, coverImageUrl?: string) {
     editorForm.setSaveStatus("saving");
 
     const result = await savePost({
       id: editorForm.postId ?? undefined,
       ...editorForm.form,
+      cover_image: coverImageUrl,
       published,
     });
 

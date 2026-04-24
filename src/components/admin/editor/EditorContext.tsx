@@ -5,7 +5,7 @@ import { useEditorForm } from "@/hooks/useEditorForm";
 
 // useEditorForm 반환 타입 + handleSave + isEditMode
 type EditorContextValue = ReturnType<typeof useEditorForm> & {
-  handleSave: (published: boolean) => Promise<void>;
+  handleSave: (published: boolean, coverImageUrl?: string) => Promise<void>;
   isEditMode: boolean;
 };
 

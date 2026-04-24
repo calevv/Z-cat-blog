@@ -30,6 +30,7 @@ export interface PostForm extends Omit<
   | "deleted_at"
 > {
   id?: string;
+  cover_image?: string;
   author_type: AuthorType;
 }
 
