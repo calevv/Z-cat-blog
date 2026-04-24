@@ -1,5 +1,6 @@
 import AdminHeader from "@/components/admin/dashboard/AdminHeader";
 import TrashTable from "@/components/admin/trash/TrashTable";
+import AdminTableFooter from "@/components/common/AdminTableFooter";
 import SearchInput from "@/components/common/SearchInput";
 import { createServerSupabaseClient } from "@/lib/supabase";
 import { Suspense } from "react";
@@ -37,6 +38,7 @@ export default async function TrashPage({
             </Suspense>
           </div>
           <TrashTable posts={filtered ?? []} />
+          <AdminTableFooter filteredLength={filtered?.length ?? 0} />
         </section>
       </div>
     </div>

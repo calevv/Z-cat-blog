@@ -21,6 +21,7 @@ import { Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
+import AdminTableFooter from "@/components/common/AdminTableFooter";
 
 export default async function AdminPage({
   searchParams,
@@ -97,14 +98,7 @@ export default async function AdminPage({
           <div className="flex-1 overflow-hidden">
             <AdminTable posts={filtered ?? []} />
           </div>
-          <div className="flex h-10 items-center justify-between px-6">
-            <p className="font-space text-[10px] leading-4 font-normal tracking-wide text-zinc-400 uppercase">
-              {`${filtered?.length ?? 0} posts found`}
-            </p>
-            <p className="font-space text-[10px] leading-4 font-normal tracking-wide text-zinc-400 uppercase">
-              All entries logged by Z-cat.
-            </p>
-          </div>
+          <AdminTableFooter filteredLength={filtered?.length ?? 0} />
         </section>
       </div>
     </div>
