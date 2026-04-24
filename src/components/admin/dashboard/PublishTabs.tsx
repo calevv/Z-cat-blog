@@ -1,14 +1,11 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Search } from "lucide-react";
 import Link from "next/link";
-import { ChangeEvent } from "react";
+import SearchInput from "@/components/common/SearchInput";
 
 export default function PublishTabs() {
-  const router = useRouter();
-
   const searchParams = useSearchParams();
   const currentStatus = searchParams.get("status") ?? "all";
   const currentQuery = searchParams.get("query") ?? "";
@@ -18,20 +15,7 @@ export default function PublishTabs() {
     { label: "Published", value: "published" },
     { label: "Draft", value: "draft" },
   ];
-  // 검색어 변경 핸들러
-  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const params = new URLSearchParams(searchParams.toString());
 
-    if (value) {
-      params.set("query", value);
-    } else {
-      params.delete("query");
-    }
-
-    // 주소창 업데이트 (replace를 써서 뒤로가기 기록이 너무 많이 남지 않게 함)
-    router.replace(`/admin?${params.toString()}`);
-  };
   return (
     <div className="flex justify-between px-6 py-4">
       <div className="flex gap-1">
@@ -60,17 +44,7 @@ export default function PublishTabs() {
           );
         })}
       </div>
-      <div className="flex h-9 items-center gap-3 rounded border border-neutral-200 bg-neutral-50 px-3 focus-within:border-orange-600 focus-within:bg-white">
-        <Search size={14} className="text-zinc-400" />
-        <input
-          type="text"
-          placeholder="Search posts..."
-          name="search"
-          defaultValue={currentQuery}
-          onChange={handleSearch}
-          className="w-full bg-transparent text-xs"
-        />
-      </div>
+      <SearchInput basePath="/admin" />
     </div>
   );
 }
