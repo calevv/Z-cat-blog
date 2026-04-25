@@ -36,6 +36,7 @@ export async function savePost(form: PostForm) {
     author_type: form.author_type,
     published: form.published,
     published_at: form.published ? new Date().toISOString() : null,
+    ...(form.cover_image !== undefined && { cover_image: form.cover_image }),
   };
 
   // 수정 vs 새 글
@@ -138,7 +139,7 @@ export async function uploadCoverImage(formData: FormData) {
     .from("covers")
     .upload(fileName, compressed, { contentType: "image/webp" });
 
-  if (error) return { success: false, message: "업로드 실패" };
+  if (error) return { success: false, message: error.message };
 
   const {
     data: { publicUrl },

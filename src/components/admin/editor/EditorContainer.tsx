@@ -53,7 +53,14 @@ export default function EditorContainer({
   }
 
   return (
-    <EditorContext.Provider value={{ ...editorForm, handleSave, isEditMode }}>
+    <EditorContext.Provider
+      value={{
+        ...editorForm,
+        handleSave,
+        isEditMode,
+        initialCoverImage: initialData?.cover_image,
+      }}
+    >
       <div className="flex h-screen w-full flex-col">
         <main className="grid flex-1 grid-cols-2">
           {/* 에디터 메인 영역 (좌우 분할) */}

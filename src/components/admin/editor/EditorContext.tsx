@@ -7,6 +7,7 @@ import { useEditorForm } from "@/hooks/useEditorForm";
 type EditorContextValue = ReturnType<typeof useEditorForm> & {
   handleSave: (published: boolean, coverImageUrl?: string) => Promise<void>;
   isEditMode: boolean;
+  initialCoverImage?: string | null;
 };
 
 export const EditorContext = createContext<EditorContextValue | null>(null);

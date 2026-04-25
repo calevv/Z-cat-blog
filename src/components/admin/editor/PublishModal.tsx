@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -16,11 +15,13 @@ import { toast } from "sonner";
 import { uploadCoverImage } from "@/lib/actions/posts.action";
 
 export default function PublishModal() {
+  const { form, handleSave, saveStatus, initialCoverImage } = useEditor();
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>(
+    initialCoverImage ?? null
+  );
   const inputRef = useRef<HTMLInputElement>(null);
-  const { form, handleSave, saveStatus } = useEditor();
 
   const handleOpenModal = () => {
     // 여기서 먼저 체크
@@ -49,7 +50,11 @@ export default function PublishModal() {
       const formData = new FormData();
       formData.append("image", file);
       const result = await uploadCoverImage(formData);
-      if (result.success) coverImageUrl = result.url;
+      if (!result.success) {
+        toast.error(result.message ?? "이미지 업로드 실패");
+        return;
+      }
+      coverImageUrl = result.url;
     }
 
     await handleSave(true, coverImageUrl);

@@ -15,7 +15,7 @@ interface CardItemProps {
   created_at?: string;
   tags?: string[];
   author_type?: "zcat" | "human";
-  coverImage?: string;
+  cover_image?: string;
 }
 
 export function CardItem({
@@ -24,15 +24,15 @@ export function CardItem({
   created_at,
   tags,
   author_type,
-  coverImage,
+  cover_image,
 }: CardItemProps) {
   return (
     <article className="group border-border bg-card flex flex-col overflow-hidden rounded-2xl border">
       {/* 썸네일 */}
       <div className="bg-muted aspect-video w-full overflow-hidden">
-        {coverImage ? (
+        {cover_image ? (
           <img
-            src={coverImage}
+            src={cover_image}
             alt={title_ko}
             className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0"
           />
