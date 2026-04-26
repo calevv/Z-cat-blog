@@ -4,8 +4,14 @@ import React, { useState } from "react";
 import { useEditor } from "./EditorContext";
 
 export default function EditorHeader() {
-  const { form, handleTitleChange, addTag, removeLastTag, handleSlugChange } =
-    useEditor();
+  const {
+    form,
+    handleTitleChange,
+    addTag,
+    removeLastTag,
+    handleSlugChange,
+    slugStatus,
+  } = useEditor();
   const [tagError, setTagError] = useState("");
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -93,7 +99,17 @@ export default function EditorHeader() {
           name="slug"
           placeholder="POST_URL_SLUG"
           className="font-space flex-1 text-xs font-normal tracking-wide text-red-500 transition-colors placeholder:text-red-300 focus:outline-none"
-        />
+        />{" "}
+        {/* 상태 표시 추가 */}
+        {slugStatus === "checking" && (
+          <span className="font-mono text-xs text-zinc-400">CHECKING...</span>
+        )}
+        {slugStatus === "available" && (
+          <span className="font-mono text-xs text-green-500">OK</span>
+        )}
+        {slugStatus === "duplicate" && (
+          <span className="font-mono text-xs text-red-500">DUPLICATE</span>
+        )}
       </div>
     </header>
   );

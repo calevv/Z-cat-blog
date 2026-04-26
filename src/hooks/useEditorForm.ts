@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { generateSlug } from "@/lib/utils";
 import { savePost } from "@/lib/actions/posts.action";
 import { Post, PostForm } from "@/types/database.types";
+import { createClient } from "@/lib/supabase";
 
 export function useEditorForm({
   isEditMode,
@@ -27,7 +28,11 @@ export function useEditorForm({
   );
   const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
   const isFirstRender = useRef(true);
+  const [slugStatus, setSlugStatus] = useState<
+    "idle" | "checking" | "available" | "duplicate"
+  >(isEditMode ? "available" : "idle");
 
+  const isFirstSlugCheck = useRef(true);
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
@@ -62,7 +67,32 @@ export function useEditorForm({
 
     // 클린업: title_ko가 또 바뀌면 이전 타이머 취소
     return () => clearTimeout(timer);
-  }, [form.title_ko]);
+  }, [form.title_ko, isEditMode]);
+
+  useEffect(() => {
+    if (isFirstSlugCheck.current) {
+      isFirstSlugCheck.current = false;
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      if (!form.slug.trim()) {
+        setSlugStatus("idle");
+        return;
+      }
+
+      setSlugStatus("checking");
+
+      const supabase = createClient();
+      let query = supabase.from("posts").select("id").eq("slug", form.slug);
+      if (postId) query = query.neq("id", postId);
+
+      const { data } = await query;
+      setSlugStatus(data && data.length > 0 ? "duplicate" : "available");
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [form.slug, postId]);
 
   // 자동저장
   useEffect(() => {
@@ -78,7 +108,13 @@ export function useEditorForm({
 
       const result = await savePost({
         id: postId ?? undefined,
-        ...form,
+        title_ko: form.title_ko,
+        title_en: form.title_en,
+        slug: form.slug,
+        content: form.content,
+        excerpt: form.excerpt,
+        tags: form.tags,
+        author_type: form.author_type,
         published: false,
       });
 
@@ -94,10 +130,13 @@ export function useEditorForm({
     return () => clearTimeout(timer);
   }, [
     form.title_ko,
+    form.title_en,
     form.content,
     form.slug,
+    form.excerpt,
     form.tags,
     form.author_type,
+    isEditMode,
     postId,
   ]);
 
@@ -148,5 +187,6 @@ export function useEditorForm({
     postId,
     lastSavedAt,
     setPostId,
+    slugStatus,
   };
 }

@@ -20,7 +20,15 @@ export async function savePost(form: PostForm) {
       message: "제목, slug, 내용은 필수다, 인간.",
     };
   }
-
+  // slug 중복 체크
+  {
+    let query = supabase.from("posts").select("id").eq("slug", form.slug);
+    if (form.id) query = query.neq("id", form.id);
+    const { data: existing } = await query;
+    if (existing && existing.length > 0) {
+      return { success: false, message: "이미 사용 중인 slug다, 인간." };
+    }
+  }
   // excerpt 자동 생성 (없으면 content 앞 100자)
   const excerpt =
     form.excerpt.trim() ||
