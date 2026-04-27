@@ -46,3 +46,7 @@ CLAUDE.md
 .claude*
 
 notes*
+
+
+script/
+results.json
