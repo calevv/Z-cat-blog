@@ -74,13 +74,13 @@ export default async function DiaryDetailPage({
           {/* 메타 정보 */}
           <div className="flex items-center">
             <p className="text-muted-foreground font-mono text-xs">
-              {`[ARCHIVE_INDEX]`}
+              {`[ARCHIVE_INDEX] `}
               {formatDate(post.published_at)}
             </p>
           </div>
 
           {/* 제목 */}
-          <h1 className="text-foreground mt-4 text-4xl font-bold">
+          <h1 className="text-foreground mt-4 text-4xl leading-tight font-bold break-keep">
             {post.title_ko}
           </h1>
           <p className="text-muted-foreground mt-2 text-sm">{post.title_en}</p>
@@ -126,12 +126,12 @@ export default async function DiaryDetailPage({
           {prevPost && (
             <a
               href={`/diary/${prevPost.slug}`}
-              className="group flex flex-col gap-1"
+              className="group flex max-w-[45%] flex-col gap-1"
             >
               <span className="text-muted-foreground font-mono text-xs">
                 ← PREV
               </span>
-              <span className="group-hover:text-primary text-sm font-bold transition-colors">
+              <span className="group-hover:text-primary line-clamp-1 text-sm font-bold transition-colors">
                 {prevPost.title_ko}
               </span>
             </a>
@@ -141,12 +141,12 @@ export default async function DiaryDetailPage({
           {nextPost && (
             <a
               href={`/diary/${nextPost.slug}`}
-              className="group flex flex-col items-end gap-1"
+              className="group flex max-w-[45%] flex-col items-end gap-1"
             >
               <span className="text-muted-foreground font-mono text-xs">
                 NEXT →
               </span>
-              <span className="group-hover:text-primary text-sm font-bold transition-colors">
+              <span className="group-hover:text-primary line-clamp-1 text-sm font-bold transition-colors">
                 {nextPost.title_ko}
               </span>
             </a>

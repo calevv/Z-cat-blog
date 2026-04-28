@@ -99,7 +99,7 @@ export default function EditorHeader() {
           name="slug"
           placeholder="POST_URL_SLUG"
           className="font-space flex-1 text-xs font-normal tracking-wide text-red-500 transition-colors placeholder:text-red-300 focus:outline-none"
-        />{" "}
+        />
         {/* 상태 표시 추가 */}
         {slugStatus === "checking" && (
           <span className="font-mono text-xs text-zinc-400">CHECKING...</span>

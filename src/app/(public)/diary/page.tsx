@@ -45,10 +45,8 @@ export default async function DiaryPage({
               <li key={post.id}>
                 <Link
                   href={`/diary/${post.slug}`}
-                  className="flex gap-6 py-8 transition-opacity hover:opacity-70"
+                  className="group flex gap-8 py-4 transition-opacity hover:opacity-70"
                 >
-                  {/* 썸네일 */}
-                  <div className="bg-muted h-24 w-36 shrink-0" />
                   {/* 텍스트 */}
                   <div className="flex flex-1 flex-col gap-2">
                     {/* 날짜 + 태그 */}
@@ -72,12 +70,23 @@ export default async function DiaryPage({
                     </h2>
 
                     {/* 요약 */}
-                    <p className="text-muted-foreground line-clamp-2 text-sm">
+                    <p className="text-muted-foreground line-clamp-2 text-sm break-keep">
                       {post.excerpt}
                     </p>
-
+                  </div>
+                  <div>
+                    {/* 썸네일 */}
+                    {post.cover_image ? (
+                      <img
+                        src={post.cover_image}
+                        alt={post.title_ko}
+                        className="h-24 w-36 object-cover grayscale transition-all duration-500 group-hover:grayscale-0"
+                      />
+                    ) : (
+                      <div className="h-24 w-36 shrink-0 bg-white" />
+                    )}
                     {/* author 배지 */}
-                    <div className="mt-auto flex justify-end">
+                    <div className="mt-3 flex justify-end">
                       <span
                         className={`font-mono text-xs ${
                           post.author_type === "zcat"
