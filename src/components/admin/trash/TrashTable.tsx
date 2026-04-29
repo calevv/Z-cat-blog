@@ -27,63 +27,69 @@ export default function TrashTable({ posts }: { posts: Post[] }) {
         </ul>
       </div>
       <div className="custom-scrollbar flex-1 overflow-y-auto" role="rowgroup">
-        {posts.map((post) => {
-          return (
-            <ul
-              role="row"
-              key={post.id}
-              className="grid h-16 grid-cols-4 items-center border-b border-neutral-200"
-            >
-              <li
-                role="cell"
-                className="font-heading px-6 text-xs leading-5 font-bold text-zinc-900"
+        {posts.length === 0 ? (
+          <div className="py-10 text-center text-4xl text-zinc-500">
+            삭제된 게시물이 없습니다.
+          </div>
+        ) : (
+          posts.map((post) => {
+            return (
+              <ul
+                role="row"
+                key={post.id}
+                className="grid h-16 grid-cols-4 items-center border-b border-neutral-200"
               >
-                {post.title_ko}
-              </li>
-              <li role="cell" className="px-6">
-                <div className="flex gap-1">
-                  {post.tags.map((tag, index) => (
-                    <p
-                      key={`${post.id}=${index}-${tag}`}
-                      className="font-space text-xs leading-4 font-normal tracking-wide text-orange-700"
-                    >
-                      #{tag}
-                    </p>
-                  ))}
-                </div>
-              </li>
-              <li
-                role="cell"
-                className="font-space px-6 text-xs leading-4 font-normal text-zinc-500"
-              >
-                {formatDate(post.deleted_at ?? "")}
-              </li>
+                <li
+                  role="cell"
+                  className="font-heading px-6 text-xs leading-5 font-bold text-zinc-900"
+                >
+                  {post.title_ko}
+                </li>
+                <li role="cell" className="px-6">
+                  <div className="flex gap-1">
+                    {post.tags.map((tag, index) => (
+                      <p
+                        key={`${post.id}=${index}-${tag}`}
+                        className="font-space text-xs leading-4 font-normal tracking-wide text-orange-700"
+                      >
+                        #{tag}
+                      </p>
+                    ))}
+                  </div>
+                </li>
+                <li
+                  role="cell"
+                  className="font-space px-6 text-xs leading-4 font-normal text-zinc-500"
+                >
+                  {formatDate(post.deleted_at ?? "")}
+                </li>
 
-              <li role="cell" className="px-6">
-                <div className="flex gap-2">
-                  <Button
-                    variant="ghost"
-                    onClick={async () => {
-                      if (confirm("복구할까요?")) await restorePost(post.id);
-                    }}
-                  >
-                    <RotateCcw className="h-4 w-4 text-zinc-500" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    onClick={async () => {
-                      if (confirm("영구삭제할까요? 되돌릴 수 없어요.")) {
-                        await permanentDeletePost(post.id);
-                      }
-                    }}
-                  >
-                    <Trash2 className="h-4 w-4 text-red-400" />
-                  </Button>
-                </div>
-              </li>
-            </ul>
-          );
-        })}
+                <li role="cell" className="px-6">
+                  <div className="flex gap-2">
+                    <Button
+                      variant="ghost"
+                      onClick={async () => {
+                        if (confirm("복구할까요?")) await restorePost(post.id);
+                      }}
+                    >
+                      <RotateCcw className="h-4 w-4 text-zinc-500" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      onClick={async () => {
+                        if (confirm("영구삭제할까요? 되돌릴 수 없어요.")) {
+                          await permanentDeletePost(post.id);
+                        }
+                      }}
+                    >
+                      <Trash2 className="h-4 w-4 text-red-400" />
+                    </Button>
+                  </div>
+                </li>
+              </ul>
+            );
+          })
+        )}
       </div>
     </div>
   );
