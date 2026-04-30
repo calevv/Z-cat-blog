@@ -66,6 +66,11 @@ export async function savePost(form: PostForm) {
       .single();
 
     if (error) return { success: false, message: "저장 실패. 집사 탓이다." };
+
+    revalidatePath("/");
+    revalidatePath("/diary");
+    revalidatePath(`/diary/${form.slug}`);
+    revalidatePath("/admin");
     return { success: true, message: "저장됐다.", id: data.id };
   }
 }
@@ -96,6 +101,7 @@ export async function deletePost(id: string) {
 
   revalidatePath("/admin");
   revalidatePath("/diary");
+  revalidatePath("/");
 
   return { success: true, message: "삭제됐다, 인간." };
 }
@@ -113,6 +119,8 @@ export async function restorePost(id: string) {
 
   revalidatePath("/admin");
   revalidatePath("/admin/trash");
+  revalidatePath("/diary");
+  revalidatePath("/");
   return { success: true, message: "복구됐다." };
 }
 
