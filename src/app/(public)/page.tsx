@@ -1,3 +1,5 @@
+export const revalidate = 3600;
+
 import RecentPosts from "@/components/public/about/RecentPosts";
 import { Button } from "@/components/ui/button";
 import { ArchiveIcon, EyeIcon, UtensilsIcon } from "lucide-react";
