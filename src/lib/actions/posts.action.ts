@@ -56,6 +56,10 @@ export async function savePost(form: PostForm) {
       .eq("id", form.id);
 
     if (error) return { success: false, message: "저장 실패. 집사 탓이다." };
+    revalidatePath("/");
+    revalidatePath("/diary");
+    revalidatePath(`/diary/${form.slug}`);
+    revalidatePath("/admin");
     return { success: true, message: "저장됐다." };
   } else {
     // 새 글 (INSERT)
