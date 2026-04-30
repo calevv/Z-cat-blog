@@ -73,7 +73,7 @@ export default function PublishModal() {
         <DialogHeader>
           <DialogTitle>READY TO TRANSMIT?</DialogTitle>
           <DialogDescription>
-            썸네일을 등록하거나 건너뛰고 바로 발행할 수 있습니다.
+            썸네일을 등록하거나 바로 발행할 수 있습니다.
           </DialogDescription>
         </DialogHeader>
         {/* 숨겨진 파일 input */}
@@ -98,7 +98,7 @@ export default function PublishModal() {
           )}
         </div>
         <DialogFooter>
-          <Button
+          {/* <Button
             onClick={async () => {
               await handleSave(true);
               setOpen(false);
@@ -106,7 +106,7 @@ export default function PublishModal() {
             variant="outline"
           >
             건너뛰기
-          </Button>
+          </Button> */}
           <Button onClick={handlePublish}>발행하기</Button>
         </DialogFooter>
       </DialogContent>
