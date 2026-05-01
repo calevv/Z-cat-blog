@@ -40,7 +40,7 @@ export default function Home() {
             <br />
             archived by
             <br />
-            <span className="text-primary">a cat.</span>
+            <span className="text-orange-700">a cat.</span>
           </div>
           <div className="font-serif text-sm leading-6 font-normal text-zinc-500">
             당신의 코드는 Z-cat의 감시 하에 있습니다.
