@@ -9,7 +9,10 @@ export async function getAllPosts() {
     .is("deleted_at", null)
     .order("published_at", { ascending: false });
 
-  if (error) throw error;
+  if (error) {
+    console.error("[getAllPosts]", error);
+    throw error;
+  }
 
   return data;
 }
@@ -24,6 +27,9 @@ export async function getRecentPosts(limit: number = 3) {
     .order("published_at", { ascending: false })
     .limit(limit);
 
-  if (error) throw error;
+  if (error) {
+    console.error("[getRecentPosts]", error);
+    throw error;
+  }
   return data;
 }

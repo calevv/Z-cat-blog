@@ -58,7 +58,7 @@ export default function CommentSection({
       setLocalComments((prev) => [
         ...prev,
         {
-          id: crypto.randomUUID(),
+          id: result.id ?? crypto.randomUUID(),
           post_id: postId,
           author_name: isAdmin ? "Z-cat" : nickname,
           content: comment,

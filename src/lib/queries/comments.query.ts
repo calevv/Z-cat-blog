@@ -10,6 +10,9 @@ export async function getCommentsByPostId(postId: string) {
     .eq("post_id", postId)
     .order("created_at", { ascending: true });
 
-  if (error) throw error;
+  if (error) {
+    console.error("[getCommentsByPostId]", error);
+    throw error;
+  }
   return data;
 }

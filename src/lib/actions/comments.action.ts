@@ -15,14 +15,16 @@ export async function createComment({
 }) {
   const supabase = await createServerSupabaseClient();
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("comments")
-    .insert({ post_id, author_name, content, is_zcat: false });
+    .insert({ post_id, author_name, content, is_zcat: false })
+    .select("id")
+    .single();
 
   if (error) return { success: false, message: "댓글 작성 실패" };
 
   revalidatePath(`/diary`);
-  return { success: true, message: "전송됐다, 인간." };
+  return { success: true, message: "전송됐다, 인간.", id: data.id };
 }
 
 // Z-cat 댓글 작성 (어드민)
@@ -37,18 +39,22 @@ export async function createZcatComment({
 }) {
   const supabase = await createServerSupabaseClient();
 
-  const { error } = await supabase.from("comments").insert({
-    post_id,
-    author_name: "Z-cat",
-    content,
-    is_zcat: true,
-    parent_id,
-  });
+  const { data, error } = await supabase
+    .from("comments")
+    .insert({
+      post_id,
+      author_name: "Z-cat",
+      content,
+      is_zcat: true,
+      parent_id,
+    })
+    .select("id")
+    .single();
 
   if (error) return { success: false, message: "Z-cat 댓글 작성 실패" };
 
   revalidatePath(`/diary`);
-  return { success: true, message: "Z-cat이 응답했다." };
+  return { success: true, message: "Z-cat이 응답했다.", id: data.id };
 }
 
 // 댓글 삭제 (어드민)
