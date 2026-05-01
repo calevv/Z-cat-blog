@@ -9,6 +9,7 @@
 import CommentSection from "@/components/public/diary/CommentSection";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 import { createClient } from "@/lib/supabase";
 import { formatDate } from "@/lib/utils";
 import { getCommentsByPostId } from "@/lib/queries/comments.query";
@@ -110,7 +111,7 @@ export default async function DiaryDetailPage({
       <section className="mx-auto max-w-3xl px-6 py-12">
         {/* prose: @tailwindcss/typography가 마크다운 태그에 스타일 자동 적용 */}
         <article className="prose prose-zinc max-w-none">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
             {post.content}
           </ReactMarkdown>
         </article>

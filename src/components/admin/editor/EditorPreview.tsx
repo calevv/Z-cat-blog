@@ -1,5 +1,6 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 
 import { cn } from "@/lib/utils";
 import { CheckIcon } from "lucide-react";
@@ -86,7 +87,7 @@ export default function EditorPreview() {
         <div>By {form.author_type}</div>
         {/* prose 클래스가 마크다운 스타일링을 담당, max-w-none으로 너비 제한 해제 */}
         <article className="prose prose-zinc max-w-none">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
             {form.content}
           </ReactMarkdown>
         </article>
