@@ -2,7 +2,6 @@
 // CommentSection 컴포넌트
 // 역할: 댓글 목록 + 작성 폼
 // "use client" — 랜덤 닉네임, input 상태 관리 필요
-// TODO: Supabase 연결 후 실제 댓글 데이터로 교체
 // ───────────────────────────────
 "use client";
 

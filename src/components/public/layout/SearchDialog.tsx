@@ -26,8 +26,9 @@ export function SearchDialog() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!open) return; // 모달 열릴 때만 fetch
+    if (!open) return;
 
+    setIsLoading(true);
     const supabase = createClient();
     supabase
       .from("posts")
@@ -38,6 +39,7 @@ export function SearchDialog() {
       .limit(10)
       .then(({ data }) => {
         if (data) setPosts(data);
+        setIsLoading(false);
       });
   }, [open]);
 

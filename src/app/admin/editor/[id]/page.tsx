@@ -17,7 +17,7 @@ export default async function EditEditorPage({
     .eq("id", id)
     .single();
   if (error) {
-    console.log("getPostById error:", error);
+    console.error("getPostById error:", error);
     return null;
   }
   return <EditorContainer initialData={data} />;

@@ -10,7 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useEditor } from "./EditorContext";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { toast } from "sonner";
 import { uploadCoverImage } from "@/lib/actions/posts.action";
 
@@ -36,12 +36,21 @@ export default function PublishModal() {
     setOpen(true);
   };
 
+  // 새 파일 선택 시 이전 blob URL 해제
+  useEffect(() => {
+    return () => {
+      if (preview && preview.startsWith("blob:")) {
+        URL.revokeObjectURL(preview);
+      }
+    };
+  }, [preview]);
+
   // 파일 선택 시
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0];
     if (!selected) return;
     setFile(selected);
-    setPreview(URL.createObjectURL(selected)); // 미리보기 URL 생성
+    setPreview(URL.createObjectURL(selected));
   };
   const handlePublish = async () => {
     let coverImageUrl: string | undefined;
