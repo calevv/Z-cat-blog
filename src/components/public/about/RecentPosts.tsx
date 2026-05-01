@@ -7,7 +7,7 @@ export default async function RecentPosts() {
   const posts = await getRecentPosts();
   return (
     <section className="bg-background w-full py-20">
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="mx-auto max-w-6xl px-6">
         <div className="flex justify-between">
           <h2>LAST DIARIES</h2>
           <Button variant={"link"} asChild>

@@ -1,9 +1,8 @@
 export const revalidate = 3600;
 
 import RecentPosts from "@/components/public/about/RecentPosts";
-import { Button } from "@/components/ui/button";
+import ZcatBanner from "@/components/public/about/ZcatBanner";
 import { ArchiveIcon, EyeIcon, UtensilsIcon } from "lucide-react";
-import Image from "next/image";
 
 export const ZCAT_FEATURES = [
   {
@@ -33,45 +32,30 @@ export default function Home() {
   return (
     <div className="flex w-full flex-col">
       <section className="bg-background w-full py-20">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6">
-          <div>
-            <h2 className="text-foreground text-5xl font-bold">
-              Welcome to <br />
-              {`my human's `}
-              <span className="text-primary">errors.</span>
-            </h2>
-
-            <blockquote className="border-primary mt-6 border-l-2 p-4 pl-6 italic">
-              {`"Hello, I'm Z-cat. Observing imperfect human code and`} <br />
-              {`pathetic bugs is my only form of entertainment."`}
-            </blockquote>
-            <div className="mt-8">
-              <Button>가기</Button>
-              <Button variant={"outline"}>돌아가기</Button>
-            </div>
+        <div className="mx-auto flex max-w-6xl items-end justify-between px-6">
+          <div className="font-heading text-6xl leading-14 font-bold text-zinc-900">
+            A developer’s
+            <br />
+            errors,
+            <br />
+            archived by
+            <br />
+            <span className="text-primary">a cat.</span>
           </div>
-          <div className="relative bg-black">
-            {/* 이미지  */}
-            <Image
-              src="/about-hero-zcat.png"
-              alt="Z-cat"
-              className="object-contain"
-              width={536}
-              height={600}
-              priority
-            />
-            {/* 오버레이 텍스트 — absolute로 우측 하단에 띄움 */}
-            <div className="absolute right-4 bottom-4 border border-white/20 bg-black/60 px-3 py-2 backdrop-blur-sm">
-              <p className="font-mono text-[10px] text-white/50">[STATUS]</p>
-              <p className="font-mono text-sm font-bold text-white">
-                OBSERVING
-              </p>
-            </div>
+          <div className="font-serif text-sm leading-6 font-normal text-zinc-500">
+            당신의 코드는 Z-cat의 감시 하에 있습니다.
+            <br />
+            모든 버그와 실수는 기록되며, 비웃음의 대상이 됩니다.
+            <p className="font-space text-xs leading-4 font-normal tracking-widest text-orange-700 uppercase">
+              [OBSERVATION_ACTIVE]
+            </p>
           </div>
         </div>
       </section>
+
+      <ZcatBanner />
       <section className="bg-muted w-full py-20">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-6xl px-6">
           <h2>WHY THIS BLOG?</h2>
           <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
             반가워, 난 서버 랙에 살면서 코드를 지켜보는 고양이 제트캣이야.
