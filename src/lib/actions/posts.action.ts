@@ -45,6 +45,7 @@ export async function savePost(form: PostForm) {
     published: form.published,
     published_at: form.published ? new Date().toISOString() : null,
     ...(form.cover_image !== undefined && { cover_image: form.cover_image }),
+    is_velog: false,
   };
 
   // 수정 vs 새 글

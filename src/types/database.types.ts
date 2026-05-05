@@ -28,6 +28,7 @@ export interface PostForm extends Omit<
   | "updated_at"
   | "published_at"
   | "deleted_at"
+  | "is_velog"
 > {
   id?: string;
   cover_image?: string;
