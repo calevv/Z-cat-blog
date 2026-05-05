@@ -33,7 +33,7 @@ const SYSTEM_PROMPT = `
 
 async function sendFailureAlert(error: string) {
   await resend.emails.send({
-    from: "Z-cat Blog <onboarding@resend.dev>",
+    from: "Z-cat <onboarding@resend.dev>",
     to: process.env.CONTACT_EMAIL!,
     subject: "[Z-cat] 자동 포스팅 실패",
     html: `<p>generate-post Cron 실패:</p><pre>${error}</pre>`,
@@ -45,18 +45,20 @@ export async function GET() {
     // 1. 벨로그 RSS 파싱
     const feed = await parser.parseURL("https://api.velog.io/rss/@jeongminji/");
 
-    // 2. DB에 있는 slug 전체 조회
-    const { data: existingSlugs } = await supabase.from("posts").select("slug");
+    // 2. DB에서 가장 최근 published_at 조회
+    const { data: latestPost } = await supabase
+      .from("posts")
+      .select("published_at")
+      .not("published_at", "is", null)
+      .order("published_at", { ascending: false })
+      .limit(1)
+      .single();
 
-    const slugSet = new Set(existingSlugs?.map((p) => p.slug) ?? []);
-
-    // 3. 새 글 필터링 (DB에 없는 것만)
+    // 3. 새 글 필터링 (최근 글 이후에 올라온 것만)
     const newItems = feed.items.filter((item) => {
-      const tempSlug = item.title
-        ?.toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-|-$/g, "");
-      return tempSlug && !slugSet.has(tempSlug);
+      if (!item.pubDate) return false;
+      if (!latestPost?.published_at) return true;
+      return new Date(item.pubDate) > new Date(latestPost.published_at);
     });
 
     if (newItems.length === 0) {
@@ -132,7 +134,6 @@ ${originalContent}`
       results.push(titleKo);
       console.log(`[generate-post] 저장 완료: ${titleKo}`);
 
-      // API 과호출 방지 (2초 대기)
       await new Promise((r) => setTimeout(r, 2000));
     }
 
