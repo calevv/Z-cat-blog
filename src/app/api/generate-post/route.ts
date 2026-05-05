@@ -45,16 +45,18 @@ export async function GET() {
     // 1. 벨로그 RSS 파싱
     const feed = await parser.parseURL("https://api.velog.io/rss/@jeongminji/");
 
-    // 2. DB에서 가장 최근 published_at 조회
+    // 2. DB에서 벨로그 글 중 가장 최근 published_at 조회
     const { data: latestPost } = await supabase
       .from("posts")
       .select("published_at")
+      .eq("author_type", "zcat")
+      .eq("is_velog", true)
       .not("published_at", "is", null)
       .order("published_at", { ascending: false })
       .limit(1)
       .single();
 
-    // 3. 새 글 필터링 (최근 글 이후에 올라온 것만)
+    // 3. 새 글 필터링 (최근 벨로그 글 이후에 올라온 것만)
     const newItems = feed.items.filter((item) => {
       if (!item.pubDate) return false;
       if (!latestPost?.published_at) return true;
@@ -88,6 +90,7 @@ TITLE_KO: 한국어 제목
 TITLE_EN: English title
 SLUG: english-slug-with-hyphens
 TAG: (react/next/javascript/typescript/css/git/db 중 하나)
+EXCERPT: 글 핵심 내용 한 줄 요약 (50자 이내, Z-cat 말투로)
 CONTENT:
 (본문 내용)
 
@@ -103,6 +106,7 @@ ${originalContent}`
       const titleEn = text.match(/TITLE_EN: (.+)/)?.[1]?.trim();
       const slug = text.match(/SLUG: (.+)/)?.[1]?.trim();
       const tag = text.match(/TAG: (.+)/)?.[1]?.trim() ?? "etc";
+      const excerpt = text.match(/EXCERPT: (.+)/)?.[1]?.trim() ?? "";
       const content = text.split("CONTENT:\n")[1]?.trim();
 
       if (!titleKo || !titleEn || !slug || !content) {
@@ -115,9 +119,10 @@ ${originalContent}`
         title_en: titleEn,
         slug,
         content,
-        excerpt: content.replace(/[#*`]/g, "").trim().slice(0, 100),
+        excerpt,
         tags: [tag],
         author_type: "zcat",
+        is_velog: true,
         published: true,
         published_at: item.pubDate ?? new Date().toISOString(),
       });
