@@ -145,7 +145,13 @@ ${originalContent}`
     if (results.length === 0) {
       throw new Error("모든 글 처리 실패");
     }
-
+    await resend.emails.send({
+      from: "Z-cat <onboarding@resend.dev>",
+      to: process.env.CONTACT_EMAIL!,
+      subject: "[Z-cat] 자동 포스팅 완료",
+      html: `<p>새 글 ${results.length}개 등록됨:</p>
+         <ul>${results.map((t) => `<li>${t}</li>`).join("")}</ul>`,
+    });
     return NextResponse.json({ success: true, titles: results });
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
