@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <footer className="border-border bg-background w-full border-t">
-      <div className="mx-auto flex max-w-7xl justify-between px-6 py-8">
+      <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8 md:flex-row md:justify-between md:px-6">
         {/* 로고 + 카피 */}
         <div className="flex flex-col gap-1">
           <span className="text-xl font-bold tracking-tight">Z-cat.</span>

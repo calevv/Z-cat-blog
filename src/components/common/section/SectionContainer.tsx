@@ -11,7 +11,7 @@ export default function SectionContainer({
   return (
     <section
       className={cn(
-        "mx-auto flex max-w-7xl justify-between px-8 pb-24",
+        "mx-auto flex max-w-7xl justify-between px-4 pb-12 md:px-8 md:pb-24",
         className
       )}
     >
