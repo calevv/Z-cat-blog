@@ -91,8 +91,7 @@ export default function CommentSection({
                   : "bg-muted text-muted-foreground"
               }`}
             >
-              {/* 이름 앞 두 글자 이니셜 */}
-              {c.author_name.slice(0, 2)}
+              {c.is_zcat ? "Z" : c.author_name.slice(-2)}
             </div>
 
             {/* 댓글 내용 */}
@@ -120,22 +119,36 @@ export default function CommentSection({
       {/* 댓글 작성 폼 */}
       <div className="border-border mt-8 border p-6">
         <p className="text-muted-foreground font-mono text-xs">
-          HAVE SOMETHING TO SAY?{" "}
-          <span className="text-primary">
-            (RANDOM NICKNAME WILL BE ASSIGNED)
-          </span>
+          HAVE SOMETHING TO SAY?
+          {!isAdmin && (
+            <span className="text-primary">
+              (RANDOM NICKNAME WILL BE ASSIGNED)
+            </span>
+          )}
         </p>
 
-        {/* 닉네임 입력 — 랜덤 생성, 수정 가능 */}
-        {!isAdmin && (
+        {/* 닉네임 입력 */}
+        <div className="mt-4 flex gap-2">
           <input
             type="text"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            className="border-border bg-background text-foreground focus:border-primary mt-4 w-full border px-4 py-2 font-mono text-xs focus:outline-none"
+            value={isAdmin ? "Z-cat" : nickname}
+            onChange={(e) => !isAdmin && setNickname(e.target.value)}
+            readOnly={isAdmin}
+            className={`border-border bg-background text-foreground focus:border-primary w-full border px-4 py-2 font-mono text-xs focus:outline-none ${
+              isAdmin ? "text-primary" : ""
+            }`}
             placeholder="NICKNAME"
           />
-        )}
+          {/* 랜덤 닉네임 재생성 버튼 */}
+          {!isAdmin && (
+            <button
+              onClick={() => setNickname(generateNickname())}
+              className="border-border hover:border-primary text-muted-foreground hover:text-primary shrink-0 border px-3 font-mono text-xs transition-colors"
+            >
+              RANDOM
+            </button>
+          )}
+        </div>
 
         {/* 댓글 textarea */}
         <textarea
