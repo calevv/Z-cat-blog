@@ -14,7 +14,7 @@ export default async function RecentPosts() {
             <Link href={"/diary"}>VIEW ALL ARCHIVE →</Link>
           </Button>
         </div>
-        <div className="mt-20 grid grid-cols-3 gap-8">
+        <div className="mt-20 grid grid-cols-3 items-stretch gap-8">
           {posts.map((post) => {
             return (
               <Link href={`/diary/${post.slug}`} key={post.id}>
