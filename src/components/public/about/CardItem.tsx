@@ -3,7 +3,9 @@
 // 역할: about 페이지에서 최신 포스트 미리보기용 카드
 // 연관: about 페이지 반복 렌더링됨
 // ──────
+"use client";
 
+import { motion } from "framer-motion";
 import { formatDate } from "@/lib/utils";
 
 // CardItemProps
@@ -27,7 +29,13 @@ export function CardItem({
   cover_image,
 }: CardItemProps) {
   return (
-    <article className="group border-border bg-card flex flex-col overflow-hidden rounded-2xl border">
+    <motion.article
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+      className="group border-border bg-card flex flex-col overflow-hidden rounded-2xl border"
+    >
       {/* 썸네일 */}
       <div className="bg-muted aspect-video w-full overflow-hidden">
         {cover_image ? (
@@ -74,6 +82,6 @@ export function CardItem({
           </span>
         </div>
       </div>
-    </article>
+    </motion.article>
   );
 }

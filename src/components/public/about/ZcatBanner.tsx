@@ -34,14 +34,21 @@ export default function ZcatBanner() {
           [ Z-CAT ]
         </p>
 
-        <Image
-          src="/about-hero-zcat.png"
-          alt="Z-cat"
-          width={512}
-          height={624}
-          className="my-8 h-auto w-lg object-contain"
-          priority
-        />
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 1.2, duration: 0.7 }}
+        >
+          <Image
+            src="/about-hero-zcat.png"
+            alt="Z-cat"
+            width={512}
+            height={624}
+            className="my-8 h-auto w-lg object-contain"
+            priority
+          />
+        </motion.div>
         <div className="flex gap-4">
           <Link
             href="/diary"
