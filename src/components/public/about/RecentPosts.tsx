@@ -17,7 +17,11 @@ export default async function RecentPosts() {
         <div className="mt-20 grid grid-cols-3 items-stretch gap-8">
           {posts.map((post) => {
             return (
-              <Link href={`/diary/${post.slug}`} key={post.id}>
+              <Link
+                href={`/diary/${post.slug}`}
+                key={post.id}
+                className="h-full"
+              >
                 <CardItem {...post} />
               </Link>
             );

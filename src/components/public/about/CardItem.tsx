@@ -34,18 +34,18 @@ export function CardItem({
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
-      className="group border-border bg-card flex flex-col overflow-hidden rounded-2xl border"
+      className="group border-border bg-card flex h-full flex-col overflow-hidden rounded-2xl border"
     >
       {/* 썸네일 */}
-      <div className="bg-muted aspect-video w-full overflow-hidden">
+      <div className="bg-muted relative aspect-video w-full overflow-hidden">
         {cover_image ? (
           <img
             src={cover_image}
             alt={title_ko}
-            className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0"
+            className="absolute inset-0 h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0"
           />
         ) : (
-          <div className="bg-muted h-full w-full" />
+          <div className="bg-muted absolute inset-0" />
         )}
       </div>
 
