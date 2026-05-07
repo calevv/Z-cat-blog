@@ -82,6 +82,7 @@ export default function ExitEditorAlert() {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogAction
+            className={showDraftSave ? "" : "col-start-1 col-end-3"}
             variant={"outline"}
             onClick={isEditMode ? handleNormalExit : handleDeleteAndExit}
           >

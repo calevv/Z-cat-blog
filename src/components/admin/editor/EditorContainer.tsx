@@ -62,10 +62,10 @@ export default function EditorContainer({
       }}
     >
       <div className="flex h-screen w-full flex-col">
-        <main className="grid flex-1 grid-cols-2">
+        <main className="grid min-h-0 flex-1 grid-cols-2">
           {/* 에디터 메인 영역 (좌우 분할) */}
           {/* 좌측: 마크다운 입력창 */}
-          <section className="flex flex-col border-r border-neutral-200 bg-white">
+          <section className="flex flex-col overflow-hidden border-r border-neutral-200 bg-white">
             <EditorHeader />
             <div className="border-border/40 flex-1 p-6">
               <EditorBody />

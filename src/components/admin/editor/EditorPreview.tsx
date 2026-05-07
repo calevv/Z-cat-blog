@@ -10,7 +10,7 @@ export default function EditorPreview() {
   const { form, toggleAuthor, lastSavedAt, saveStatus } = useEditor();
 
   return (
-    <section className="flex flex-col">
+    <section className="flex flex-1 flex-col overflow-hidden">
       <header className="flex h-17 items-center justify-between border-b border-neutral-200 bg-white px-8 py-4">
         <div className="flex items-center gap-3">
           <p className="font-space text-[10px] leading-4 font-normal tracking-wider text-zinc-500 uppercase">
@@ -87,7 +87,10 @@ export default function EditorPreview() {
         <div>By {form.author_type}</div>
         {/* prose 클래스가 마크다운 스타일링을 담당, max-w-none으로 너비 제한 해제 */}
         <article className="prose prose-zinc max-w-none">
-          <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeRaw]}
+          >
             {form.content}
           </ReactMarkdown>
         </article>
