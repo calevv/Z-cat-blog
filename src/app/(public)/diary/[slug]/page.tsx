@@ -71,7 +71,7 @@ export default async function DiaryDetailPage({
     <div className="bg-background w-full">
       {/* 헤더 영역 */}
       <section>
-        <div className="border-border mx-auto max-w-3xl border-b px-6 py-16">
+        <div className="border-border mx-auto max-w-3xl border-b px-4 py-10 md:px-6 md:py-16">
           {/* 메타 정보 */}
           <div className="flex items-center">
             <p className="text-muted-foreground font-mono text-xs">
@@ -81,7 +81,7 @@ export default async function DiaryDetailPage({
           </div>
 
           {/* 제목 */}
-          <h1 className="text-foreground mt-4 text-4xl leading-tight font-bold break-keep">
+          <h1 className="text-foreground mt-4 text-2xl leading-tight font-bold break-keep md:text-4xl">
             {post.title_ko}
           </h1>
           <p className="text-muted-foreground mt-2 text-sm">{post.title_en}</p>
@@ -108,20 +108,20 @@ export default async function DiaryDetailPage({
         </div>
       </section>
       {/* 본문 — 마크다운 렌더링 */}
-      <section className="mx-auto max-w-3xl px-6 py-12">
+      <section className="mx-auto max-w-3xl px-4 py-8 md:px-6 md:py-12">
         {/* prose: @tailwindcss/typography가 마크다운 태그에 스타일 자동 적용 */}
-        <article className="prose prose-zinc max-w-none">
+        <article className="prose prose-zinc max-w-none [&_pre]:overflow-x-auto">
           <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
             {post.content}
           </ReactMarkdown>
         </article>
       </section>
       {/* 댓글 */}
-      <section className="mx-auto max-w-3xl px-6 pb-16">
+      <section className="mx-auto max-w-3xl px-4 pb-12 md:px-6 md:pb-16">
         <CommentSection comments={comments} postId={post.id} isAdmin={!!user} />
       </section>
       {/* 이전글 / 다음글 */}
-      <section className="mx-auto max-w-3xl px-6 py-8">
+      <section className="mx-auto max-w-3xl px-4 py-6 md:px-6 md:py-8">
         <div className="border-border flex justify-between border-y py-6">
           {/* 이전글 */}
           {prevPost && (

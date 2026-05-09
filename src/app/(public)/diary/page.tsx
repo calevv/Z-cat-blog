@@ -45,7 +45,7 @@ export default async function DiaryPage({
               <li key={post.id}>
                 <Link
                   href={`/diary/${post.slug}`}
-                  className="group flex gap-8 py-4 transition-opacity hover:opacity-70"
+                  className="group flex gap-4 py-4 transition-opacity hover:opacity-70 sm:gap-8"
                 >
                   {/* 텍스트 */}
                   <div className="flex flex-1 flex-col gap-2">
@@ -74,7 +74,7 @@ export default async function DiaryPage({
                       {post.excerpt}
                     </p>
                   </div>
-                  <div>
+                  <div className="hidden shrink-0 sm:block">
                     {/* 썸네일 */}
                     {post.cover_image ? (
                       <img
@@ -107,7 +107,7 @@ export default async function DiaryPage({
         </ul>
 
         {/* 사이드바 */}
-        <aside className="w-48 shrink-0">
+        <aside className="hidden md:block md:w-48 md:shrink-0">
           <div className="sticky top-24">
             <p className="text-foreground font-mono text-xs font-bold">TAGS</p>
             {/* TODO: 클릭 시 필터 기능 — 클라이언트 컴포넌트로 분리 예정 */}

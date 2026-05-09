@@ -117,7 +117,7 @@ export default function CommentSection({
       </ul>
 
       {/* 댓글 작성 폼 */}
-      <div className="border-border mt-8 border p-6">
+      <div className="border-border mt-8 border p-4 md:p-6">
         <p className="text-muted-foreground font-mono text-xs">
           HAVE SOMETHING TO SAY?
           {!isAdmin && (
