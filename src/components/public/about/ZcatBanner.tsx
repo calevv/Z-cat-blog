@@ -45,7 +45,7 @@ export default function ZcatBanner() {
             alt="Z-cat"
             width={512}
             height={624}
-            className="my-8 h-auto w-lg object-contain"
+            className="my-8 h-auto w-full md:w-lg object-contain"
             priority
           />
         </motion.div>

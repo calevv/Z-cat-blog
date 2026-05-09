@@ -27,8 +27,8 @@ export const ZCAT_FEATURES = [
 ];
 export default function WhySection() {
   return (
-    <section className="bg-muted w-full py-20">
-      <div className="mx-auto max-w-6xl px-6">
+    <section className="bg-muted w-full py-16 md:py-24">
+      <div className="mx-auto max-w-6xl px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -52,7 +52,7 @@ export default function WhySection() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-12 grid grid-cols-3 gap-8"
+          className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
         >
           {ZCAT_FEATURES.map((feature) => (
             <li key={feature.id} className="flex flex-col gap-3">

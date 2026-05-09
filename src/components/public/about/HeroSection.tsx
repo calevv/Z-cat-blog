@@ -16,13 +16,13 @@ const item = {
 
 export default function HeroSection() {
   return (
-    <section className="bg-background w-full py-20">
-      <div className="mx-auto flex max-w-6xl items-end justify-between px-6">
+    <section className="bg-background w-full py-16 md:py-24">
+      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 md:flex-row md:items-end md:justify-between md:px-6">
         <motion.div
           variants={container}
           initial="hidden"
           animate="show"
-          className="font-heading text-6xl leading-14 font-bold text-zinc-900"
+          className="font-heading text-4xl leading-tight font-bold text-zinc-900 md:text-6xl md:leading-14"
         >
           <motion.span variants={item} className="block">
             A developer's
