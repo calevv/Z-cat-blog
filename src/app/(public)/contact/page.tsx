@@ -29,8 +29,8 @@ export default function ContactPage() {
       />
 
       <div className="border-t border-neutral-200 bg-neutral-50">
-        <SectionContainer className="gap-16 pt-16">
-          <aside className="flex w-sm flex-col gap-8">
+        <SectionContainer className="flex-col gap-10 pt-10 md:flex-row md:gap-16 md:pt-16">
+          <aside className="flex w-full flex-col gap-8 md:w-sm">
             <dl>
               <dt className="font-space mb-3 text-[10px] leading-4 font-normal tracking-wider text-zinc-500 uppercase">
                 Node

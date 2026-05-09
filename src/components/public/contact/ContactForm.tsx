@@ -34,11 +34,11 @@ export default function ContactForm() {
   }
 
   return (
-    <article className="w-3xl rounded-[10px] border border-neutral-200 bg-white px-10 py-10">
+    <article className="w-full rounded-[10px] border border-neutral-200 bg-white px-5 py-6 md:px-10 md:py-10">
       <form
         onSubmit={handleSubmit}
         ref={formRef}
-        className="grid grid-cols-2 gap-8"
+        className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8"
       >
         {/* 이름 */}
         <div className="flex flex-col gap-1">
@@ -65,9 +65,9 @@ export default function ContactForm() {
             className="border-border text-foreground placeholder:text-muted-foreground focus:border-primary w-full rounded border bg-neutral-50 px-4 py-3 font-mono text-sm transition-colors focus:outline-none"
           />
         </div>
-        <div className="col-start-1 col-end-3 h-px w-full bg-neutral-200"></div>
+        <div className="h-px w-full bg-neutral-200 md:col-start-1 md:col-end-3"></div>
         {/* 메시지 */}
-        <div className="col-start-1 col-end-3 flex flex-col gap-1">
+        <div className="flex flex-col gap-1 md:col-start-1 md:col-end-3">
           <label className="text-muted-foreground font-mono text-xs">
             MESSAGE
           </label>
@@ -80,7 +80,7 @@ export default function ContactForm() {
         </div>
 
         {/* 전송 버튼 */}
-        <div className="col-start-1 col-end-3 flex justify-between">
+        <div className="flex flex-col gap-3 md:col-start-1 md:col-end-3 md:flex-row md:justify-between">
           <div className="font-space text-[10px] leading-4 font-normal tracking-wider text-zinc-400 uppercase">
             All fields required
           </div>
@@ -88,7 +88,7 @@ export default function ContactForm() {
           <button
             type="submit"
             disabled={loading}
-            className="bg-primary px-8 py-3 font-mono text-xs text-white transition-opacity hover:opacity-80 disabled:opacity-50"
+            className="bg-primary w-full px-8 py-3 font-mono text-xs text-white transition-opacity hover:opacity-80 disabled:opacity-50 md:w-auto"
           >
             {loading ? "TRANSMITTING..." : "TRANSMIT_MESSAGE"}
           </button>
