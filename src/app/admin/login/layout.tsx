@@ -2,8 +2,15 @@ import { ReactNode } from "react";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <main className="flex min-h-screen w-full">
-      <aside className="flex w-[480px] flex-col justify-between bg-zinc-900 p-12">
+    <main className="flex min-h-screen w-full flex-col lg:flex-row">
+      {/* 모바일 전용 상단 배너 — lg+ 에서 숨김 */}
+      <div className="flex items-center justify-between bg-zinc-900 px-6 py-4 lg:hidden">
+        <h1 className="text-background text-lg font-bold">Z-cat.</h1>
+        <p className="text-primary font-mono text-xs">[SECURITY_PROTOCOL_ALPHA]</p>
+      </div>
+
+      {/* 데스크탑 전용 좌측 브랜딩 패널 — 모바일에서 숨김 */}
+      <aside className="hidden lg:flex lg:w-[480px] lg:flex-col lg:justify-between bg-zinc-900 p-12">
         <header>
           <h1 className="text-background text-lg font-bold">Z-cat.</h1>
         </header>
@@ -26,13 +33,14 @@ export default function Layout({ children }: { children: ReactNode }) {
           </div>
         </div>
         <footer className="pt-4">
-          {/* border-zinc-800 border-t */}
           <p className="font-mono text-xs text-zinc-600">
             SERIAL_NO: ZC-00192-B ADMIN ONLY
           </p>
         </footer>
       </aside>
-      <section className="flex-1 bg-neutral-50">{children}</section>
+
+      {/* 폼 영역 — flex flex-col 추가해야 자식(page.tsx)이 flex-1로 늘어날 수 있음 */}
+      <section className="flex flex-1 flex-col bg-neutral-50">{children}</section>
     </main>
   );
 }

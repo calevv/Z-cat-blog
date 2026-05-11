@@ -46,7 +46,7 @@ export default function LoginPage() {
   const isValid = form.email.trim() !== "" && form.password.trim() !== "";
 
   return (
-    <div className="flex min-h-screen flex-col justify-between">
+    <div className="flex flex-1 flex-col justify-between">
       <header className="text-muted-foreground flex h-20 flex-row-reverse items-center px-10 text-right text-xs">
         <Button
           variant={"ghost"}
