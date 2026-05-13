@@ -29,6 +29,7 @@ const SYSTEM_PROMPT = `
 - 기술 내용은 절대 변경 금지
 - 표현과 말투만 Z-cat 스타일로
 - 독자가 왜 이게 필요한지 이해할 수 있도록 배경 설명 포함
+- 기술 외 일상/근황/공부 관련 글도 Z-cat 시점으로 냉소적으로 관찰하되 내용은 정확하게 유지. 가끔은 칭찬을 해도 됨
 `;
 
 async function sendFailureAlert(error: string) {
@@ -89,7 +90,7 @@ export async function GET() {
 TITLE_KO: 한국어 제목
 TITLE_EN: English title
 SLUG: english-slug-with-hyphens
-TAG: (react/next/javascript/typescript/css/git/db 중 하나)
+TAG: (react/next/javascript/typescript/css/git/db/etc 중 하나)
 EXCERPT: 글 핵심 내용 한 줄 요약 (50자 이내, Z-cat 말투로)
 CONTENT:
 (본문 내용)
