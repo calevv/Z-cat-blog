@@ -48,7 +48,13 @@ async function generateAndUploadThumbnail(
 ): Promise<string | null> {
   try {
     const imagePrompt = encodeURIComponent(
-      `A simple and cute illustration of a black cat. The cat is ${catAction}, holding ${catObject}. Simple and cute illustration style, soft colors, delicate textures. Minimalist white background. No text, no humans.`
+      `A minimalist illustration of a black cat.
+The cat is ${catAction}, holding ${catObject}.
+Flat vector style, bold clean lines.
+Slightly cynical and deadpan expression.
+Monochrome with subtle orange (#c2410c) accent.
+White background. No text, no humans.
+No hearts, no sparkles, no cute decorations.`
     );
     const pollinationsUrl = `https://image.pollinations.ai/prompt/${imagePrompt}?width=1200&height=630&nologo=true`;
 
