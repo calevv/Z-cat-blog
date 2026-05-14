@@ -80,7 +80,7 @@ export default async function DiaryPage({
                       <img
                         src={post.cover_image}
                         alt={post.title_ko}
-                        className="h-24 w-36 object-cover grayscale transition-all duration-500 group-hover:grayscale-0"
+                        className="aspect-video w-36 object-cover grayscale transition-all duration-500 group-hover:grayscale-0"
                       />
                     ) : (
                       <div className="h-24 w-36 shrink-0 bg-white" />
