@@ -4,6 +4,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import Parser from "rss-parser";
 import { Resend } from "resend";
 import { revalidatePath } from "next/cache";
+import sharp from "sharp";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -39,6 +40,48 @@ async function sendFailureAlert(error: string) {
     subject: "[Z-cat] 자동 포스팅 실패",
     html: `<p>generate-post Cron 실패:</p><pre>${error}</pre>`,
   });
+}
+
+async function generateAndUploadThumbnail(
+  catAction: string,
+  catObject: string
+): Promise<string | null> {
+  try {
+    const imagePrompt = encodeURIComponent(
+      `A simple and cute illustration of a black cat. The cat is ${catAction}, holding ${catObject}. Simple and cute illustration style, soft colors, delicate textures. Minimalist white background. No text, no humans.`
+    );
+    const pollinationsUrl = `https://image.pollinations.ai/prompt/${imagePrompt}?width=1200&height=630&nologo=true`;
+
+    // 1. Pollinations에서 이미지 다운로드
+    const response = await fetch(pollinationsUrl);
+    if (!response.ok) throw new Error("이미지 다운로드 실패");
+
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    // 2. sharp로 압축
+    const compressed = await sharp(buffer)
+      .resize(1200, 630, { fit: "cover" })
+      .webp({ quality: 80 })
+      .toBuffer();
+
+    // 3. Supabase Storage 업로드
+    const fileName = `${crypto.randomUUID()}.webp`;
+    const { error } = await supabase.storage
+      .from("covers")
+      .upload(fileName, compressed, { contentType: "image/webp" });
+
+    if (error) throw new Error(`Storage 업로드 실패: ${error.message}`);
+
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from("covers").getPublicUrl(fileName);
+
+    return publicUrl;
+  } catch (error) {
+    console.error("[generateAndUploadThumbnail] 실패:", error);
+    return null;
+  }
 }
 
 export async function GET() {
@@ -92,6 +135,8 @@ TITLE_EN: English title
 SLUG: english-slug-with-hyphens
 TAG: (react/next/javascript/typescript/css/git/db/etc 중 하나)
 EXCERPT: 글 핵심 내용 한 줄 요약 (50자 이내, Z-cat 말투로)
+CAT_ACTION: (looking pathetic and exhausted / smirking cynically with one eyebrow raised / angrily glaring / looking confused with spinning eyes / haughty and smug expression 중 하나)
+CAT_OBJECT: (제목과 연관된 물건 영어로, 예: a leaking bucket / a tangled wire / a trophy)
 CONTENT:
 (본문 내용)
 
@@ -108,6 +153,11 @@ ${originalContent}`
       const slug = text.match(/SLUG: (.+)/)?.[1]?.trim();
       const tag = text.match(/TAG: (.+)/)?.[1]?.trim() ?? "etc";
       const excerpt = text.match(/EXCERPT: (.+)/)?.[1]?.trim() ?? "";
+      const catAction =
+        text.match(/CAT_ACTION: (.+)/)?.[1]?.trim() ??
+        "smirking cynically with one eyebrow raised";
+      const catObject =
+        text.match(/CAT_OBJECT: (.+)/)?.[1]?.trim() ?? "a laptop";
       const content = text.split("CONTENT:\n")[1]?.trim();
 
       if (!titleKo || !titleEn || !slug || !content) {
@@ -115,6 +165,13 @@ ${originalContent}`
         continue;
       }
 
+      // 6. 썸네일 생성 + 업로드
+      const coverImageUrl = await generateAndUploadThumbnail(
+        catAction,
+        catObject
+      );
+
+      // 7. Supabase에 저장
       const { error } = await supabase.from("posts").insert({
         title_ko: titleKo,
         title_en: titleEn,
@@ -126,6 +183,7 @@ ${originalContent}`
         is_velog: true,
         published: true,
         published_at: item.pubDate ?? new Date().toISOString(),
+        ...(coverImageUrl && { cover_image: coverImageUrl }),
       });
 
       if (error) {
@@ -146,6 +204,7 @@ ${originalContent}`
     if (results.length === 0) {
       throw new Error("모든 글 처리 실패");
     }
+
     await resend.emails.send({
       from: "Z-cat <onboarding@resend.dev>",
       to: process.env.CONTACT_EMAIL!,
@@ -153,6 +212,7 @@ ${originalContent}`
       html: `<p>새 글 ${results.length}개 등록됨:</p>
          <ul>${results.map((t) => `<li>${t}</li>`).join("")}</ul>`,
     });
+
     return NextResponse.json({ success: true, titles: results });
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
