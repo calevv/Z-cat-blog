@@ -133,9 +133,31 @@ export async function restorePost(id: string) {
 export async function permanentDeletePost(id: string) {
   const supabase = await createServerSupabaseClient();
 
+  // 1. cover_image URL 먼저 조회
+  const { data: post } = await supabase
+    .from("posts")
+    .select("cover_image")
+    .eq("id", id)
+    .single();
+
+  // 2. DB에서 삭제
   const { error } = await supabase.from("posts").delete().eq("id", id);
 
   if (error) return { success: false, message: "영구삭제 실패" };
+
+  // 3. Storage 이미지 삭제 (cover_image가 있고 Supabase Storage URL인 경우만)
+  if (post?.cover_image?.includes("supabase")) {
+    const fileName = post.cover_image.split("/").pop();
+    if (fileName) {
+      const { error: storageError } = await supabase.storage
+        .from("covers")
+        .remove([fileName]);
+      if (storageError) {
+        console.error("[permanentDeletePost] Storage 삭제 실패:", storageError);
+        // 글 삭제는 성공했으니 에러 반환 안 함
+      }
+    }
+  }
 
   revalidatePath("/admin/trash");
   return { success: true, message: "영구삭제됐다." };
