@@ -43,18 +43,15 @@ async function sendFailureAlert(error: string) {
 }
 
 async function generateAndUploadThumbnail(
-  catAction: string,
-  catObject: string
+  imageScene: string
 ): Promise<string | null> {
   try {
     const imagePrompt = encodeURIComponent(
-      `A minimalist illustration of a black cat.
-The cat is ${catAction}, holding ${catObject}.
-Flat vector style, bold clean lines.
-Slightly cynical and deadpan expression.
-Monochrome with subtle orange (#c2410c) accent.
-White background. No text, no humans.
-No hearts, no sparkles, no cute decorations.`
+      `Vintage editorial newspaper illustration, 1950s technical journal style.
+Crosshatching and ink etching technique.
+Black and white with subtle sepia tones, stark shadows, bold contrast.
+Scene: ${imageScene}
+No color fills, no modern flat design, no cats, no cute elements, no text.`
     );
     const pollinationsUrl = `https://image.pollinations.ai/prompt/${imagePrompt}?width=1200&height=630&nologo=true`;
 
@@ -141,8 +138,7 @@ TITLE_EN: English title
 SLUG: english-slug-with-hyphens
 TAG: (react/next/javascript/typescript/css/git/db/etc 중 하나)
 EXCERPT: 글 핵심 내용 한 줄 요약 (50자 이내, Z-cat 말투로)
-CAT_ACTION: (looking pathetic and exhausted / smirking cynically with one eyebrow raised / angrily glaring / looking confused with spinning eyes / haughty and smug expression 중 하나)
-CAT_OBJECT: (제목과 연관된 물건 영어로, 예: a leaking bucket / a tangled wire / a trophy)
+IMAGE_SCENE: (글 주제와 연관된 삽화 장면을 영어 한 문장으로, 예: a developer staring at a wall of error logs / tangled cables bursting from a server rack / a lone lightbulb flickering in a dark room)
 CONTENT:
 (본문 내용)
 
@@ -159,11 +155,9 @@ ${originalContent}`
       const slug = text.match(/SLUG: (.+)/)?.[1]?.trim();
       const tag = text.match(/TAG: (.+)/)?.[1]?.trim() ?? "etc";
       const excerpt = text.match(/EXCERPT: (.+)/)?.[1]?.trim() ?? "";
-      const catAction =
-        text.match(/CAT_ACTION: (.+)/)?.[1]?.trim() ??
-        "smirking cynically with one eyebrow raised";
-      const catObject =
-        text.match(/CAT_OBJECT: (.+)/)?.[1]?.trim() ?? "a laptop";
+      const imageScene =
+        text.match(/IMAGE_SCENE: (.+)/)?.[1]?.trim() ??
+        "a developer staring at endless lines of code in a dark room";
       const content = text.split("CONTENT:\n")[1]?.trim();
 
       if (!titleKo || !titleEn || !slug || !content) {
@@ -172,10 +166,7 @@ ${originalContent}`
       }
 
       // 6. 썸네일 생성 + 업로드
-      const coverImageUrl = await generateAndUploadThumbnail(
-        catAction,
-        catObject
-      );
+      const coverImageUrl = await generateAndUploadThumbnail(imageScene);
 
       // 7. Supabase에 저장
       const { error } = await supabase.from("posts").insert({
