@@ -11,7 +11,11 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function DashboardNav() {
+export default function DashboardNav({
+  onNavigate,
+}: {
+  onNavigate?: () => void;
+}) {
   const pathname = usePathname();
 
   const ADMIN_MENU = [
@@ -63,6 +67,7 @@ export default function DashboardNav() {
               {menu.isReady ? (
                 <Link
                   href={menu.href}
+                  onClick={onNavigate}
                   className={`flex items-center justify-between rounded-lg px-4 py-3 transition-colors ${
                     isActive
                       ? "bg-primary text-white"

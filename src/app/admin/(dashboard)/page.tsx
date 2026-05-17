@@ -16,6 +16,7 @@ import AdminHeader from "@/components/admin/dashboard/AdminHeader";
 import AdminTable from "@/components/admin/dashboard/AdminTable";
 import PublishTabs from "@/components/admin/dashboard/PublishTabs";
 import StateCard from "@/components/admin/dashboard/StateCard";
+import SidebarToggleButton from "@/components/admin/dashboard/layout/SidebarToggleButton";
 import { createServerSupabaseClient } from "@/lib/supabase";
 import { Suspense } from "react";
 import { Button } from "@/components/ui/button";
@@ -69,6 +70,7 @@ export default async function AdminPage({
     <div className="flex h-full flex-col">
       <AdminHeader
         title={`게시물 관리`}
+        leftSlot={<SidebarToggleButton />}
         component={
           <Button
             asChild

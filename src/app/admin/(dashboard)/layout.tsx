@@ -1,10 +1,6 @@
-import { signOut } from "@/lib/actions/auth.action";
-import AvatarGroup from "@/components/admin/dashboard/layout/AvatarGroup";
-import DashboardNav from "@/components/admin/dashboard/layout/DashboardNav";
-import { Button } from "@/components/ui/button";
+import DashboardSidebar from "@/components/admin/dashboard/layout/DashboardSidebar";
+import { SidebarProvider } from "@/components/admin/dashboard/layout/SidebarContext";
 import { createServerSupabaseClient } from "@/lib/supabase";
-import { House, SquareArrowRightExit } from "lucide-react";
-import Link from "next/link";
 import { ReactNode } from "react";
 
 export default async function Layout({ children }: { children: ReactNode }) {
@@ -17,41 +13,13 @@ export default async function Layout({ children }: { children: ReactNode }) {
   const adminName = user?.user_metadata?.display_name ?? "User";
 
   return (
-    <main className="flex h-screen w-full overflow-hidden">
-      <aside className="flex w-60 flex-col justify-between bg-zinc-900">
-        <header className="text-background min-h-24 p-6">
-          <h1 className="text-lg leading-7 font-bold text-white">Z-cat.</h1>
-          <p className="font-space-grotesk text-xs leading-3 font-normal tracking-wider text-zinc-600 uppercase">
-            Admin Console
-          </p>
-        </header>
-        <DashboardNav />
-        <footer className="flex min-h-24 flex-col gap-3 px-6 py-5">
-          <AvatarGroup user={adminName} />
-          <Button
-            asChild
-            variant={"ghost"}
-            className="w-full cursor-pointer justify-start text-[10px] leading-4 font-normal tracking-wide text-zinc-600 uppercase"
-          >
-            <Link href={"/"}>
-              <House />
-              Go to Site
-            </Link>
-          </Button>
-          <form action={signOut}>
-            <Button
-              variant={"ghost"}
-              className="w-full cursor-pointer justify-start text-[10px] leading-4 font-normal tracking-wide text-zinc-600 uppercase"
-            >
-              <SquareArrowRightExit />
-              Logout
-            </Button>
-          </form>
-        </footer>
-      </aside>
-      <section className="flex-1 overflow-hidden bg-neutral-50">
-        {children}
-      </section>
-    </main>
+    <SidebarProvider>
+      <main className="flex h-screen w-full overflow-hidden">
+        <DashboardSidebar adminName={adminName} />
+        <section className="flex-1 overflow-hidden bg-neutral-50">
+          {children}
+        </section>
+      </main>
+    </SidebarProvider>
   );
 }
