@@ -20,7 +20,11 @@ export default async function DiaryPage({
 }) {
   const { tag } = await searchParams;
   const posts = await getAllPosts();
-  const allTags = [...new Set(posts.flatMap((p) => p.tags))];
+  const allTags = [...new Set(posts.flatMap((p) => p.tags))].sort((a, b) => {
+    if (a === "etc") return 1;
+    if (b === "etc") return -1;
+    return a.localeCompare(b);
+  });
   const filtered = tag ? posts.filter((p) => p.tags.includes(tag)) : posts;
 
   return (
