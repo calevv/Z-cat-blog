@@ -6,7 +6,7 @@ interface AdminHeaderProps {
 
 export default function AdminHeader({ title, component, leftSlot }: AdminHeaderProps) {
   return (
-    <header className="flex h-20 items-center justify-between border-b border-neutral-200 bg-white px-8">
+    <header className="flex h-20 items-center justify-between border-b border-neutral-200 bg-white px-4 md:px-8">
       <div className="flex items-center gap-3">
         {leftSlot}
         <div>

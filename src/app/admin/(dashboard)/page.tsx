@@ -83,7 +83,7 @@ export default async function AdminPage({
           </Button>
         }
       />
-      <div className="flex flex-1 flex-col gap-6 overflow-hidden p-8">
+      <div className="flex flex-1 flex-col gap-6 overflow-hidden p-4 md:p-8">
         <section className="grid grid-cols-3 gap-4">
           <StateCard label="Total Posts" value={total} />
           <StateCard label="Published" value={published} />

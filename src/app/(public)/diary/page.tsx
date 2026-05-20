@@ -78,7 +78,7 @@ export default async function DiaryPage({
                       {post.excerpt}
                     </p>
                   </div>
-                  <div className="hidden shrink-0 sm:block">
+                  <div className="hidden shrink-0 md:block">
                     {/* 썸네일 */}
                     {post.cover_image ? (
                       <img
