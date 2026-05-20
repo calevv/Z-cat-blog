@@ -7,7 +7,7 @@ export default function EditorFooter() {
   const { form, handleSave, saveStatus } = useEditor();
 
   return (
-    <footer className="flex h-17 items-center justify-between border-t border-neutral-200 bg-white px-8 py-4">
+    <footer className="flex h-17 items-center justify-between border-t border-neutral-200 bg-white px-4 py-4 md:px-8">
       <div>
         <ExitEditorAlert />
       </div>

@@ -11,7 +11,7 @@ export default function EditorPreview() {
 
   return (
     <section className="flex flex-1 flex-col overflow-hidden">
-      <header className="flex h-17 items-center justify-between border-b border-neutral-200 bg-white px-8 py-4">
+      <header className="flex h-17 items-center justify-between border-b border-neutral-200 bg-white px-4 py-4 md:px-8">
         <div className="flex items-center gap-3">
           <p className="font-space text-[10px] leading-4 font-normal tracking-wider text-zinc-500 uppercase">
             STATUS_04 // PREVIEW
@@ -34,7 +34,7 @@ export default function EditorPreview() {
           )}
         </div>
         <div className="flex items-center gap-2.5">
-          <p className="font-space text-[10px] leading-4 font-normal tracking-wider text-zinc-500 uppercase">
+          <p className="hidden font-space text-[10px] leading-4 font-normal tracking-wider text-zinc-500 uppercase md:block">
             AUTHOR:
           </p>
           <div className="flex h-7 items-center overflow-hidden rounded border border-neutral-200">
@@ -64,7 +64,7 @@ export default function EditorPreview() {
           </div>
         </div>
       </header>
-      <div className="flex flex-1 flex-col gap-8 overflow-y-auto bg-neutral-50 p-6">
+      <div className="flex flex-1 flex-col gap-8 overflow-y-auto bg-neutral-50 p-4 md:p-6">
         <div className="flex flex-col">
           {/* 제목 동기화 */}
           {form.title_ko && (

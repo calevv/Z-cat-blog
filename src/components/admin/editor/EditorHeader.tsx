@@ -45,7 +45,7 @@ export default function EditorHeader() {
   };
 
   return (
-    <header className="flex h-44 flex-col gap-6 border-b border-neutral-200 px-8 pt-6">
+    <header className="flex h-44 flex-col gap-6 border-b border-neutral-200 px-4 pt-4 md:px-8 md:pt-6">
       {/* TODO: 타이틀과 태그는 이후 보여주기창과 동기화 기능 필요*/}
 
       <input

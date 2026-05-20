@@ -12,6 +12,7 @@ import { Post } from "@/types/database.types";
 import { useRouter } from "next/navigation";
 import EditorPreview from "./EditorPreview";
 import { EditorContext } from "./EditorContext";
+import { useState } from "react";
 
 //TODO : 태그 없으면 등록 못하는 처리, 같은 제목 필터링
 
@@ -24,6 +25,7 @@ export default function EditorContainer({
   const isEditMode = !!initialData;
 
   const editorForm = useEditorForm({ isEditMode, initialData });
+  const [mobileTab, setMobileTab] = useState<"edit" | "preview">("edit");
 
   // 공통 저장 함수
   async function handleSave(published: boolean, coverImageUrl?: string) {
@@ -62,19 +64,51 @@ export default function EditorContainer({
       }}
     >
       <div className="flex h-screen w-full flex-col">
-        <main className="grid min-h-0 flex-1 grid-cols-2">
-          {/* 에디터 메인 영역 (좌우 분할) */}
+        {/* 탭바 — 모바일 전용 */}
+        <div className="flex flex-shrink-0 border-b border-neutral-200 bg-white md:hidden">
+          <button
+            onClick={() => setMobileTab("edit")}
+            className={`flex-1 py-3 font-space text-[10px] tracking-[1.5px] uppercase transition-colors ${
+              mobileTab === "edit"
+                ? "border-b-2 border-orange-700 text-zinc-900"
+                : "text-zinc-400"
+            }`}
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => setMobileTab("preview")}
+            className={`flex-1 py-3 font-space text-[10px] tracking-[1.5px] uppercase transition-colors ${
+              mobileTab === "preview"
+                ? "border-b-2 border-orange-700 text-zinc-900"
+                : "text-zinc-400"
+            }`}
+          >
+            Preview
+          </button>
+        </div>
+
+        <main className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-2">
           {/* 좌측: 마크다운 입력창 */}
-          <section className="flex flex-col overflow-hidden border-r border-neutral-200 bg-white">
+          <section
+            className={`flex-col overflow-hidden border-r border-neutral-200 bg-white md:flex ${
+              mobileTab === "edit" ? "flex" : "hidden"
+            }`}
+          >
             <EditorHeader />
             <div className="border-border/40 flex-1 p-6">
               <EditorBody />
             </div>
           </section>
 
-          {/* 우측: 실시간 미리보기 (마크다운 뷰어) */}
-
-          <EditorPreview />
+          {/* 우측: 실시간 미리보기 */}
+          <div
+            className={`min-h-0 overflow-hidden md:flex ${
+              mobileTab === "preview" ? "flex" : "hidden"
+            }`}
+          >
+            <EditorPreview />
+          </div>
         </main>
         <EditorFooter />
       </div>
