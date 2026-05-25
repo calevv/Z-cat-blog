@@ -12,6 +12,7 @@ import SectionContainer from "@/components/common/section/SectionContainer";
 import { getAllPosts } from "@/lib/queries/posts.query";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
+import { Fragment } from "react";
 
 export default async function DiaryPage({
   searchParams,
@@ -130,21 +131,21 @@ export default async function DiaryPage({
               </li>
               <li className="my-1 border-t border-neutral-200" />
               {allTags.map((t) => (
-                <li
-                  key={t}
-                  className="text-muted-foreground hover:text-foreground cursor-pointer font-mono text-sm transition-colors"
-                >
-                  <Link
-                    href={t === tag ? "/diary" : `/diary?tag=${t}`}
-                    className={`font-mono text-sm transition-colors ${
-                      t === tag
-                        ? "text-primary font-bold"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    #{t}
-                  </Link>
-                </li>
+                <Fragment key={t}>
+                  {t === "etc" && <li className="my-1 border-t border-neutral-200" />}
+                  <li className="text-muted-foreground hover:text-foreground cursor-pointer font-mono text-sm transition-colors">
+                    <Link
+                      href={t === tag ? "/diary" : `/diary?tag=${t}`}
+                      className={`font-mono text-sm transition-colors ${
+                        t === tag
+                          ? "text-primary font-bold"
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      #{t}
+                    </Link>
+                  </li>
+                </Fragment>
               ))}
             </ul>
           </div>
