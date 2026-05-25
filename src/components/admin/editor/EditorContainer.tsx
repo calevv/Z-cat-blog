@@ -28,12 +28,13 @@ export default function EditorContainer({
   const [mobileTab, setMobileTab] = useState<"edit" | "preview">("edit");
 
   // 공통 저장 함수
-  async function handleSave(published: boolean, coverImageUrl?: string) {
+  async function handleSave(published: boolean, coverImageUrl?: string, excerptOverride?: string) {
     editorForm.setSaveStatus("saving");
 
     const result = await savePost({
       id: editorForm.postId ?? undefined,
       ...editorForm.form,
+      excerpt: excerptOverride ?? editorForm.form.excerpt,
       cover_image: coverImageUrl,
       published,
     });
