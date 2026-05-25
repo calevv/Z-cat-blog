@@ -58,7 +58,7 @@ export default function PublishModal() {
     if (file) {
       const formData = new FormData();
       formData.append("image", file);
-      const result = await uploadCoverImage(formData);
+      const result = await uploadCoverImage(formData, initialCoverImage ?? undefined);
       if (!result.success) {
         toast.error(result.message ?? "이미지 업로드 실패");
         return;

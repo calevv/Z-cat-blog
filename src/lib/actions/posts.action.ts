@@ -163,7 +163,7 @@ export async function permanentDeletePost(id: string) {
   return { success: true, message: "영구삭제됐다." };
 }
 
-export async function uploadCoverImage(formData: FormData) {
+export async function uploadCoverImage(formData: FormData, oldImageUrl?: string) {
   const file = formData.get("image") as File;
 
   const arrayBuffer = await file.arrayBuffer();
@@ -187,6 +187,19 @@ export async function uploadCoverImage(formData: FormData) {
   const {
     data: { publicUrl },
   } = supabase.storage.from("covers").getPublicUrl(fileName);
+
+  // 새 이미지 업로드 성공 후 기존 고아 파일 삭제
+  if (oldImageUrl?.includes("supabase")) {
+    const oldFileName = oldImageUrl.split("/").pop();
+    if (oldFileName) {
+      const { error: storageError } = await supabase.storage
+        .from("covers")
+        .remove([oldFileName]);
+      if (storageError) {
+        console.error("[uploadCoverImage] 기존 이미지 삭제 실패:", storageError);
+      }
+    }
+  }
 
   return { success: true, url: publicUrl };
 }
