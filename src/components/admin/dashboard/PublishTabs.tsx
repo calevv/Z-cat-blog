@@ -17,7 +17,7 @@ export default function PublishTabs() {
   ];
 
   return (
-    <div className="flex justify-between px-6 py-4">
+    <div className="flex flex-col gap-3 px-4 py-4 md:flex-row md:justify-between md:px-6">
       <div className="flex gap-1">
         {TABS.map((tab) => {
           const isActive = currentStatus === tab.value;
