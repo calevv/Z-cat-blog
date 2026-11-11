@@ -1,16 +1,16 @@
 // ───────────────────────────────
 // Diary 상세 페이지
 // 역할: 개별 포스트 상세 내용
-// TODO:
-// Supabase 연결 후 더미 데이터 교체(완)
-// 상세페이지 인덱스와 날짜 수정예정
-// .maybeSingle() 변경
+// - post 먼저 조회 후 나머지(이전/다음글, 댓글, 로그인)는 Promise.all로 병렬 처리
+// - 휴지통(deleted_at) / 미발행 글은 404
 // ───────────────────────────────
+import Link from "next/link";
+import { notFound } from "next/navigation";
 import CommentSection from "@/components/public/diary/CommentSection";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
-import { createClient } from "@/lib/supabase";
+import { createClient, createServerSupabaseClient } from "@/lib/supabase";
 import { formatDate } from "@/lib/utils";
 import { getCommentsByPostId } from "@/lib/queries/comments.query";
 
@@ -22,50 +22,54 @@ export default async function DiaryDetailPage({
   const { slug } = await params;
   const supabase = createClient();
 
-  // slug로 해당 포스트 조회
-  const { data: post, error } = await supabase
+  // 1. post 먼저 조회 (나머지 쿼리가 post.id, published_at에 의존)
+  const { data: post } = await supabase
     .from("posts")
     .select("*")
     .eq("slug", slug)
-    .single();
+    .eq("published", true)
+    .is("deleted_at", null)
+    .maybeSingle();
 
   // 포스트 없으면 404
-  if (!post || error) {
-    return (
-      <div className="mx-auto max-w-3xl px-6 py-32 text-center">
-        <p className="text-muted-foreground font-mono text-xs">[ERROR_404]</p>
-        <h1 className="mt-4 text-4xl font-bold">
-          존재하지 않는 관찰 기록이다.
-        </h1>
-      </div>
-    );
-  }
+  if (!post) notFound();
 
-  // 이전글 / 다음글 조회
-  const { data: prevPost } = await supabase
-    .from("posts")
-    .select("slug, title_ko")
-    .eq("published", true)
-    .lt("published_at", post.published_at)
-    .order("published_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-
-  const { data: nextPost } = await supabase
-    .from("posts")
-    .select("slug, title_ko")
-    .eq("published", true)
-    .gt("published_at", post.published_at)
-    .order("published_at", { ascending: true })
-    .limit(1)
-    .maybeSingle();
-
-  const comments = await getCommentsByPostId(post.id);
-  const { createServerSupabaseClient } = await import("@/lib/supabase");
   const serverSupabase = await createServerSupabaseClient();
-  const {
-    data: { user },
-  } = await serverSupabase.auth.getUser();
+
+  // 2. 서로 의존하지 않는 4개는 동시에 요청
+  const [
+    { data: prevPost },
+    { data: nextPost },
+    comments,
+    {
+      data: { user },
+    },
+  ] = await Promise.all([
+    // 이전글
+    supabase
+      .from("posts")
+      .select("slug, title_ko")
+      .eq("published", true)
+      .is("deleted_at", null)
+      .lt("published_at", post.published_at)
+      .order("published_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+    // 다음글
+    supabase
+      .from("posts")
+      .select("slug, title_ko")
+      .eq("published", true)
+      .is("deleted_at", null)
+      .gt("published_at", post.published_at)
+      .order("published_at", { ascending: true })
+      .limit(1)
+      .maybeSingle(),
+    // 댓글
+    getCommentsByPostId(post.id),
+    // 로그인 여부 (Z-cat 댓글 작성용)
+    serverSupabase.auth.getUser(),
+  ]);
 
   return (
     <div className="bg-background w-full">
@@ -107,6 +111,7 @@ export default async function DiaryDetailPage({
           </div>
         </div>
       </section>
+
       {/* 본문 — 마크다운 렌더링 */}
       <section className="mx-auto max-w-3xl px-4 py-8 md:px-6 md:py-12">
         {/* prose: @tailwindcss/typography가 마크다운 태그에 스타일 자동 적용 */}
@@ -116,16 +121,18 @@ export default async function DiaryDetailPage({
           </ReactMarkdown>
         </article>
       </section>
+
       {/* 댓글 */}
       <section className="mx-auto max-w-3xl px-4 pb-12 md:px-6 md:pb-16">
         <CommentSection comments={comments} postId={post.id} isAdmin={!!user} />
       </section>
+
       {/* 이전글 / 다음글 */}
       <section className="mx-auto max-w-3xl px-4 py-6 md:px-6 md:py-8">
         <div className="border-border flex justify-between border-y py-6">
           {/* 이전글 */}
           {prevPost && (
-            <a
+            <Link
               href={`/diary/${prevPost.slug}`}
               className="group flex max-w-[45%] flex-col gap-1"
             >
@@ -135,14 +142,14 @@ export default async function DiaryDetailPage({
               <span className="group-hover:text-primary line-clamp-1 text-sm font-bold transition-colors">
                 {prevPost.title_ko}
               </span>
-            </a>
+            </Link>
           )}
 
           {/* 다음글 */}
           {nextPost && (
-            <a
+            <Link
               href={`/diary/${nextPost.slug}`}
-              className="group flex max-w-[45%] flex-col items-end gap-1"
+              className="group ml-auto flex max-w-[45%] flex-col items-end gap-1"
             >
               <span className="text-muted-foreground font-mono text-xs">
                 NEXT →
@@ -150,7 +157,7 @@ export default async function DiaryDetailPage({
               <span className="group-hover:text-primary line-clamp-1 text-sm font-bold transition-colors">
                 {nextPost.title_ko}
               </span>
-            </a>
+            </Link>
           )}
         </div>
       </section>
