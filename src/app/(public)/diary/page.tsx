@@ -1,11 +1,8 @@
 // ───────────────────────────────
 // Diary 목록 페이지
-// 역할: 전체 포스트 목록 + 태그 사이드바 필터
+// 역할: 전체 포스트 목록 + 태그 사이드바 필터 (searchParams 기반)
 // TODO:
-// 태그 필터링
-// 페이지네이션 혹은 스크롤
-// 호버 이벤트 변경
-// Supabase 연결 후 더미 데이터 교체(완)
+// 페이지네이션 혹은 무한스크롤
 // ───────────────────────────────
 import PageHeader from "@/components/common/PageHeader";
 import SectionContainer from "@/components/common/section/SectionContainer";
@@ -17,15 +14,18 @@ import { Fragment } from "react";
 export default async function DiaryPage({
   searchParams,
 }: {
-  searchParams: { tag?: string };
+  searchParams: Promise<{ tag?: string }>;
 }) {
   const { tag } = await searchParams;
   const posts = await getAllPosts();
+
+  // 태그 알파벳 정렬 + etc는 마지막
   const allTags = [...new Set(posts.flatMap((p) => p.tags))].sort((a, b) => {
     if (a === "etc") return 1;
     if (b === "etc") return -1;
     return a.localeCompare(b);
   });
+
   const filtered = tag ? posts.filter((p) => p.tags.includes(tag)) : posts;
 
   return (
@@ -41,81 +41,88 @@ export default async function DiaryPage({
       {/* 본문 — 목록 + 사이드바 */}
       <SectionContainer className="gap-8">
         {/* 포스트 목록 */}
-        <ul className="divide-border flex flex-1 flex-col divide-y">
-          {filtered?.map((post) => {
-            const displayDate =
-              post.published_at ?? post.created_at ?? "NO_DATE_ERROR";
-            // 날짜가 없으면 생성일(created_at)을 보여주고, 그것도 없으면 에러 메시지
-            return (
-              <li key={post.id}>
-                <Link
-                  href={`/diary/${post.slug}`}
-                  className="group flex gap-4 py-4 transition-opacity hover:opacity-70 sm:gap-8"
-                >
-                  {/* 텍스트 */}
-                  <div className="flex flex-1 flex-col gap-2">
-                    {/* 날짜 + 태그 */}
-                    <div className="flex items-center gap-3">
-                      <span className="text-muted-foreground font-mono text-xs">
-                        {formatDate(displayDate)}
-                      </span>
-                      {post.tags.map((tag: string) => (
-                        <span
-                          key={tag}
-                          className="text-primary font-mono text-xs"
-                        >
-                          #{tag}
+        {filtered.length === 0 ? (
+          <p className="text-muted-foreground flex-1 py-16 text-center font-mono text-sm">
+            [NO_RECORDS_FOUND]
+          </p>
+        ) : (
+          <ul className="divide-border flex flex-1 flex-col divide-y">
+            {filtered.map((post) => {
+              // 발행일 없으면 생성일로 대체
+              const displayDate = post.published_at ?? post.created_at;
+
+              return (
+                <li key={post.id}>
+                  <Link
+                    href={`/diary/${post.slug}`}
+                    className="group flex gap-4 py-4 transition-opacity hover:opacity-70 md:gap-8"
+                  >
+                    {/* 텍스트 */}
+                    <div className="flex flex-1 flex-col gap-2">
+                      {/* 날짜 + 태그 */}
+                      <div className="flex items-center gap-3">
+                        <span className="text-muted-foreground font-mono text-xs">
+                          {formatDate(displayDate)}
                         </span>
-                      ))}
+                        {post.tags.map((t: string) => (
+                          <span
+                            key={t}
+                            className="text-primary font-mono text-xs"
+                          >
+                            #{t}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* 제목 */}
+                      <h2 className="text-foreground text-lg leading-snug font-bold">
+                        {post.title_ko}
+                      </h2>
+
+                      {/* 요약 */}
+                      <p className="text-muted-foreground line-clamp-2 text-sm break-keep">
+                        {post.excerpt}
+                      </p>
                     </div>
 
-                    {/* 제목 */}
-                    <h2 className="text-foreground text-lg leading-snug font-bold">
-                      {post.title_ko}
-                    </h2>
+                    <div className="hidden shrink-0 md:block">
+                      {/* 썸네일 */}
+                      {post.cover_image ? (
+                        <img
+                          src={post.cover_image}
+                          alt={post.title_ko}
+                          className="aspect-video w-36 object-cover grayscale transition-all duration-500 group-hover:grayscale-0"
+                        />
+                      ) : (
+                        <div className="aspect-video w-36 bg-white" />
+                      )}
 
-                    {/* 요약 */}
-                    <p className="text-muted-foreground line-clamp-2 text-sm break-keep">
-                      {post.excerpt}
-                    </p>
-                  </div>
-                  <div className="hidden shrink-0 md:block">
-                    {/* 썸네일 */}
-                    {post.cover_image ? (
-                      <img
-                        src={post.cover_image}
-                        alt={post.title_ko}
-                        className="aspect-video w-36 object-cover grayscale transition-all duration-500 group-hover:grayscale-0"
-                      />
-                    ) : (
-                      <div className="h-24 w-36 shrink-0 bg-white" />
-                    )}
-                    {/* author 배지 */}
-                    <div className="mt-3 flex justify-end">
-                      <span
-                        className={`font-mono text-xs ${
-                          post.author_type === "zcat"
-                            ? "text-primary"
-                            : "text-muted-foreground"
-                        }`}
-                      >
-                        {post.author_type === "zcat"
-                          ? "[ Z-cat ]"
-                          : "[ Human ]"}
-                      </span>
+                      {/* author 배지 */}
+                      <div className="mt-3 flex justify-end">
+                        <span
+                          className={`font-mono text-xs ${
+                            post.author_type === "zcat"
+                              ? "text-primary"
+                              : "text-muted-foreground"
+                          }`}
+                        >
+                          {post.author_type === "zcat"
+                            ? "[ Z-cat ]"
+                            : "[ Human ]"}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        )}
 
         {/* 사이드바 */}
         <aside className="hidden md:block md:w-48 md:shrink-0">
           <div className="sticky top-24">
             <p className="text-foreground font-mono text-xs font-bold">TAGS</p>
-            {/* TODO: 클릭 시 필터 기능 — 클라이언트 컴포넌트로 분리 예정 */}
             <ul className="mt-4 flex flex-col gap-2">
               <li>
                 <Link
@@ -132,10 +139,14 @@ export default async function DiaryPage({
               <li className="my-1 border-t border-neutral-200" />
               {allTags.map((t) => (
                 <Fragment key={t}>
-                  {t === "etc" && <li className="my-1 border-t border-neutral-200" />}
-                  <li className="text-muted-foreground hover:text-foreground cursor-pointer font-mono text-sm transition-colors">
+                  {/* etc 앞 구분선 */}
+                  {t === "etc" && (
+                    <li className="my-1 border-t border-neutral-200" />
+                  )}
+                  <li>
                     <Link
                       href={t === tag ? "/diary" : `/diary?tag=${t}`}
+                      prefetch={false} // 태그별 서버 호출 방지 (선택사항)
                       className={`font-mono text-sm transition-colors ${
                         t === tag
                           ? "text-primary font-bold"
