@@ -22,6 +22,8 @@ export default function Navigation() {
     return exact ? pathname === href : pathname.startsWith(href);
   }
 
+  const closeMenu = () => setMenuOpen(false);
+
   // onAuthStateChange → 로그인/로그아웃 실시간 감지
   useEffect(() => {
     const supabase = createClient();
@@ -46,12 +48,16 @@ export default function Navigation() {
     <header className="bg-background/80 border-muted/50 sticky top-0 z-50 w-full border-b backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-6">
         {/* Logo */}
-        <div className="flex">
-          <Link href="/" className="text-xl font-bold tracking-tight">
+        <div className="flex items-center gap-1.5">
+          <Link
+            href="/"
+            onClick={closeMenu}
+            className="text-xl font-bold tracking-tight"
+          >
             Z-cat.
           </Link>
           {isAdmin && (
-            <Link href="/admin">
+            <Link href="/admin" onClick={closeMenu} aria-label="관리자 페이지">
               <PawPrint size={16} className="fill-foreground" />
             </Link>
           )}
@@ -80,7 +86,8 @@ export default function Navigation() {
           {/* 햄버거 버튼 — 모바일 전용 */}
           <button
             onClick={() => setMenuOpen((v) => !v)}
-            aria-label="메뉴 열기"
+            aria-label={menuOpen ? "메뉴 닫기" : "메뉴 열기"}
+            aria-expanded={menuOpen}
             className="hover:bg-muted rounded p-2 transition-colors md:hidden"
           >
             {menuOpen ? (
@@ -103,7 +110,7 @@ export default function Navigation() {
             <Link
               key={href}
               href={href}
-              onClick={() => setMenuOpen(false)}
+              onClick={closeMenu}
               className={`block border-b px-4 py-4 text-sm transition-colors ${
                 isActive(href, exact)
                   ? "text-primary bg-primary/5 border-muted/30 font-medium"
